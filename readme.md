@@ -10,7 +10,7 @@ If you find this concept intriguiging through morbid curiosity, or if you are on
 
 # Current State
 
-This is prototype code. Some features have yet to be implimented:
+This is prototype code. Some features have yet to be completed:
 - Start with Windows
 - Crackle Fix (for bypassing USB interface pops in some cases)
 
