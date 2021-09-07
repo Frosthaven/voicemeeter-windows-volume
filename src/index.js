@@ -1,11 +1,10 @@
-import SysTray from "systray2";
-import os from "os";
-import path from "path";
-import { Voicemeeter, StripProperties } from "voicemeeter-connector";
-import { getSettings, loadSettings, saveSettings } from "./settingsManager";
-import { clear } from "console";
-const processWindows = require("node-process-windows");
-const audio = require("win-audio").speaker;
+import SysTray from 'systray2';
+import os from 'os';
+import path from 'path';
+import { Voicemeeter, StripProperties } from 'voicemeeter-connector';
+import { getSettings, loadSettings, saveSettings } from './settingsManager';
+const processWindows = require('node-process-windows');
+const audio = require('win-audio').speaker;
 
 let vm = null;
 let strips = [],
@@ -30,27 +29,27 @@ for (let i = 0; i <= 7; i++) {
 }
 
 const itemBindList = {
-    title: "Bind Windows Volume To",
+    title: 'Bind Windows Volume To',
     enabled: true,
-    items: [...strips, { Title: "" }, ...buses],
+    items: [...strips, { Title: '' }, ...buses],
 };
 
 const itemStartWithWindows = {
-    title: "Start With Windows",
+    title: 'Start With Windows',
     checked: false,
-    sid: "start_with_windows",
+    sid: 'start_with_windows',
     enabled: true,
 };
 
 const itemCrackleFix = {
-    title: "Apply Crackle Fix",
+    title: 'Apply Crackle Fix',
     checked: false,
-    sid: "apply_crackle_fix",
+    sid: 'apply_crackle_fix',
     enabled: true,
 };
 
 const itemExit = {
-    title: "Exit",
+    title: 'Exit',
     checked: false,
     enabled: true,
     click: () => {
@@ -65,11 +64,11 @@ const systray = new SysTray({
     menu: {
         // you should use .png icon on macOS/Linux, and .ico format on Windows
         icon:
-            os.platform() === "win32"
-                ? path.normalize(__dirname + "/assets/app.ico")
-                : path.normalize(__dirname + "/assets/app.png"),
-        title: "Voicemeeter Windows Volume",
-        tooltip: "Voicemeeter Windows Volume",
+            os.platform() === 'win32'
+                ? path.normalize(__dirname + '/assets/app.ico')
+                : path.normalize(__dirname + '/assets/app.png'),
+        title: 'Voicemeeter Windows Volume',
+        tooltip: 'Voicemeeter Windows Volume',
         items: [
             itemBindList,
             SysTray.separator, // SysTray.separator is equivalent to a MenuItem with "title" equals "<SEPARATOR>"
@@ -90,13 +89,13 @@ systray.onClick((action) => {
     }
 
     if (
-        typeof action?.item?.checked === "boolean" ||
-        action?.item?.checked === "true" ||
-        action?.item?.checked === "false"
+        typeof action?.item?.checked === 'boolean' ||
+        action?.item?.checked === 'true' ||
+        action?.item?.checked === 'false'
     ) {
         action.item.checked = !action.item.checked;
         systray.sendAction({
-            type: "update-item",
+            type: 'update-item',
             item: action.item,
         });
         saveSettings(systray);
@@ -105,7 +104,7 @@ systray.onClick((action) => {
 
 const runInitCode = () => {
     for (let [key, value] of systray.internalIdMap) {
-        if (typeof value.init === "function") {
+        if (typeof value.init === 'function') {
             value.init(value.checked);
         }
     }
@@ -114,15 +113,15 @@ const runInitCode = () => {
 const waitForVoicemeeter = (callback) => {
     const activeProcess = processWindows.getProcesses((err, processes) => {
         let running = processes.filter(
-            (x) => x.processName === "voicemeeter"
+            (x) => x.processName === 'voicemeeter'
         )[0];
         if (!running) {
-            console.log("waiting for voicemeeter...");
+            console.log('waiting for voicemeeter...');
             setTimeout(() => {
                 waitForVoicemeeter(callback);
             }, 5000);
         } else {
-            console.log("connected!");
+            console.log('connected!');
             callback();
         }
     });
@@ -148,25 +147,25 @@ const runWinAudio = () => {
     let settings = getSettings();
     audio.polling(settings.polling_rate);
 
-    audio.events.on("change", (volume) => {
+    audio.events.on('change', (volume) => {
         if (vm) {
             for (let [key, value] of systray.internalIdMap) {
                 if (
                     value.checked &&
-                    (value?.sid?.startsWith("Strip") ||
-                        value?.sid?.startsWith("Bus"))
+                    (value?.sid?.startsWith('Strip') ||
+                        value?.sid?.startsWith('Bus'))
                 ) {
                     const gain =
                         (volume.new * (settings.gain_max - settings.gain_min)) /
                             100 +
                         settings.gain_min;
                     const roundedGain = Math.round(gain * 10) / 10;
-                    const tokens = value.sid.split("_");
+                    const tokens = value.sid.split('_');
                     try {
                         vm.setParameter(
                             tokens[0],
                             tokens[1],
-                            "Gain",
+                            'Gain',
                             roundedGain
                         );
                     } catch (e) {}
@@ -175,20 +174,20 @@ const runWinAudio = () => {
         }
     });
 
-    audio.events.on("toggle", (status) => {
+    audio.events.on('toggle', (status) => {
         // status.new = true or false to indicate mute
         if (vm) {
             for (let [key, value] of systray.internalIdMap) {
                 if (
                     value.checked &&
-                    (value?.sid?.startsWith("Strip") ||
-                        value?.sid?.startsWith("Bus"))
+                    (value?.sid?.startsWith('Strip') ||
+                        value?.sid?.startsWith('Bus'))
                 ) {
-                    const tokens = value.sid.split("_");
-                    const type = "";
+                    const tokens = value.sid.split('_');
+                    const type = '';
                     const isMute = status.new ? 1 : 0;
                     try {
-                        vm.setParameter(tokens[0], tokens[1], "Mute", isMute);
+                        vm.setParameter(tokens[0], tokens[1], 'Mute', isMute);
                     } catch (e) {}
                 }
             }
