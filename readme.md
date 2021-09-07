@@ -10,7 +10,7 @@ This codebase is *mildly dirty*, which will be corrected once feature prototypin
 
 If you still want to try it out, head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page.
 
-# Developement Environment
+# Building From Source
 
 ## Requirements
 
@@ -18,3 +18,5 @@ If you still want to try it out, head over to the [releases](https://github.com/
 - [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
 
 Once you have the above tools installed as described, you will need to reboot your computer.
+
+- `npm run build`
