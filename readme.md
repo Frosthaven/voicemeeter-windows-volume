@@ -17,8 +17,6 @@ If you find this concept intriguiging through morbid curiosity, or if you are on
 - Start with Windows
 - Crackle Fix (for bypassing USB interface pops in some cases)
 
-The volume and mute sync currently work
-
 This codebase is *mildly dirty*, which will be corrected once feature prototyping is complete.
 
 If you still want to try it out, head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page.
