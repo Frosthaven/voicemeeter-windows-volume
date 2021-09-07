@@ -1,0 +1,48 @@
+{
+    "name": "voicemeeter-windows-volume",
+    "version": "0.8.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
+        "startb": "nodemon --exec ./node_modules/.bin/babel-node ./_build/build.js",
+        "clean": "rimraf _build && rimraf _dist",
+        "build_webpack": "webpack --config ./build-tools/webpack.config.js",
+        "build_nexe": "node ./build-tools/build.nexe.js",
+        "build_archive": "node ./build-tools/build.archive.js",
+        "build": "npm run clean && npm run build_webpack && npm run build_nexe",
+        "rebuild": "npm run clean && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@babel/cli": "^7.15.4",
+        "@babel/core": "^7.15.5",
+        "@babel/node": "^7.15.4",
+        "@babel/plugin-transform-runtime": "^7.15.0",
+        "@babel/polyfill": "^7.12.1",
+        "@babel/preset-env": "^7.15.4",
+        "archiver": "^5.3.0",
+        "babel-loader": "^8.2.2",
+        "copy-webpack-plugin": "^9.0.1",
+        "file-loader": "^6.2.0",
+        "jszip": "^3.7.1",
+        "nexe": "^4.0.0-beta.17",
+        "node-loader": "^2.0.0",
+        "nodemon": "^2.0.12",
+        "rimraf": "^3.0.2",
+        "terser-webpack-plugin": "^5.2.3",
+        "webpack": "^5.52.0",
+        "webpack-cli": "^4.8.0",
+        "webpack-node-externals": "^3.0.0",
+        "zip-webpack-plugin": "^4.0.1"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.15.4",
+        "node-process-windows": "^0.0.2",
+        "systray2": "^2.1.2",
+        "voicemeeter-connector": "^1.0.3",
+        "win-audio": "^2.0.2"
+    }
+}
