@@ -1,13 +1,3 @@
-# Foreword
-
-This is a cursed project. Turn back now. I mean, think about it. Who takes a server-side javascript engine and compiles it into an executable for the purpose of a tray applet? What kind of madman does this? Sometimes solving problems isn't about giving the *best* answer. Sometimes the answers alone are ethereal and impossible to grab. Sometimes, it's the questions that'll take you further. The question I posed was
-
-> What interesting problems and solutions would come about if you applied the wrong technology stack to meet demands, and then forced yourself to keep going?
-
-Introducing the over-engineered monolith of a tray app that is voicemeeter-windows-volume. There is a common unsolved thread that pops up from time to time on message boards - how to hook volume keys to something other than A1. This project will solve that problem - and it will do it *by running node*. There are better languages and toolkits to accomplish this task with, but I'd learn nothing from doing it the *right way*. No, we both know that it is too late for that. This level of discomfort  - the one that you and I share - is *necessary*. Learning to think outside of the box *demands* a certain creative discomfort.
-
-If you find this concept intriguiging through morbid curiosity, or if you are one of the people this solution actually manages to help, then read on and snag your copy!
-
 # Current State
 
 **What works:**
@@ -19,7 +9,7 @@ If you find this concept intriguiging through morbid curiosity, or if you are on
 
 This codebase is *mildly dirty*, which will be corrected once feature prototyping is complete.
 
-If you still want to try it out, head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page.
+If you  want to try it out, head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page.
 
 # Building From Source
 
