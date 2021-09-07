@@ -20,5 +20,6 @@ If you still want to try it out, head over to the [releases](https://github.com/
 
 Once you have the above tools installed as described, you will need to reboot your computer.
 
-- `npm install`
-- `npm run build`
+- `npm install` _Installs dependencies_
+- `npm run build` _Builds the projects into the \_dist folder_
+- `npm run rebuild` _Triggers a full rebuild of the node binary, including any changes made to the exe details_
