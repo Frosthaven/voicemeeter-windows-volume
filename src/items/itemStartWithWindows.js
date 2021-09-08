@@ -2,7 +2,7 @@ import { enableStartOnLaunch, disableStartOnLaunch } from '../externalCommands';
 
 const itemStartWithWindows = {
     title: 'Automatically Start With Windows',
-    checked: false,
+    checked: true,
     sid: 'start_with_windows',
     enabled: true,
     init: function (checked) {

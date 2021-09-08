@@ -21,18 +21,18 @@ const hard_copy_modules = [
 hard_copy_modules.forEach((module) => {
     hard_copy.push({
         from: `./node_modules/${module}`,
-        to: `../_dist/required/node_modules/${module}`,
+        to: `../_dist/${pkg.name}/required/node_modules/${module}`,
     });
 });
 
 // we also hard copy assets necessary to complete the project
 hard_copy.push({
     from: './src/assets',
-    to: '../_dist/required/assets',
+    to: `../_dist/${pkg.name}/required/assets`,
 });
 hard_copy.push({
     from: './build-tools/include/app-launcher.vbs',
-    to: `../_dist/${pkg.name}.vbs`,
+    to: `../_dist/${pkg.name}/${pkg.name}.vbs`,
 });
 
 /// WEBPACK CONFIG *************************************************************

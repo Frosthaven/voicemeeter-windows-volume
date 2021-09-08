@@ -7,7 +7,7 @@ const pkg = require('../package.json');
 const path = require('path');
 
 // name the file
-const zipName = `${pkg.name}_v${pkg.version}_${os.arch}.zip`;
+const zipName = `Portable_${pkg.name}_v${pkg.version}_${os.arch}.zip`;
 
 // create a file to stream archive data to.
 const output = fs.createWriteStream(`${__dirname}/../_dist/${zipName}`);
@@ -45,10 +45,16 @@ archive.on('error', function (err) {
 });
 
 // append files from a glob pattern
-archive.directory(path.normalize(`${__dirname}/../_dist/required`), 'required');
-archive.file(path.normalize(`${__dirname}/../_dist/${pkg.name}.vbs`), {
-    name: `${pkg.name}.vbs`,
-});
+archive.directory(
+    path.normalize(`${__dirname}/../_dist/${pkg.name}/required`),
+    'required'
+);
+archive.file(
+    path.normalize(`${__dirname}/../_dist/${pkg.name}/${pkg.name}.vbs`),
+    {
+        name: `${pkg.name}.vbs`,
+    }
+);
 
 // pipe archive data to the file
 archive.pipe(output);
