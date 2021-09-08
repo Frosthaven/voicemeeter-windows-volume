@@ -44,7 +44,6 @@ const runPowershell = ({ commands, callback, stdout = false }) => {
 };
 
 const enableStartOnLaunch = () => {
-    console.log(__dirname);
     const actionPath = path.normalize(
         __dirname + '/../voicemeeter-windows-volume.vbs'
     );
