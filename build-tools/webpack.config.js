@@ -6,8 +6,8 @@ const pkg = require('../package.json');
 
 /// PRE-CONFIG *****************************************************************
 //******************************************************************************
-// we hard copy all modules that can't be bundled into webpack into the
-// distribution directory
+// we hard copy all node_modules that we can't bundle into the executable for
+// one reason or another
 let hard_copy = [];
 
 const hard_copy_modules = [

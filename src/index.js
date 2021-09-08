@@ -1,118 +1,37 @@
-import SysTray from 'systray2';
+// standard imports ************************************************************
+
 import os from 'os';
 import path from 'path';
-import { Voicemeeter, StripProperties } from 'voicemeeter-connector';
+import { exec } from 'child_process';
+
+// external package imports ****************************************************
+
+import { Voicemeeter } from 'voicemeeter-connector';
+import { speaker } from 'win-audio';
+
+// local imports ***************************************************************
+
 import {
     getToggle,
     getSettings,
     loadSettings,
     saveSettings,
 } from './settingsManager';
-import {
-    PRIORITIES,
-    setProcessPriority,
-    setProcessAffinity,
-    enableStartOnLaunch,
-    disableStartOnLaunch,
-} from './externalCommands';
-import { PRIORITY_ABOVE_NORMAL, PRIORITY_HIGH } from 'constants';
-import { exec } from 'child_process';
-const audio = require('win-audio').speaker;
+
+import { PRIORITIES } from './externalCommands';
+
+import { CustomSystray } from './customSystray';
+import { itemBindList } from './items/itemBindList';
+import { itemStartWithWindows } from './items/itemStartWithWindows';
+import { itemCrackleFix } from './items/itemCrackleFix';
+import { itemExit } from './items/itemExit';
+
+// code ************************************************************************
 
 let vm = null;
-let strips = [],
-    buses = [];
 
-for (let i = 0; i <= 7; i++) {
-    strips.push({
-        title: `Strip ${i}`,
-        sid: `Strip_${i}`,
-        init: (checked) => {},
-        checked: false,
-        enabled: true,
-    });
-
-    buses.push({
-        title: `Bus ${i}`,
-        sid: `Bus_${i}`,
-        init: (checked) => {},
-        checked: false,
-        enabled: true,
-    });
-}
-
-const itemBindList = {
-    title: 'Bind Windows Volume To',
-    enabled: true,
-    items: [...strips, { Title: '' }, ...buses],
-};
-
-const itemStartWithWindows = {
-    title: 'Automatically Start With Windows',
-    checked: false,
-    sid: 'start_with_windows',
-    enabled: true,
-    init: function (checked) {
-        // only run the code here if checked at launch
-        checked && this.activate(checked);
-    },
-    activate: function (checked) {
-        if (checked) {
-            enableStartOnLaunch();
-        } else {
-            disableStartOnLaunch();
-        }
-    },
-};
-
-const itemCrackleFix = {
-    title: 'Apply Crackle Fix (USB Interfaces)',
-    checked: false,
-    sid: 'apply_crackle_fix',
-    enabled: true,
-    init: function (checked) {
-        // only run the code here if checked at launch
-        checked && this.activate(checked);
-    },
-    activate: function (checked) {
-        const loadedSettings = getSettings().audiodg;
-        const audiodg_settings = {
-            priority: loadedSettings?.priority || 128,
-            affinity: loadedSettings?.affinity || 2,
-        };
-        if (checked === true) {
-            console.log(
-                `Setting audiodg.exe priority to ${audiodg_settings.priority} and affinity to ${audiodg_settings.affinity}`
-            );
-            setProcessPriority('audiodg', audiodg_settings?.priority || 128);
-            setProcessAffinity('audiodg', audiodg_settings?.affinity || 2);
-        } else {
-            console.log(
-                `Restoring audiodg.exe priority to ${
-                    PRIORITIES.NORMAL
-                } and affinity to ${255}`
-            );
-            setProcessPriority('audiodg', PRIORITIES.NORMAL);
-            setProcessAffinity('audiodg', 255);
-        }
-    },
-};
-
-const itemExit = {
-    title: 'Exit',
-    checked: false,
-    enabled: true,
-    click: () => {
-        systray.kill(false);
-        setTimeout(() => {
-            process.exit();
-        }, 1000);
-    },
-};
-
-const systray = new SysTray({
+const systray = new CustomSystray({
     menu: {
-        // you should use .png icon on macOS/Linux, and .ico format on Windows
         icon:
             os.platform() === 'win32'
                 ? path.normalize(__dirname + '/assets/app.ico')
@@ -121,11 +40,10 @@ const systray = new SysTray({
         tooltip: 'Voicemeeter Windows Volume',
         items: [
             itemBindList,
-            SysTray.separator,
-
+            CustomSystray.separator,
             itemCrackleFix,
             itemStartWithWindows,
-            SysTray.separator,
+            CustomSystray.separator,
             itemExit,
         ],
     },
@@ -219,9 +137,9 @@ const connectVoicemeeter = () => {
 
 const runWinAudio = () => {
     let settings = getSettings();
-    audio.polling(settings.polling_rate);
+    speaker.polling(settings.polling_rate);
 
-    audio.events.on('change', (volume) => {
+    speaker.events.on('change', (volume) => {
         if (vm) {
             for (let [key, value] of systray.internalIdMap) {
                 if (
@@ -248,7 +166,7 @@ const runWinAudio = () => {
         }
     });
 
-    audio.events.on('toggle', (status) => {
+    speaker.events.on('toggle', (status) => {
         // status.new = true or false to indicate mute
         if (vm) {
             for (let [key, value] of systray.internalIdMap) {
