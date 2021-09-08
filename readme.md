@@ -36,10 +36,10 @@ This codebase is _mildly dirty_, which will be corrected once feature prototypin
 ## Requirements
 
 -   [NodeJS](https://nodejs.org/) _(Currently on the 16.x line)_
--   [Python v3.6+](https://www.python.org/downloads/) _(Check to add python to environmental variables)_
+-   [Python v3.6+](https://www.python.org/downloads/) _(Checkbox to add python to the environmental PATH variable)_
 -   [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
 -   [Windows Build Tools](https://www.npmjs.com/package/windows-build-tools) _(Visual Studio Community will also have this in the package)_
--   [NSIS]() _(Add the NSIS folder that contains makensis.exe to the system path)_
+-   [NSIS v3.07+](https://nsis.sourceforge.io/Download) _(Manually add the NSIS folder that contains makensis.exe to the environmental PATH variable)_
 
 Once you have the above tools installed as described, you will need to reboot your computer.
 
