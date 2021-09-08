@@ -1,8 +1,8 @@
-const path = require("path");
-const nodeExternals = require("webpack-node-externals");
-const CopyPlugin = require("copy-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const pkg = require("../package.json");
+const path = require('path');
+const nodeExternals = require('webpack-node-externals');
+const CopyPlugin = require('copy-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const pkg = require('../package.json');
 
 /// PRE-CONFIG *****************************************************************
 //******************************************************************************
@@ -11,13 +11,12 @@ const pkg = require("../package.json");
 let hard_copy = [];
 
 const hard_copy_modules = [
-    "ffi-napi",
-    "ref-napi",
-    "ref-array-napi",
-    "systray2",
-    "voicemeeter-connector",
-    "win-audio",
-    "node-process-windows",
+    'ffi-napi',
+    'ref-napi',
+    'ref-array-napi',
+    'systray2',
+    'voicemeeter-connector',
+    'win-audio',
 ];
 hard_copy_modules.forEach((module) => {
     hard_copy.push({
@@ -28,39 +27,39 @@ hard_copy_modules.forEach((module) => {
 
 // we also hard copy assets necessary to complete the project
 hard_copy.push({
-    from: "./src/assets",
-    to: "../_dist/required/assets",
+    from: './src/assets',
+    to: '../_dist/required/assets',
 });
 hard_copy.push({
-    from: "./build-tools/include/app-launcher.vbs",
+    from: './build-tools/include/app-launcher.vbs',
     to: `../_dist/${pkg.name}.vbs`,
 });
 
 /// WEBPACK CONFIG *************************************************************
 //******************************************************************************
 module.exports = {
-    context: path.resolve(__dirname, "../"),
-    entry: "./src/index.js",
+    context: path.resolve(__dirname, '../'),
+    entry: './src/index.js',
     output: {
-        path: path.resolve("./_build"),
-        filename: "webpack.bundle.js",
+        path: path.resolve('./_build'),
+        filename: 'webpack.bundle.js',
     },
-    target: "node",
+    target: 'node',
     externalsPresets: { node: true },
     externals: [nodeExternals()],
 
-    mode: "production",
+    mode: 'production',
     module: {
         rules: [
-            { test: /\.node$/, use: "node-loader" },
+            { test: /\.node$/, use: 'node-loader' },
             {
                 test: /\.m?js$/,
                 exclude: /(node_modules|bower_components)/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ["@babel/preset-env"],
-                        plugins: ["@babel/transform-runtime"],
+                        presets: ['@babel/preset-env'],
+                        plugins: ['@babel/transform-runtime'],
                     },
                 },
             },

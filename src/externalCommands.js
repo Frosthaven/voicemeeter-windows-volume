@@ -1,5 +1,5 @@
-var spawn = require('child_process').spawn,
-    child;
+import path from 'path';
+const { spawn } = require('child_process');
 
 const PRIORITIES = {
     REALTIME: 256,
@@ -12,6 +12,10 @@ const PRIORITIES = {
 
 const AFFINITIES = {};
 
+const formattedCodeblock = (typedCode) => {
+    return typedCode.replace(/\r?\n|\r/g, ' ').trim();
+};
+
 const runPowershell = ({ commands, callback, stdout = false }) => {
     // make sure our command is a part of an array
     if (typeof commands !== 'object') {
@@ -19,7 +23,7 @@ const runPowershell = ({ commands, callback, stdout = false }) => {
     }
 
     // script started
-    child = spawn('powershell.exe', commands);
+    const child = spawn('powershell.exe', commands);
 
     // script output
     if (stdout) {
@@ -37,6 +41,44 @@ const runPowershell = ({ commands, callback, stdout = false }) => {
 
     // close powershell input
     child.stdin.end();
+};
+
+const enableStartOnLaunch = () => {
+    console.log(__dirname);
+    const actionPath = path.normalize(
+        __dirname + '/../voicemeeter-windows-volume.vbs'
+    );
+
+    let psCommand = formattedCodeblock(`
+        $name = "voicemeeter-windows-volume";
+        $description = "Runs voicemeeter-windows-volume app at login";
+        $action = New-ScheduledTaskAction -Execute "${actionPath}";
+        $trigger = New-ScheduledTaskTrigger -AtLogon;
+        $principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\\Administrators" -RunLevel Highest;
+        $settings = New-ScheduledTaskSettingsSet -DontStopIfGoingOnBatteries -AllowStartIfOnBatteries -DontStopOnIdleEnd -ExecutionTimeLimit 0;
+        $task = New-ScheduledTask -Description $description -Action $action -Principal $principal -Trigger $trigger -Settings $settings;
+
+        Unregister-ScheduledTask -TaskName $name -Confirm:$false;
+        Register-ScheduledTask $name -InputObject $task;
+    `);
+
+    runPowershell({
+        stdout: false,
+        commands: [psCommand],
+        callback: () => {},
+    });
+};
+
+const disableStartOnLaunch = () => {
+    let psCommand = formattedCodeblock(`
+        $name = "voicemeeter-windows-volume";
+        Unregister-ScheduledTask -TaskName $name -Confirm:$false;
+    `);
+    runPowershell({
+        stdout: false,
+        commands: [psCommand],
+        callback: () => {},
+    });
 };
 
 const setProcessPriority = (processName, priorityCode) => {
@@ -59,4 +101,10 @@ const setProcessAffinity = (processName, affinityCode) => {
     });
 };
 
-export { setProcessPriority, setProcessAffinity, PRIORITIES };
+export {
+    setProcessPriority,
+    setProcessAffinity,
+    PRIORITIES,
+    enableStartOnLaunch,
+    disableStartOnLaunch,
+};

@@ -1,7 +1,7 @@
 {
     "name": "voicemeeter-windows-volume",
-    "version": "0.9.0",
-    "description": "",
+    "version": "1.0.0",
+    "description": "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls",
     "main": "index.js",
     "scripts": {
         "start": "nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
@@ -9,8 +9,8 @@
         "clean": "rimraf _build && rimraf _dist",
         "build_webpack": "webpack --config ./build-tools/webpack.config.js",
         "build_nexe": "node ./build-tools/build.nexe.js",
-        "build_archive": "node ./build-tools/build.archive.js",
         "build": "npm run clean && npm run build_webpack && npm run build_nexe",
+        "archive": "node ./build-tools/build.archive.js",
         "rebuild": "npm run clean && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js"
     },
     "keywords": [],
@@ -38,7 +38,6 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.15.4",
-        "node-process-windows": "^0.0.2",
         "systray2": "^2.1.2",
         "voicemeeter-connector": "^1.0.3",
         "win-audio": "^2.0.2"

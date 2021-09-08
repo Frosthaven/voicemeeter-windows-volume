@@ -12,10 +12,11 @@ import {
     PRIORITIES,
     setProcessPriority,
     setProcessAffinity,
+    enableStartOnLaunch,
+    disableStartOnLaunch,
 } from './externalCommands';
 import { PRIORITY_ABOVE_NORMAL, PRIORITY_HIGH } from 'constants';
-
-const processWindows = require('node-process-windows');
+import { exec } from 'child_process';
 const audio = require('win-audio').speaker;
 
 let vm = null;
@@ -51,6 +52,17 @@ const itemStartWithWindows = {
     checked: false,
     sid: 'start_with_windows',
     enabled: true,
+    init: function (checked) {
+        // only run the code here if checked at launch
+        checked && this.activate(checked);
+    },
+    activate: function (checked) {
+        if (checked) {
+            enableStartOnLaunch();
+        } else {
+            disableStartOnLaunch();
+        }
+    },
 };
 
 const itemCrackleFix = {
@@ -59,8 +71,8 @@ const itemCrackleFix = {
     sid: 'apply_crackle_fix',
     enabled: true,
     init: function (checked) {
-        //only change process priority and affinity if initialized as checked
-        this.checked && this.activate(checked);
+        // only run the code here if checked at launch
+        checked && this.activate(checked);
     },
     activate: function (checked) {
         const loadedSettings = getSettings().audiodg;
@@ -109,11 +121,11 @@ const systray = new SysTray({
         tooltip: 'Voicemeeter Windows Volume',
         items: [
             itemBindList,
-            SysTray.separator, // SysTray.separator is equivalent to a MenuItem with "title" equals "<SEPARATOR>"
+            SysTray.separator,
 
             itemCrackleFix,
             itemStartWithWindows,
-            SysTray.separator, // SysTray.separator is equivalent to a MenuItem with "title" equals "<SEPARATOR>"
+            SysTray.separator,
             itemExit,
         ],
     },
@@ -154,19 +166,37 @@ const runInitCode = () => {
     }
 };
 
+const checkIfProccessRunning = (query, cb) => {
+    let platform = process.platform;
+    let cmd = '';
+    switch (platform) {
+        case 'win32':
+            cmd = `tasklist`;
+            break;
+        case 'darwin':
+            cmd = `ps -ax | grep ${query}`;
+            break;
+        case 'linux':
+            cmd = `ps -A`;
+            break;
+        default:
+            break;
+    }
+    exec(cmd, (err, stdout, stderr) => {
+        cb(stdout.toLowerCase().indexOf(query.toLowerCase()) > -1);
+    });
+};
+
 const waitForVoicemeeter = (callback) => {
-    const activeProcess = processWindows.getProcesses((err, processes) => {
-        let running = processes.filter(
-            (x) => x.processName === 'voicemeeter'
-        )[0];
-        if (!running) {
+    checkIfProccessRunning('voicemeeter.exe', (running) => {
+        if (running) {
+            console.log('connected!');
+            callback();
+        } else {
             console.log('waiting for voicemeeter...');
             setTimeout(() => {
                 waitForVoicemeeter(callback);
             }, 5000);
-        } else {
-            console.log('connected!');
-            callback();
         }
     });
 };
