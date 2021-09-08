@@ -1,2 +1,4 @@
+scriptdir = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScript.ScriptFullName)
+
 Set Shell = CreateObject("Shell.Application")
-Shell.ShellExecute "required\app-engine.exe", , , "runas", 0
+Shell.ShellExecute scriptDir & "\required\app-engine.exe", , , "runas", 0
