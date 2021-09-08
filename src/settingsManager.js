@@ -1,7 +1,7 @@
-import path from "path";
-import fs from "fs";
+import path from 'path';
+import fs from 'fs';
 
-let settingsFilePath = "";
+let settingsFilePath = '';
 let settings = null;
 
 const saveSettings = (systray) => {
@@ -9,10 +9,10 @@ const saveSettings = (systray) => {
     // state to the settings file
 
     let loadedSettings = getSettings();
-    if (typeof loadedSettings === "object") {
+    if (typeof loadedSettings === 'object') {
         loadedSettings.toggles = [];
         for (let [key, value] of systray.internalIdMap) {
-            if (value.sid && typeof value.checked === "boolean") {
+            if (value.sid && typeof value.checked === 'boolean') {
                 loadedSettings.toggles.push({
                     setting: value.sid,
                     value: value.checked,
@@ -43,7 +43,7 @@ const updateSysTrayFromSettings = (systray) => {
             if (matchedToggle[0]) {
                 value.checked = matchedToggle[0].value;
                 systray.sendAction({
-                    type: "update-item",
+                    type: 'update-item',
                     item: value,
                 });
             }
@@ -73,7 +73,7 @@ const loadSettings = ({ systray, settingsPath, defaults, callback }) => {
     updateSysTrayFromSettings(systray);
 
     // hand code off to the callback if provided
-    if (typeof callback === "function") {
+    if (typeof callback === 'function') {
         callback(getSettings());
     }
 };
@@ -82,10 +82,14 @@ const setSettings = (settingsObj) => {
     settings = settingsObj;
 };
 
+const getToggle = (toggleSID) => {
+    return getSettings().toggles.filter((x) => x.setting === toggleSID)[0];
+};
+
 const getSettings = () => {
     return settings;
 };
 
 // load the file here
 
-export { saveSettings, loadSettings, getSettings };
+export { saveSettings, loadSettings, getSettings, getToggle };

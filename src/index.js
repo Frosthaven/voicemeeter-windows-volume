@@ -2,7 +2,19 @@ import SysTray from 'systray2';
 import os from 'os';
 import path from 'path';
 import { Voicemeeter, StripProperties } from 'voicemeeter-connector';
-import { getSettings, loadSettings, saveSettings } from './settingsManager';
+import {
+    getToggle,
+    getSettings,
+    loadSettings,
+    saveSettings,
+} from './settingsManager';
+import {
+    PRIORITIES,
+    setProcessPriority,
+    setProcessAffinity,
+} from './externalCommands';
+import { PRIORITY_ABOVE_NORMAL, PRIORITY_HIGH } from 'constants';
+
 const processWindows = require('node-process-windows');
 const audio = require('win-audio').speaker;
 
@@ -35,17 +47,43 @@ const itemBindList = {
 };
 
 const itemStartWithWindows = {
-    title: 'Start With Windows',
+    title: 'Automatically Start With Windows',
     checked: false,
     sid: 'start_with_windows',
     enabled: true,
 };
 
 const itemCrackleFix = {
-    title: 'Apply Crackle Fix',
+    title: 'Apply Crackle Fix (USB Interfaces)',
     checked: false,
     sid: 'apply_crackle_fix',
     enabled: true,
+    init: function (checked) {
+        //only change process priority and affinity if initialized as checked
+        this.checked && this.activate(checked);
+    },
+    activate: function (checked) {
+        const loadedSettings = getSettings().audiodg;
+        const audiodg_settings = {
+            priority: loadedSettings?.priority || 128,
+            affinity: loadedSettings?.affinity || 2,
+        };
+        if (checked === true) {
+            console.log(
+                `Setting audiodg.exe priority to ${audiodg_settings.priority} and affinity to ${audiodg_settings.affinity}`
+            );
+            setProcessPriority('audiodg', audiodg_settings?.priority || 128);
+            setProcessAffinity('audiodg', audiodg_settings?.affinity || 2);
+        } else {
+            console.log(
+                `Restoring audiodg.exe priority to ${
+                    PRIORITIES.NORMAL
+                } and affinity to ${255}`
+            );
+            setProcessPriority('audiodg', PRIORITIES.NORMAL);
+            setProcessAffinity('audiodg', 255);
+        }
+    },
 };
 
 const itemExit = {
@@ -100,11 +138,17 @@ systray.onClick((action) => {
         });
         saveSettings(systray);
     }
+
+    if (action?.item?.sid && typeof action?.item?.activate === 'function') {
+        action.item.activate.bind(action.item);
+        action.item.activate(getToggle(action.item.sid).value);
+    }
 });
 
 const runInitCode = () => {
     for (let [key, value] of systray.internalIdMap) {
         if (typeof value.init === 'function') {
+            value.init.bind(value);
             value.init(value.checked);
         }
     }
@@ -209,6 +253,10 @@ systray.ready().then(() => {
             polling_rate: 200,
             gain_min: -60,
             gain_max: 12,
+            audiodg: {
+                priority: PRIORITIES.HIGH,
+                affinity: 2,
+            },
         },
         callback: handleSettingsLoaded,
     });
