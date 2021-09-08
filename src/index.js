@@ -54,7 +54,6 @@ const systray = new CustomSystray({
                     setTimeout(() => {
                         process.exit();
                     }, 1000);
-
                 },
             },
         ],
@@ -96,7 +95,7 @@ const runInitCode = () => {
     }
 };
 
-const checkIfProccessRunning = (query, cb) => {
+const checkIfProcessRunning = (processNameRegex, cb) => {
     let platform = process.platform;
     let cmd = '';
     switch (platform) {
@@ -113,12 +112,14 @@ const checkIfProccessRunning = (query, cb) => {
             break;
     }
     exec(cmd, (err, stdout, stderr) => {
-        cb(stdout.toLowerCase().indexOf(query.toLowerCase()) > -1);
+        const haystack = stdout.toLowerCase();
+        let match = processNameRegex.exec(haystack);
+        cb(match !== null ? true : false);
     });
 };
 
 const waitForVoicemeeter = (callback) => {
-    checkIfProccessRunning('voicemeeter.exe', (running) => {
+    checkIfProcessRunning(/voicemeeter(.*)?.exe/g, (running) => {
         if (running) {
             console.log('connected!');
             callback();
