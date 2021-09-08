@@ -24,7 +24,8 @@ import { CustomSystray } from './customSystray';
 import { itemBindList } from './items/itemBindList';
 import { itemStartWithWindows } from './items/itemStartWithWindows';
 import { itemCrackleFix } from './items/itemCrackleFix';
-import { itemExit } from './items/itemExit';
+// the itemExit entry needs to be moved after we modularize the systray logic
+// import { itemExit } from './items/itemExit';
 
 // code ************************************************************************
 
@@ -44,7 +45,18 @@ const systray = new CustomSystray({
             itemCrackleFix,
             itemStartWithWindows,
             CustomSystray.separator,
-            itemExit,
+            {
+                title: 'Exit',
+                checked: false,
+                enabled: true,
+                click: () => {
+                    systray.kill(false);
+                    setTimeout(() => {
+                        process.exit();
+                    }, 1000);
+
+                },
+            },
         ],
     },
     debug: false,
