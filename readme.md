@@ -1,4 +1,4 @@
-# Current State
+# Voicemeeter Windows Volume
 
 ## How To Install
 
@@ -27,11 +27,11 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   `audiodg` should be left alone unless you know what you are doing. It utilizes Windows priority and affinity codes to set both appropriately when "Apply Crackle Fix" is checked.
 -   `toggles` this is an enumerated list of all checkable items in the tray applet.
 
+# Building From Source
+
 ## Note About This Codebase
 
 This codebase is _mildly dirty_, which will be corrected once feature prototyping is complete.
-
-# Building From Source
 
 ## Requirements
 
