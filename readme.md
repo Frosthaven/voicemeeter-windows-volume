@@ -38,6 +38,7 @@ This codebase is _mildly dirty_, which will be corrected once feature prototypin
 -   [NodeJS](https://nodejs.org/) _(Currently on the 16.x line)_
 -   [Python](https://www.python.org/downloads/) _(Check to add python to environmental variables)_
 -   [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
+-   [Windows Build Tools](https://www.npmjs.com/package/windows-build-tools)
 
 Once you have the above tools installed as described, you will need to reboot your computer.
 
