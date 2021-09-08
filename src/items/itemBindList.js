@@ -6,7 +6,7 @@ let strips = [],
 
 for (let i = 0; i <= 7; i++) {
     strips.push({
-        title: `Strip ${i}`,
+        title: `Input Strip ${i}`,
         sid: `Strip_${i}`,
         init: (checked) => {},
         checked: false,
@@ -14,7 +14,7 @@ for (let i = 0; i <= 7; i++) {
     });
 
     buses.push({
-        title: `Bus ${i}`,
+        title: `Output Bus ${i}`,
         sid: `Bus_${i}`,
         init: (checked) => {},
         checked: false,
