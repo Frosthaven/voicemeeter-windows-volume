@@ -19,9 +19,9 @@ import {
 
 import { PRIORITIES, waitForProcess } from './processManager';
 import { CustomSystray } from './customSystray';
-import { itemBindList } from './items/itemBindList';
-import { itemStartWithWindows } from './items/itemStartWithWindows';
-import { itemCrackleFix } from './items/itemCrackleFix';
+import { itemBindList } from './menuItems/itemBindList';
+import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
+import { itemCrackleFix } from './menuItems/itemCrackleFix';
 
 // the itemExit entry needs to be moved after we modularize the systray logic
 // import { itemExit } from './items/itemExit';
