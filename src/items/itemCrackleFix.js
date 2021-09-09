@@ -3,7 +3,7 @@ import {
     PRIORITIES,
     setProcessPriority,
     setProcessAffinity,
-} from '../externalCommands';
+} from '../processManager';
 
 const itemCrackleFix = {
     title: 'Apply Crackle Fix (USB Interfaces)',

@@ -2,7 +2,6 @@
 
 import os from 'os';
 import path from 'path';
-import { exec } from 'child_process';
 
 // external package imports ****************************************************
 
@@ -18,12 +17,12 @@ import {
     saveSettings,
 } from './settingsManager';
 
-import { PRIORITIES } from './externalCommands';
-
+import { PRIORITIES, waitForProcess } from './processManager';
 import { CustomSystray } from './customSystray';
 import { itemBindList } from './items/itemBindList';
 import { itemStartWithWindows } from './items/itemStartWithWindows';
 import { itemCrackleFix } from './items/itemCrackleFix';
+
 // the itemExit entry needs to be moved after we modularize the systray logic
 // import { itemExit } from './items/itemExit';
 
@@ -95,45 +94,8 @@ const runInitCode = () => {
     }
 };
 
-const checkIfProcessRunning = (processNameRegex, cb) => {
-    let platform = process.platform;
-    let cmd = '';
-    switch (platform) {
-        case 'win32':
-            cmd = `tasklist`;
-            break;
-        case 'darwin':
-            cmd = `ps -ax | grep ${query}`;
-            break;
-        case 'linux':
-            cmd = `ps -A`;
-            break;
-        default:
-            break;
-    }
-    exec(cmd, (err, stdout, stderr) => {
-        const haystack = stdout.toLowerCase();
-        let match = processNameRegex.exec(haystack);
-        cb(match !== null ? true : false);
-    });
-};
-
-const waitForVoicemeeter = (callback) => {
-    checkIfProcessRunning(/voicemeeter(.*)?.exe/g, (running) => {
-        if (running) {
-            console.log('connected!');
-            callback();
-        } else {
-            console.log('waiting for voicemeeter...');
-            setTimeout(() => {
-                waitForVoicemeeter(callback);
-            }, 5000);
-        }
-    });
-};
-
 const connectVoicemeeter = () => {
-    waitForVoicemeeter(() => {
+    waitForProcess(/voicemeeter(.*)?.exe/g, () => {
         Voicemeeter.init().then(async (voicemeeter) => {
             try {
                 voicemeeter.connect();
