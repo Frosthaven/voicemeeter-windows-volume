@@ -139,6 +139,31 @@ const handleSettingsLoaded = () => {
     connectVoicemeeter();
 };
 
+// @todo move to persistantSystray when that module is ready
+systray.onClick((action) => {
+    if (action.item.click != null) {
+        action.item.click();
+    }
+
+    if (
+        typeof action?.item?.checked === 'boolean' ||
+        action?.item?.checked === 'true' ||
+        action?.item?.checked === 'false'
+    ) {
+        action.item.checked = !action.item.checked;
+        systray.sendAction({
+            type: 'update-item',
+            item: action.item,
+        });
+        saveSettings(systray);
+    }
+
+    if (action?.item?.sid && typeof action?.item?.activate === 'function') {
+        action.item.activate.bind(action.item);
+        action.item.activate(getToggle(action.item.sid).value);
+    }
+});
+
 // Systray.ready is a promise which resolves when the tray is ready.
 systray.ready().then(() => {
     loadSettings({
