@@ -1,9 +1,9 @@
-const itemExit = (props) => {
+const itemExit = ({ click }) => {
     return {
         title: 'Exit',
         checked: false,
         enabled: true,
-        click: props.click,
+        click: click,
     };
 };
 
