@@ -3,8 +3,7 @@
 ## How To Install
 
 1. Head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page to download the archive of the newest version.
-1. Extract the archive anywhere you want to run the program from.
-1. Double click `voicemeeter-windows-volume.vbs` to start the tray application.
+2. Download the installer and run it.
 
 ## Features
 
