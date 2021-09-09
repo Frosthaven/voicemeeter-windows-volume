@@ -18,11 +18,12 @@ import {
 } from './lib/settingsManager';
 
 import { PRIORITIES, waitForProcess } from './lib/processManager';
-import { CustomSystray } from './lib/customSystray';
+import { PersistantSysTray } from './lib/persistantSysTray';
 
 import { itemBindList } from './menuItems/itemBindList';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';
+import { itemExit } from './menuItems/itemExit';
 // the itemExit entry needs to be moved after we modularize the systray logic
 // import { itemExit } from './items/itemExit';
 
@@ -30,7 +31,7 @@ import { itemCrackleFix } from './menuItems/itemCrackleFix';
 
 let vm = null;
 
-const systray = new CustomSystray({
+const systray = new PersistantSysTray({
     menu: {
         icon:
             os.platform() === 'win32'
@@ -39,52 +40,23 @@ const systray = new CustomSystray({
         title: 'Voicemeeter Windows Volume',
         tooltip: 'Voicemeeter Windows Volume',
         items: [
-            itemBindList,
-            CustomSystray.separator,
-            itemCrackleFix,
-            itemStartWithWindows,
-            CustomSystray.separator,
-            {
-                title: 'Exit',
-                checked: false,
-                enabled: true,
+            itemBindList(),
+            PersistantSysTray.separator,
+            itemCrackleFix(),
+            itemStartWithWindows(),
+            PersistantSysTray.separator,
+            itemExit({
                 click: () => {
-                    systray.kill(false);
-                    setTimeout(() => {
-                        process.exit();
-                    }, 1000);
+                    process.exit();
                 },
-            },
+            }),
         ],
     },
     debug: false,
     copyDir: true, // copy go tray binary to outside directory, useful for packing tool like pkg.
 });
 
-systray.onClick((action) => {
-    if (action.item.click != null) {
-        action.item.click();
-    }
-
-    if (
-        typeof action?.item?.checked === 'boolean' ||
-        action?.item?.checked === 'true' ||
-        action?.item?.checked === 'false'
-    ) {
-        action.item.checked = !action.item.checked;
-        systray.sendAction({
-            type: 'update-item',
-            item: action.item,
-        });
-        saveSettings(systray);
-    }
-
-    if (action?.item?.sid && typeof action?.item?.activate === 'function') {
-        action.item.activate.bind(action.item);
-        action.item.activate(getToggle(action.item.sid).value);
-    }
-});
-
+// @todo: move this into the PersistentSysTray logic
 const runInitCode = () => {
     for (let [key, value] of systray.internalIdMap) {
         if (typeof value.init === 'function') {
