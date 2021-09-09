@@ -1,9 +1,9 @@
-import { getSettings } from '../settingsManager';
+import { getSettings } from '../lib/settingsManager';
 import {
     PRIORITIES,
     setProcessPriority,
     setProcessAffinity,
-} from '../processManager';
+} from '../lib/processManager';
 
 const itemCrackleFix = {
     title: 'Apply Crackle Fix (USB Interfaces)',

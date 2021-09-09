@@ -15,14 +15,14 @@ import {
     getSettings,
     loadSettings,
     saveSettings,
-} from './settingsManager';
+} from './lib/settingsManager';
 
-import { PRIORITIES, waitForProcess } from './processManager';
-import { CustomSystray } from './customSystray';
+import { PRIORITIES, waitForProcess } from './lib/processManager';
+import { CustomSystray } from './lib/customSystray';
+
 import { itemBindList } from './menuItems/itemBindList';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';
-
 // the itemExit entry needs to be moved after we modularize the systray logic
 // import { itemExit } from './items/itemExit';
 

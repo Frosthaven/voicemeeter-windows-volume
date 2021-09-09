@@ -1,4 +1,7 @@
-import { enableStartOnLaunch, disableStartOnLaunch } from '../autoStartManager';
+import {
+    enableStartOnLaunch,
+    disableStartOnLaunch,
+} from '../lib/autoStartManager';
 
 const itemStartWithWindows = {
     title: 'Automatically Start With Windows',
