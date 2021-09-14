@@ -8,13 +8,15 @@ import { getToggle, saveSettings, loadSettings } from './settingsManager';
 // 2. We provide two new methods for menu items to use
 //    a. init(checkedBoolean) which fires on creation of the menu item
 //    b. activate(checkedBoolean) which fires when a menu item is clicked
+let systray = null;
+
 const setupPersistantSystray = ({
     trayApp,
     defaults,
     settingsPath,
     onReady,
 }) => {
-    const systray = new SysTray(trayApp);
+    systray = new SysTray(trayApp);
 
     const runInitCode = () => {
         for (let [key, value] of systray.internalIdMap) {
@@ -68,4 +70,4 @@ const setupPersistantSystray = ({
     return systray;
 };
 
-export { setupPersistantSystray };
+export { systray, setupPersistantSystray };

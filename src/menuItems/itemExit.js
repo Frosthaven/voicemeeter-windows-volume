@@ -3,7 +3,7 @@ const itemExit = ({ click }) => {
         title: 'Exit',
         checked: false,
         enabled: true,
-        click: click,
+        click,
     };
 };
 
