@@ -10,15 +10,11 @@ import { speaker } from 'win-audio';
 
 // local imports ***************************************************************
 
-import {
-    getToggle,
-    getSettings,
-    loadSettings,
-    saveSettings,
-} from './lib/settingsManager';
+import { getSettings } from './lib/settingsManager';
 
 import { PRIORITIES, waitForProcess } from './lib/processManager';
-import { PersistantSysTray } from './lib/persistantSysTray';
+import SysTray from 'systray2';
+import { setupPersistantSystray } from './lib/persistantSysTray';
 
 import { itemBindList } from './menuItems/itemBindList';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
@@ -31,7 +27,20 @@ import { itemExit } from './menuItems/itemExit';
 
 let vm = null;
 
-const systray = new PersistantSysTray({
+// configure settings
+const defaults = {
+    polling_rate: 200,
+    gain_min: -60,
+    gain_max: 12,
+    audiodg: {
+        priority: PRIORITIES.HIGH,
+        affinity: 2,
+    },
+};
+const settingsPath = `${__dirname}/settings.json`;
+
+// configure tray app
+const trayApp = {
     menu: {
         icon:
             os.platform() === 'win32'
@@ -41,10 +50,10 @@ const systray = new PersistantSysTray({
         tooltip: 'Voicemeeter Windows Volume',
         items: [
             itemBindList(),
-            PersistantSysTray.separator,
+            SysTray.separator,
             itemCrackleFix(),
             itemStartWithWindows(),
-            PersistantSysTray.separator,
+            SysTray.separator,
             itemExit({
                 click: () => {
                     process.exit();
@@ -53,18 +62,19 @@ const systray = new PersistantSysTray({
         ],
     },
     debug: false,
-    copyDir: true, // copy go tray binary to outside directory, useful for packing tool like pkg.
-});
-
-// @todo: move this into the PersistentSysTray logic
-const runInitCode = () => {
-    for (let [key, value] of systray.internalIdMap) {
-        if (typeof value.init === 'function') {
-            value.init.bind(value);
-            value.init(value.checked);
-        }
-    }
+    copyDir: true, // this is required since we're compiling to an exe
 };
+
+// create tray app
+const systray = setupPersistantSystray({
+    trayApp,
+    defaults,
+    settingsPath,
+    onReady: () => {
+        runWinAudio();
+        connectVoicemeeter();
+    },
+});
 
 const connectVoicemeeter = () => {
     waitForProcess(/voicemeeter(.*)?.exe/g, () => {
@@ -133,51 +143,3 @@ const runWinAudio = () => {
         }
     });
 };
-const handleSettingsLoaded = () => {
-    runInitCode();
-    runWinAudio();
-    connectVoicemeeter();
-};
-
-// @todo move to persistantSystray when that module is ready
-systray.onClick((action) => {
-    if (action.item.click != null) {
-        action.item.click();
-    }
-
-    if (
-        typeof action?.item?.checked === 'boolean' ||
-        action?.item?.checked === 'true' ||
-        action?.item?.checked === 'false'
-    ) {
-        action.item.checked = !action.item.checked;
-        systray.sendAction({
-            type: 'update-item',
-            item: action.item,
-        });
-        saveSettings(systray);
-    }
-
-    if (action?.item?.sid && typeof action?.item?.activate === 'function') {
-        action.item.activate.bind(action.item);
-        action.item.activate(getToggle(action.item.sid).value);
-    }
-});
-
-// Systray.ready is a promise which resolves when the tray is ready.
-systray.ready().then(() => {
-    loadSettings({
-        systray,
-        settingsPath: `${__dirname}/settings.json`,
-        defaults: {
-            polling_rate: 200,
-            gain_min: -60,
-            gain_max: 12,
-            audiodg: {
-                priority: PRIORITIES.HIGH,
-                affinity: 2,
-            },
-        },
-        callback: handleSettingsLoaded,
-    });
-});

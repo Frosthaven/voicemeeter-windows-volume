@@ -54,13 +54,15 @@ const updateSysTrayFromSettings = (systray) => {
 const loadSettings = ({ systray, settingsPath, defaults, callback }) => {
     // store the safe file path of the settings file
     settingsFilePath = path.normalize(settingsPath);
+    console.log('Using settings file:', settingsFilePath);
 
     // attempt to load our settings
     try {
         // settings loaded successfully
         setSettings(JSON.parse(fs.readFileSync(settingsFilePath)));
-    } catch {
+    } catch (err) {
         // something went wrong, lets write the file with defaults
+        console.log(err);
         setSettings(defaults);
         const data = JSON.stringify(defaults);
         fs.writeFileSync(
