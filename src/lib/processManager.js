@@ -1,6 +1,9 @@
 import { exec } from 'child_process';
 import { runPowershell } from './runPowershell';
 
+/**
+ * This is an enumeration of system priorities for ease of development
+ */
 const PRIORITIES = {
     REALTIME: 256,
     HIGH: 128,
@@ -10,6 +13,12 @@ const PRIORITIES = {
     LOW: 64,
 };
 
+/**
+ * Polls the list of running processes every 5 seconds and responds once it
+ * finds a match
+ * @param {regexp} processNameRegex regex that matches a running process name
+ * @param {function} callback a function to call once a match is found
+ */
 const waitForProcess = (processNameRegex, callback) => {
     isProcessRunning(processNameRegex, (running) => {
         if (running) {
@@ -24,6 +33,12 @@ const waitForProcess = (processNameRegex, callback) => {
     });
 };
 
+/**
+ * checks if a process is running by matching a regex against the current task
+ * list
+ * @param {regexp} processNameRegex regex that matches a running process name
+ * @param {function} cb a function with true|false parameter to call when done
+ */
 const isProcessRunning = (processNameRegex, cb) => {
     let platform = process.platform;
     let cmd = '';
@@ -47,6 +62,11 @@ const isProcessRunning = (processNameRegex, cb) => {
     });
 };
 
+/**
+ * uses Powershell to set a process to run at a specific priority
+ * @param {string} processName the name of the target process
+ * @param {number} priorityCode  the priority code to apply
+ */
 const setProcessPriority = (processName, priorityCode) => {
     runPowershell({
         stdout: false,
@@ -57,6 +77,11 @@ const setProcessPriority = (processName, priorityCode) => {
     });
 };
 
+/**
+ * uses Powershell to set a process to run on a specific core affinity
+ * @param {*} processName the name of the target process
+ * @param {*} affinityCode the affinity code to apply
+ */
 const setProcessAffinity = (processName, affinityCode) => {
     runPowershell({
         stdout: false,

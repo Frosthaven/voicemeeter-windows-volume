@@ -1,6 +1,9 @@
 import path from 'path';
 import { runPowershell } from './runPowershell';
 
+/**
+ * Uses Powershell to generate a scheduled task that starts the tray application
+ */
 const enableStartOnLaunch = () => {
     console.log('Enabling automatic start with Windows');
     const actionPath = path.normalize(
@@ -27,6 +30,9 @@ const enableStartOnLaunch = () => {
     });
 };
 
+/**
+ * Uses Powershell to remove the generated startup task
+ */
 const disableStartOnLaunch = () => {
     console.log('Disabling automatic start with Windows');
     let psCommand = `

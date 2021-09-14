@@ -22,6 +22,11 @@ for (let i = 0; i <= 7; i++) {
     });
 }
 
+/**
+ * menu entry for binding Windows volume to Voicemeeter strips and subs
+ * @param {object} props properties passed to the menu item
+ * @returns
+ */
 const itemBindList = (props) => {
     return {
         title: 'Bind Windows Volume To',

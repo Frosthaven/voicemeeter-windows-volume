@@ -6,12 +6,16 @@ import { speaker } from 'win-audio';
 
 let vm = null;
 
+/**
+ * connects to the voicemeeter client api once it is available
+ */
 const connectVoicemeeter = () => {
     waitForProcess(/voicemeeter(.*)?.exe/g, () => {
         Voicemeeter.init().then(async (voicemeeter) => {
             try {
                 voicemeeter.connect();
                 vm = voicemeeter;
+                console.log('Voicemeeter connected!');
             } catch {
                 systray.kill(false);
                 setTimeout(() => {
@@ -22,6 +26,10 @@ const connectVoicemeeter = () => {
     });
 };
 
+/**
+ * begins polling Windows audio for changes, and propegates those changes over
+ * the Voicemeeter API
+ */
 const runWinAudio = () => {
     let settings = getSettings();
     speaker.polling(settings.polling_rate);
@@ -74,6 +82,9 @@ const runWinAudio = () => {
     });
 };
 
+/**
+ * begins synchronizing audio between Voicemeeter and Windows
+ */
 const startAudioSync = () => {
     runWinAudio();
     connectVoicemeeter();

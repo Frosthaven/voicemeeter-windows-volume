@@ -1,19 +1,18 @@
-// standard imports ************************************************************
+// imports *********************************************************************
 
+// built-in
 import os from 'os';
 import path from 'path';
 
-// external package imports ****************************************************
-
+// external
 import SysTray from 'systray2';
 
-// local imports ***************************************************************
-
+// local
 import { PRIORITIES } from './lib/processManager';
-
 import { setupPersistantSystray } from './lib/persistantSysTray';
 import { startAudioSync } from './lib/audioSyncManager';
 
+// menu items
 import { itemBindList } from './menuItems/itemBindList';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';

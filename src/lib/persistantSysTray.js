@@ -1,49 +1,70 @@
 import SysTray from 'systray2';
 
-import { getToggle, saveSettings, loadSettings } from './settingsManager';
+import {
+    getToggle,
+    saveSettings,
+    getSettings,
+    loadSettings,
+} from './settingsManager';
 
-// We do some custom things with the systray library in order to sync checked
-// menu items to a saved state
-// - Menu objects that require their check be saved need to have a unique sid
-//    assigned to them.
-// - We provide two new methods for sid enabled menu items to use
-//    - init(checkedBoolean) which fires on creation of the menu item
-//    - activate(checkedBoolean) which fires when a checkbox item is clicked
 let systray = null;
 
+/**
+ * looks through the systray menu items and runs any existing init() method
+ */
+const runInitCode = () => {
+    for (let [key, value] of systray.internalIdMap) {
+        if (typeof value.init === 'function') {
+            value.init.bind(value);
+            value.init(value.checked);
+        }
+    }
+};
+
+/**
+ * event handler for when settings have been loaded
+ */
+const settingsLoaded = () => {
+    runInitCode();
+    if (typeof onReady === 'function') {
+        onReady();
+    }
+};
+
+/**
+ * creates a system tray instance with settings saving capabilities
+ * We do some custom things with the systray library in order to sync checked
+ * menu items to a saved state
+ *  - Menu objects that require their check be saved need to have a unique sid
+ *    assigned to them.
+ *  - We provide two new methods for sid enabled menu items to use
+ *    - init(checkedBoolean) which fires on creation of the menu item
+ *    - activate(checkedBoolean) which fires when a checkbox item is clicked
+ * @param {object} trayApp the menu configuration that systray2 needs
+ * @param {object} defaults the default settings to apply when generating them
+ * @param {string} settingsPath the file location name name of the settings file
+ * @param {function} onReady the callback function that is triggered when done
+ * @returns {object} the newly created systray instance
+ */
 const setupPersistantSystray = ({
     trayApp,
     defaults,
     settingsPath,
     onReady,
 }) => {
+    // create the systray instance
     systray = new SysTray(trayApp);
 
-    const runInitCode = () => {
-        for (let [key, value] of systray.internalIdMap) {
-            if (typeof value.init === 'function') {
-                value.init.bind(value);
-                value.init(value.checked);
-            }
-        }
-    };
-
-    const settingsLoaded = () => {
-        runInitCode();
-        if (typeof onReady === 'function') {
-            onReady();
-        }
-    };
-
+    // load the settings once ready
     systray.ready().then(() => {
         loadSettings({
-            systray,
             settingsPath,
             defaults,
             callback: settingsLoaded,
         });
     });
 
+    // change the settings when a checkbox changes
     systray.onClick((action) => {
         if (action.item.click != null) {
             action.item.click();
