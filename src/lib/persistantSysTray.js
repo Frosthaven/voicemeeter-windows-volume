@@ -2,12 +2,13 @@ import SysTray from 'systray2';
 
 import { getToggle, saveSettings, loadSettings } from './settingsManager';
 
-// we do some custom things with the systray library in order to sync checked
+// We do some custom things with the systray library in order to sync checked
 // menu items to a saved state
-// 1. We take over onClick for syncing selections to settings.
-// 2. We provide two new methods for menu items to use
-//    a. init(checkedBoolean) which fires on creation of the menu item
-//    b. activate(checkedBoolean) which fires when a menu item is clicked
+// - Menu objects that require their check be saved need to have a unique sid
+//    assigned to them.
+// - We provide two new methods for sid enabled menu items to use
+//    - init(checkedBoolean) which fires on creation of the menu item
+//    - activate(checkedBoolean) which fires when a checkbox item is clicked
 let systray = null;
 
 const setupPersistantSystray = ({

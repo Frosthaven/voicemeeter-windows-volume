@@ -5,15 +5,12 @@ import path from 'path';
 
 // external package imports ****************************************************
 
-import { Voicemeeter } from 'voicemeeter-connector';
-import { speaker } from 'win-audio';
+import SysTray from 'systray2';
 
 // local imports ***************************************************************
 
-import { getSettings } from './lib/settingsManager';
+import { PRIORITIES } from './lib/processManager';
 
-import { PRIORITIES, waitForProcess } from './lib/processManager';
-import SysTray from 'systray2';
 import { setupPersistantSystray } from './lib/persistantSysTray';
 import { startAudioSync } from './lib/audioSyncManager';
 
