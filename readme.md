@@ -30,10 +30,6 @@ Close the program if it is running, and open that file in a text editor. Here ar
 
 # Building From Source
 
-## Note About This Codebase
-
-This codebase is _mildly dirty_, which will be corrected once feature prototyping is complete.
-
 ## Requirements
 
 -   [NodeJS](https://nodejs.org/) _(Currently on the 16.x line)_
