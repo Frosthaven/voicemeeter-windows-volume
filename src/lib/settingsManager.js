@@ -28,6 +28,7 @@ const saveSettings = (systray) => {
     }
 };
 
+// @todo this needs to move to the systray module instead of living here
 const updateSysTrayFromSettings = (systray) => {
     const settings = getSettings();
     if (!settings.toggles) {
