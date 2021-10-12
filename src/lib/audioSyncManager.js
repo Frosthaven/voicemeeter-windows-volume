@@ -7,6 +7,20 @@ import { speaker } from 'win-audio';
 let vm = null;
 
 /**
+ * if initial_volume is defined in settings, this will apply it to the windows
+ * volume slider (and by extension propogate the change to any bound voicemeeter
+ * strips and subs)
+ */
+const setInitialVolume = () => {
+    let settings = getSettings();
+
+    if (settings.initial_volume) {
+        console.log(`Set initial volume to ${settings.initial_volume}`);
+        speaker.set(settings.initial_volume);
+    }
+};
+
+/**
  * connects to the voicemeeter client api once it is available
  */
 const connectVoicemeeter = () => {
@@ -16,6 +30,7 @@ const connectVoicemeeter = () => {
                 voicemeeter.connect();
                 vm = voicemeeter;
                 console.log('Voicemeeter connected!');
+                setInitialVolume();
             } catch {
                 systray.kill(false);
                 setTimeout(() => {

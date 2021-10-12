@@ -22,16 +22,6 @@ const runInitCode = () => {
 };
 
 /**
- * event handler for when settings have been loaded
- */
-const settingsLoaded = () => {
-    runInitCode();
-    if (typeof onReady === 'function') {
-        onReady();
-    }
-};
-
-/**
  * creates a system tray instance with settings saving capabilities
  * We do some custom things with the systray library in order to sync checked
  * menu items to a saved state
@@ -60,7 +50,12 @@ const setupPersistantSystray = ({
         loadSettings({
             settingsPath,
             defaults,
-            callback: settingsLoaded,
+            callback: () => {
+                runInitCode();
+                if (typeof onReady === 'function') {
+                    onReady();
+                }
+            },
         });
     });
 

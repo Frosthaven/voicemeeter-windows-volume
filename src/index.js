@@ -65,6 +65,7 @@ const systray = setupPersistantSystray({
     defaults,
     settingsPath,
     onReady: () => {
+        console.log('Starting audio synchronization');
         startAudioSync();
     },
 });

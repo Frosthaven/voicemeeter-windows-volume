@@ -25,6 +25,7 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   `polling_rate` is how quickly (in milliseconds) the application will track changes in Windows volume.
 -   `gain_min` is the level Voicemeeter will be if Windows volume is at 0
 -   `gain_max` is the level Voicemeeter will be if Windows volume is at 100. You can set this to 0 if you prefer Voicemeeter volumes not go into the red.
+-   `initial_volume` if set, will automatically change the volume of Windows and bound strips & subs on program launch.
 -   `audiodg` should be left alone unless you know what you are doing. It utilizes Windows priority and affinity codes to set both appropriately when "Apply Crackle Fix" is checked.
 -   `toggles` this is an enumerated list of all checkable items in the tray applet.
 
