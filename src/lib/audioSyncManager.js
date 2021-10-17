@@ -28,9 +28,37 @@ const connectVoicemeeter = () => {
         Voicemeeter.init().then(async (voicemeeter) => {
             try {
                 voicemeeter.connect();
+
+                // changes happen rapidly on voicemeeter startup, and stop after
+                // the engine is fully loaded. we can wait until changes stop
+                // to detect when the voicemeeter engine is fully loaded
+                let voicemeeterLoaded = false;
+                let voicemeeterEngineWaiter;
+
+                voicemeeter.attachChangeEvent(() => {
+                    if (!voicemeeterLoaded) {
+                        lastEventTimestamp = Date.now();
+                    }
+
+                    let moment = new Date();
+                    console.log(
+                        `Voicemeeter: [${moment.getHours()}:${moment.getMinutes()}:${moment.getSeconds()}] Changed detected`
+                    );
+                });
+
+                let lastEventTimestamp = Date.now();
+                voicemeeterEngineWaiter = setInterval(() => {
+                    let timeDelta = Date.now() - lastEventTimestamp;
+                    if (timeDelta >= 3000) {
+                        // 3 seconds have passed between events, assume loaded
+                        clearInterval(voicemeeterEngineWaiter);
+                        voicemeeterLoaded = true;
+                        console.log('Voicemeeter: Fully Initialized');
+                        setInitialVolume();
+                    }
+                }, 1000);
+
                 vm = voicemeeter;
-                console.log('Voicemeeter connected!');
-                setInitialVolume();
             } catch {
                 systray.kill(false);
                 setTimeout(() => {
