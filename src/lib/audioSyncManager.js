@@ -1,10 +1,12 @@
 import { waitForProcess } from '../lib/processManager';
-import { getSettings } from './settingsManager';
+import { getToggle, getSettings } from './settingsManager';
 import { systray } from './persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
 import { speaker } from 'win-audio';
 
 let vm = null;
+let lastVolume = null;
+let lastVolumeTime = Date.now();
 
 /**
  * if initial_volume is defined in settings, this will apply it to the windows
@@ -15,7 +17,8 @@ const setInitialVolume = () => {
     let settings = getSettings();
 
     if (settings.initial_volume) {
-        console.log(`Set initial volume to ${settings.initial_volume}`);
+        lastVolumeTime = Date.now();
+        console.log(`Set initial volume to ${settings.initial_volume}%`);
         speaker.set(settings.initial_volume);
     }
 };
@@ -35,6 +38,11 @@ const connectVoicemeeter = () => {
                 let voicemeeterLoaded = false;
                 let voicemeeterEngineWaiter;
 
+                console.log(
+                    voicemeeter.updateDeviceList(),
+                    voicemeeter.$outputDevices,
+                    voicemeeter.$inputDevices
+                );
                 voicemeeter.attachChangeEvent(() => {
                     if (!voicemeeterLoaded) {
                         lastEventTimestamp = Date.now();
@@ -70,6 +78,15 @@ const connectVoicemeeter = () => {
 };
 
 /**
+ * converts a A windows volume level (0-100) to Voicemeeter decibel level
+ */
+const convertVolumeToVoicemeeterGain = (windowsVolume, gain_min, gain_max) => {
+    const gain = (windowsVolume * (gain_max - gain_min)) / 100 + gain_min;
+    const roundedGain = Math.round(gain * 10) / 10;
+    return roundedGain;
+};
+
+/**
  * begins polling Windows audio for changes, and propegates those changes over
  * the Voicemeeter API
  */
@@ -78,6 +95,32 @@ const runWinAudio = () => {
     speaker.polling(settings.polling_rate);
 
     speaker.events.on('change', (volume) => {
+        // There is an issue with some drivers and Windows versions where the
+        // associated audio device will spike to 100% volume when either devices
+        // change or the audio engine is reset. This will revert any 100%
+        // volume requests that were not gradual (such as the user using a
+        // volume slider)
+        let currentTime = Date.now();
+        let timeSinceLastVolume = currentTime - lastVolumeTime;
+
+        if (volume.new === 100 && timeSinceLastVolume >= 1000) {
+            let fixingVolume = getToggle('apply_volume_fix');
+
+            if (
+                fixingVolume &&
+                null !== lastVolume &&
+                settings.initial_volume !== 100
+            ) {
+                console.log(
+                    `Driver Anomoly Detected: Volume reached 100% from ${lastVolume}%. Reverting to ${lastVolume}%`
+                );
+                speaker.set(lastVolume);
+            }
+        }
+        lastVolume = volume.new;
+        lastVolumeTime = currentTime;
+
+        // propagate volume to Voicemeeter
         if (vm) {
             for (let [key, value] of systray.internalIdMap) {
                 if (
@@ -85,18 +128,18 @@ const runWinAudio = () => {
                     (value?.sid?.startsWith('Strip') ||
                         value?.sid?.startsWith('Bus'))
                 ) {
-                    const gain =
-                        (volume.new * (settings.gain_max - settings.gain_min)) /
-                            100 +
-                        settings.gain_min;
-                    const roundedGain = Math.round(gain * 10) / 10;
+                    const voicemeeterGain = convertVolumeToVoicemeeterGain(
+                        volume.new,
+                        settings.gain_min,
+                        settings.gain_max
+                    );
                     const tokens = value.sid.split('_');
                     try {
                         vm.setParameter(
                             tokens[0],
                             tokens[1],
                             'Gain',
-                            roundedGain
+                            voicemeeterGain
                         );
                     } catch (e) {}
                 }

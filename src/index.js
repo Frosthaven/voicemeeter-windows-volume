@@ -16,13 +16,14 @@ import { startAudioSync } from './lib/audioSyncManager';
 import { itemBindList } from './menuItems/itemBindList';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';
+import { itemVolumeFix } from './menuItems/itemVolumeFix';
 import { itemExit } from './menuItems/itemExit';
 
 // configuration ***************************************************************
 
 // default settings
 const defaults = {
-    polling_rate: 200,
+    polling_rate: 100,
     gain_min: -60,
     gain_max: 12,
     audiodg: {
@@ -45,6 +46,8 @@ const trayApp = {
             itemBindList(),
             SysTray.separator,
             itemCrackleFix(),
+            itemVolumeFix(),
+            SysTray.separator,
             itemStartWithWindows(),
             SysTray.separator,
             itemExit({
