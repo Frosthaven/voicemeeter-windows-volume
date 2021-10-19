@@ -14,7 +14,7 @@ Tray app that allows you to sync windows volume and mute state to Voicemeeter vo
 -   `Apply Crackle Fix (USB Interfaces)`
     -   This will fix a common crackling and popping issue with software audio mixers and USB interfaces. It does this by limiting audiodg.exe to a single core and giving it high priority.
 -   `Prevent 100% Volume Spikes`
-    -   This will detect a driver/Windows issue where devices are reset to 100% audio on audio engine restarts or audio device changes. _Note: This comes with a side effect. Enabling this will prevent the system from ever instantly reaching 100% volume. You can still use a volume slider to drag to 100%, however._
+    -   This will detect a driver/Windows issue where devices are reset to 100% audio on audio engine restarts or audio device changes. _Note: This comes with a side effect. Enabling this will prevent the system from ever instantly reaching 100% volume. You can still use volume sliders and keys to reach 100, however._
 -   `Automatically Start With Windows`
     -   Registers a scheduled task so that the tray applet launches on user login (with high enough privelages to operate) by default.
 
