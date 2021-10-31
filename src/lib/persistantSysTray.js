@@ -27,6 +27,7 @@ const runInitCode = () => {
  * menu items to a saved state
  *  - Menu objects that require their check be saved need to have a unique sid
  *    assigned to them.
+ *  - You can now set the item's button property to true to prevent toggling
  *  - We provide two new methods for sid enabled menu items to use
  *    - init(checkedBoolean) which fires on creation of the menu item
  *    - activate(checkedBoolean) which fires when a checkbox item is clicked
@@ -63,6 +64,17 @@ const setupPersistantSystray = ({
     systray.onClick((action) => {
         if (action.item.click != null) {
             action.item.click();
+        }
+
+        if (action?.item?.button === true) {
+            // automatically uncheck items that are buttons
+            setTimeout(() => {
+                action.item.checked = false;
+                systray.sendAction({
+                    type: 'update-item',
+                    item: action.item,
+                });
+            }, 1000);
         }
 
         if (

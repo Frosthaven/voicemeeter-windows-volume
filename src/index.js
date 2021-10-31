@@ -17,6 +17,7 @@ import { itemBindList } from './menuItems/itemBindList';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';
 import { itemVolumeFix } from './menuItems/itemVolumeFix';
+import { itemVisitGithub } from './menuItems/itemVisitGithub';
 import { itemExit } from './menuItems/itemExit';
 
 // configuration ***************************************************************
@@ -49,6 +50,8 @@ const trayApp = {
             itemVolumeFix(),
             SysTray.separator,
             itemStartWithWindows(),
+            SysTray.separator,
+            itemVisitGithub(),
             SysTray.separator,
             itemExit({
                 click: () => {
