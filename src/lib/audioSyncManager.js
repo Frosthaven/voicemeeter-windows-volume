@@ -178,15 +178,25 @@ const updateBindingLabels = (vm) => {
 
     if (friendlyNames) {
         for (let [key, value] of systray.internalIdMap) {
+            // enable bind menu if needed
+            if (value.title === 'Bind Windows Volume To' && !value.enabled) {
+                value.enabled = true;
+                systray.sendAction({
+                    type: 'update-item',
+                    item: value,
+                });
+            }
+
+            // update labels if needed
             if (
                 value.sid &&
                 (value.sid.startsWith('Strip_') || value.sid.startsWith('Bus_'))
             ) {
-                // this gets our strips and subs. Expect 8 strips, 8 buses and
-                // disable the options that exceed our interface counts
                 let tokens = value.sid.split('_');
                 let type = tokens[0],
                     index = parseInt(tokens[1]);
+                let lastTitle = value.title;
+                let lastHidden = value.hidden;
                 let label = vm.getParameter(type, index, 'Label');
                 let deviceName = vm.getParameter(type, index, 'device.name');
 
@@ -204,10 +214,15 @@ const updateBindingLabels = (vm) => {
                     deviceName ? '<' + deviceName + '>' : ''
                 }`;
 
-                systray.sendAction({
-                    type: 'update-item',
-                    item: value,
-                });
+                value.title = value.title.trim();
+
+                // refresh the item only if the state was changed
+                if (value.title !== lastTitle || value.hidden !== lastHidden) {
+                    systray.sendAction({
+                        type: 'update-item',
+                        item: value,
+                    });
+                }
             }
         }
     }

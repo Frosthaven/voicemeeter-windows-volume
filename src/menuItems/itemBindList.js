@@ -30,8 +30,14 @@ for (let i = 0; i <= 7; i++) {
 const itemBindList = (props) => {
     return {
         title: 'Bind Windows Volume To',
-        enabled: true,
-        items: [...strips, { Title: '' }, ...buses],
+        enabled: false,
+        items: [
+            { Title: 'INPUTS' },
+            ...strips,
+            { Title: '' },
+            { Title: 'OUTPUTS' },
+            ...buses,
+        ],
     };
 };
 
