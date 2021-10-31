@@ -18,6 +18,7 @@ import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';
 import { itemVolumeFix } from './menuItems/itemVolumeFix';
 import { itemVisitGithub } from './menuItems/itemVisitGithub';
+import { itemDonate } from './menuItems/itemDonate';
 import { itemExit } from './menuItems/itemExit';
 
 // configuration ***************************************************************
@@ -27,6 +28,7 @@ const defaults = {
     polling_rate: 100,
     gain_min: -60,
     gain_max: 12,
+    disable_donate: false,
     audiodg: {
         priority: PRIORITIES.HIGH,
         affinity: 2,
@@ -52,6 +54,7 @@ const trayApp = {
             itemStartWithWindows(),
             SysTray.separator,
             itemVisitGithub(),
+            itemDonate(),
             SysTray.separator,
             itemExit({
                 click: () => {
