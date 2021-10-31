@@ -10,7 +10,7 @@ Tray app that allows you to sync windows volume and mute state to Voicemeeter vo
 ## Features
 
 -   `Bind Windows Volume To`
-    -   The strips (inputs) and subs (outputs) align with Voicemeeter. When you change Windows volume, that volume will be synced to any selected entries in this list.
+    -   The strips (inputs) and buses (outputs) align with Voicemeeter. When you change Windows volume, that volume will be synced to any selected entries in this list.
 -   `Apply Crackle Fix (USB Interfaces)`
     -   This will fix a common crackling and popping issue with software audio mixers and USB interfaces. It does this by limiting audiodg.exe to a single core and giving it high priority.
 -   `Prevent 100% Volume Spikes`
@@ -27,7 +27,7 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   `polling_rate` is how quickly (in milliseconds) the application will track changes in Windows volume.
 -   `gain_min` is the level Voicemeeter will be if Windows volume is at 0
 -   `gain_max` is the level Voicemeeter will be if Windows volume is at 100. You can set this to 0 if you prefer Voicemeeter volumes not go into the red.
--   `initial_volume` if set, will automatically change Windows volume (and by extension any bound strips and subs). Expects a value between 0 and 100.
+-   `initial_volume` if set, will automatically change Windows volume (and by extension any bound strips and buses). Expects a value between 0 and 100.
 -   `disable_donate` if set to true, the donate link will be hidden from the tray app (donations are optional and nothing is locked behind them).
 -   `audiodg` should be left alone unless you know what you are doing. It utilizes Windows priority and affinity codes to set both appropriately when "Apply Crackle Fix" is checked.
 -   `toggles` this is an enumerated list of all checkable items in the tray applet.
