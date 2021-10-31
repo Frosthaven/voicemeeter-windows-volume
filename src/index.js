@@ -10,7 +10,7 @@ import SysTray from 'systray2';
 // local
 import { PRIORITIES } from './lib/processManager';
 import { setupPersistantSystray } from './lib/persistantSysTray';
-import { startAudioSync } from './lib/audioSyncManager';
+import { setBindFriendlyNames, startAudioSync } from './lib/audioSyncManager';
 
 // menu items
 import { itemBindList } from './menuItems/itemBindList';

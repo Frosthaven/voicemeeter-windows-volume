@@ -1,4 +1,5 @@
 import { waitForProcess } from '../lib/processManager';
+import { VOICEMEETER_FRIENDLY_NAMES } from '../lib/strings';
 import { getToggle, getSettings } from './settingsManager';
 import { systray } from './persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
@@ -27,52 +28,56 @@ const setInitialVolume = () => {
  * connects to the voicemeeter client api once it is available
  */
 const connectVoicemeeter = () => {
-    waitForProcess(/voicemeeter(.*)?.exe/g, () => {
-        Voicemeeter.init().then(async (voicemeeter) => {
-            try {
-                voicemeeter.connect();
+    return new Promise((resolve, reject) => {
+        waitForProcess(/voicemeeter(.*)?.exe/g, () => {
+            Voicemeeter.init().then(async (voicemeeter) => {
+                try {
+                    voicemeeter.connect();
 
-                // changes happen rapidly on voicemeeter startup, and stop after
-                // the engine is fully loaded. we can wait until changes stop
-                // to detect when the voicemeeter engine is fully loaded
-                let voicemeeterLoaded = false;
-                let voicemeeterEngineWaiter;
+                    // changes happen rapidly on voicemeeter startup, and stop after
+                    // the engine is fully loaded. we can wait until changes stop
+                    // to detect when the voicemeeter engine is fully loaded
+                    let voicemeeterLoaded = false;
+                    let voicemeeterEngineWaiter;
 
-                console.log(
-                    voicemeeter.updateDeviceList(),
-                    voicemeeter.$outputDevices,
-                    voicemeeter.$inputDevices
-                );
-                voicemeeter.attachChangeEvent(() => {
-                    if (!voicemeeterLoaded) {
-                        lastEventTimestamp = Date.now();
-                    }
+                    // console.log(
+                    //     voicemeeter.updateDeviceList(),
+                    //     voicemeeter.$outputDevices,
+                    //     voicemeeter.$inputDevices
+                    // );
+                    voicemeeter.attachChangeEvent(() => {
+                        if (!voicemeeterLoaded) {
+                            lastEventTimestamp = Date.now();
+                        }
 
-                    let moment = new Date();
-                    console.log(
-                        `Voicemeeter: [${moment.getHours()}:${moment.getMinutes()}:${moment.getSeconds()}] Changed detected`
-                    );
-                });
+                        let moment = new Date();
+                        updateBindingLabels(voicemeeter);
+                        console.log(
+                            `Voicemeeter: [${moment.getHours()}:${moment.getMinutes()}:${moment.getSeconds()}] Changed detected`
+                        );
+                    });
 
-                let lastEventTimestamp = Date.now();
-                voicemeeterEngineWaiter = setInterval(() => {
-                    let timeDelta = Date.now() - lastEventTimestamp;
-                    if (timeDelta >= 3000) {
-                        // 3 seconds have passed between events, assume loaded
-                        clearInterval(voicemeeterEngineWaiter);
-                        voicemeeterLoaded = true;
-                        console.log('Voicemeeter: Fully Initialized');
-                        setInitialVolume();
-                    }
-                }, 1000);
+                    let lastEventTimestamp = Date.now();
+                    voicemeeterEngineWaiter = setInterval(() => {
+                        let timeDelta = Date.now() - lastEventTimestamp;
+                        if (timeDelta >= 3000) {
+                            // 3 seconds have passed between events, assume loaded
+                            clearInterval(voicemeeterEngineWaiter);
+                            voicemeeterLoaded = true;
+                            console.log('Voicemeeter: Fully Initialized');
+                            resolve(voicemeeter);
+                        }
+                    }, 1000);
 
-                vm = voicemeeter;
-            } catch {
-                systray.kill(false);
-                setTimeout(() => {
-                    process.exit();
-                }, 1000);
-            }
+                    vm = voicemeeter;
+                } catch {
+                    systray.kill(false);
+                    setTimeout(() => {
+                        process.exit();
+                    }, 1000);
+                    reject('Error Attaching to Voicemeeter');
+                }
+            });
         });
     });
 };
@@ -168,12 +173,57 @@ const runWinAudio = () => {
     });
 };
 
+const updateBindingLabels = (vm) => {
+    const friendlyNames = VOICEMEETER_FRIENDLY_NAMES[vm.$type];
+
+    if (friendlyNames) {
+        for (let [key, value] of systray.internalIdMap) {
+            if (
+                value.sid &&
+                (value.sid.startsWith('Strip_') || value.sid.startsWith('Bus_'))
+            ) {
+                // this gets our strips and subs. Expect 8 strips, 8 buses and
+                // disable the options that exceed our interface counts
+                let tokens = value.sid.split('_');
+                let type = tokens[0],
+                    index = parseInt(tokens[1]);
+                let label = vm.getParameter(type, index, 'Label');
+                let deviceName = vm.getParameter(type, index, 'device.name');
+
+                let newFriendlyNames = friendlyNames[type];
+                if (newFriendlyNames[index]) {
+                    value.title =
+                        label.length > 0 ? label : newFriendlyNames[index];
+
+                    value.hidden = false;
+                } else {
+                    value.hidden = true;
+                }
+
+                value.title = `${value.title} ${deviceName ? ' : ' : ''} ${
+                    deviceName ? '<' + deviceName + '>' : ''
+                }`;
+
+                systray.sendAction({
+                    type: 'update-item',
+                    item: value,
+                });
+            }
+        }
+    }
+};
+
 /**
  * begins synchronizing audio between Voicemeeter and Windows
  */
 const startAudioSync = () => {
     runWinAudio();
-    connectVoicemeeter();
+    connectVoicemeeter()
+        .then((vm) => {
+            setInitialVolume();
+            updateBindingLabels(vm);
+        })
+        .catch((err) => console.log);
 };
 
 export { startAudioSync };
