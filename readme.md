@@ -2,6 +2,8 @@
 
 Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls. Made in web technologies. For kicks.
 
+The advantage of this application is that you do not need to fiddle with custom macro keys and related workarounds. Any existing methods to change Windows volume (keyboard keys, software, hardware controls) will "just work".
+
 ## How To Install
 
 1. Head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page to download the latest version.
