@@ -269,9 +269,9 @@ const updateBindingLabels = (vm) => {
  * begins synchronizing audio between Voicemeeter and Windows
  */
 const startAudioSync = () => {
-    runWinAudio();
     connectVoicemeeter()
         .then((vm) => {
+            runWinAudio();
             setInitialVolume();
             updateBindingLabels(vm);
         })
