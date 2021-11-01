@@ -36,13 +36,15 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   `audiodg` should be left alone unless you know what you are doing. It utilizes Windows priority and affinity codes to set both appropriately when "Apply Crackle Fix" is checked.
 -   `toggles` this is an enumerated list of all checkable items in the tray applet.
 
-# Feature Wishlist
+## Feature Wishlist
 
 These are features I currently want to add to the application. This is a spare-time project, so these are in no particular order or time-table.
 
 -   Two-way binding so that changes in bound voicemeeter channels can also update Windows volume.
 -   Ability to restart audio-engine and additionally a feature to restart voicemeeter entirely from the tray app.
 -   Ability to track Windows audio device changes and restore them on launch (Default audio devices like to change during some OS updates)
+
+If you have a feature you want added, be sure to let me know with a new ticket!
 
 # Building From Source
 
