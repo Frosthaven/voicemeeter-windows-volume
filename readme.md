@@ -12,7 +12,7 @@ The advantage of this application is that you do not need to fiddle with custom 
 ## Features
 
 -   `Bind Windows Volume To`
-    -   The strips (inputs) and buses (outputs) align with Voicemeeter. When you change Windows volume, that volume will be synced to any selected entries in this list.
+    -   These are the inputs and outputs detected in Voicemeeter. When you change Windows volume, that volume will be synced to any and all checked entries in this list.
 -   `Restore Volume At Launch`
     -   This setting allows the app to remember your volume changes while it is open and restore the last known volume on launch. This is useful for users with drivers that reset the volume on startup.
 -   `Apply Crackle Fix (USB Interfaces)`
