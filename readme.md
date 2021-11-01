@@ -14,7 +14,7 @@ The advantage of this application is that you do not need to fiddle with custom 
 -   `Bind Windows Volume To`
     -   These are the inputs and outputs detected in Voicemeeter. When you change Windows volume, that volume will be synced to any and all checked entries in this list.
 -   `Restore Volume At Launch`
-    -   This setting allows the app to remember your volume changes while it is open and restore the last known volume on launch. This is useful for users with drivers that reset the volume on startup.
+    -   This setting allows the app to remember your volume changes while it is open and restore the last known volume on launch. This is useful for users with drivers that reset the volume on startup/reboot.
 -   `Prevent 100% Volume Spikes`
     -   This will detect a driver/Windows issue where devices are reset to 100% audio on audio engine restarts or audio device changes. _Note: This comes with a side effect. Enabling this will prevent the system from ever instantly reaching 100% volume. You can still use volume sliders and keys to reach 100, however._
 -   `Apply Crackle Fix (USB Interfaces)`
