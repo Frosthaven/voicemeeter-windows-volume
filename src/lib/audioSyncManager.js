@@ -1,13 +1,50 @@
 import { waitForProcess } from '../lib/processManager';
 import { VOICEMEETER_FRIENDLY_NAMES } from '../lib/strings';
-import { getToggle, getSettings } from './settingsManager';
+import {
+    getToggle,
+    getSettings,
+    setSettings,
+    saveSettings,
+} from './settingsManager';
 import { systray } from './persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
 import { speaker } from 'win-audio';
 
 let vm = null;
+let voicemeeterLoaded = false;
 let lastVolume = null;
+let lastEventTimestamp = Date.now();
 let lastVolumeTime = Date.now();
+
+/**
+ * called when Windows audio levels have changed
+ * @param {*} volume volume change object
+ * @param {int} volume.new the new volume
+ * @param {int} volume.old the old volume
+ */
+const winAudioChanged = (volume) => {
+    getToggle('remember_volume')?.value && rememberThisVolume(volume.new);
+};
+
+/**
+ * called when Voicemeeter properties have changed
+ * @param {*} voicemeeter the voicemeeter connection handle
+ */
+const voicemeeterChanged = (voicemeeter) => {
+    updateBindingLabels(voicemeeter);
+};
+
+/**
+ * saves the current volume to be loaded on next launch
+ */
+const rememberThisVolume = () => {
+    let volume = speaker.get();
+    console.log(`remembering volume: ${volume}`);
+    let settings = getSettings();
+    settings.initial_volume = volume;
+    setSettings(settings);
+    saveSettings();
+};
 
 /**
  * if initial_volume is defined in settings, this will apply it to the windows
@@ -17,7 +54,7 @@ let lastVolumeTime = Date.now();
 const setInitialVolume = () => {
     let settings = getSettings();
 
-    if (settings.initial_volume) {
+    if (getToggle('remember_volume')?.value && settings.initial_volume) {
         lastVolumeTime = Date.now();
         console.log(`Set initial volume to ${settings.initial_volume}%`);
         speaker.set(settings.initial_volume);
@@ -29,7 +66,7 @@ const setInitialVolume = () => {
  */
 const connectVoicemeeter = () => {
     return new Promise((resolve, reject) => {
-        waitForProcess(/voicemeeter(.*)?.exe/g, () => {
+        waitForProcess(/voicemeeter(.*)?[^(setup)].exe/g, () => {
             Voicemeeter.init().then(async (voicemeeter) => {
                 try {
                     voicemeeter.connect();
@@ -37,7 +74,6 @@ const connectVoicemeeter = () => {
                     // changes happen rapidly on voicemeeter startup, and stop after
                     // the engine is fully loaded. we can wait until changes stop
                     // to detect when the voicemeeter engine is fully loaded
-                    let voicemeeterLoaded = false;
                     let voicemeeterEngineWaiter;
 
                     // console.log(
@@ -51,13 +87,13 @@ const connectVoicemeeter = () => {
                         }
 
                         let moment = new Date();
-                        updateBindingLabels(voicemeeter);
                         console.log(
                             `Voicemeeter: [${moment.getHours()}:${moment.getMinutes()}:${moment.getSeconds()}] Changed detected`
                         );
+                        voicemeeterChanged(voicemeeter);
                     });
 
-                    let lastEventTimestamp = Date.now();
+                    lastEventTimestamp = Date.now();
                     voicemeeterEngineWaiter = setInterval(() => {
                         let timeDelta = Date.now() - lastEventTimestamp;
                         if (timeDelta >= 3000) {
@@ -150,6 +186,7 @@ const runWinAudio = () => {
                 }
             }
         }
+        winAudioChanged(volume);
     });
 
     speaker.events.on('toggle', (status) => {
@@ -241,4 +278,4 @@ const startAudioSync = () => {
         .catch((err) => console.log);
 };
 
-export { startAudioSync };
+export { startAudioSync, rememberThisVolume };

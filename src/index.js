@@ -14,6 +14,7 @@ import { startAudioSync } from './lib/audioSyncManager';
 
 // menu items
 import { itemBindList } from './menuItems/itemBindList';
+import { itemRememberVolume } from './menuItems/itemRememberVolume';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemCrackleFix } from './menuItems/itemCrackleFix';
 import { itemVolumeFix } from './menuItems/itemVolumeFix';
@@ -28,6 +29,7 @@ const defaults = {
     polling_rate: 100,
     gain_min: -60,
     gain_max: 12,
+    remember_volume: false,
     disable_donate: false,
     audiodg: {
         priority: PRIORITIES.HIGH,
@@ -48,8 +50,9 @@ const trayApp = {
         items: [
             itemBindList(),
             SysTray.separator,
-            itemCrackleFix(),
+            itemRememberVolume(),
             itemVolumeFix(),
+            itemCrackleFix(),
             SysTray.separator,
             itemStartWithWindows(),
             SysTray.separator,

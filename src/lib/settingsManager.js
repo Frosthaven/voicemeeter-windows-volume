@@ -121,4 +121,4 @@ const getSettings = () => {
     return settings;
 };
 
-export { saveSettings, loadSettings, getSettings, getToggle };
+export { saveSettings, loadSettings, getSettings, setSettings, getToggle };
