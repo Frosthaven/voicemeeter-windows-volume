@@ -1,9 +1,8 @@
 import { rememberThisVolume } from '../lib/audioSyncManager';
 
 /**
- * menu entry for exiting the program
+ * menu entry to remember volume levels for next launch
  * @param {object} props properties passed to the menu item
- * @param {function} props.click function to trigger on menu item click
  * @returns
  */
 const itemRememberVolume = (props) => {
