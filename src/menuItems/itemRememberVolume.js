@@ -8,7 +8,7 @@ import { rememberThisVolume } from '../lib/audioSyncManager';
  */
 const itemRememberVolume = (props) => {
     return {
-        title: 'Remember Volume At Launch',
+        title: 'Restore Volume At Launch',
         checked: false,
         sid: 'remember_volume',
         enabled: true,
