@@ -23,7 +23,7 @@ let lastVolumeTime = Date.now();
  * @param {int} volume.old the old volume
  */
 const winAudioChanged = (volume) => {
-    getToggle('remember_volume')?.value && rememberThisVolume(volume.new);
+    getToggle('remember_volume')?.value && rememberCurrentVolume(volume.new);
 };
 
 /**
@@ -37,7 +37,7 @@ const voicemeeterChanged = (voicemeeter) => {
 /**
  * saves the current volume to be loaded on next launch
  */
-const rememberThisVolume = () => {
+const rememberCurrentVolume = () => {
     let volume = speaker.get();
     console.log(`remembering volume: ${volume}`);
     let settings = getSettings();
@@ -278,4 +278,4 @@ const startAudioSync = () => {
         .catch((err) => console.log);
 };
 
-export { startAudioSync, rememberThisVolume };
+export { startAudioSync, rememberCurrentVolume };

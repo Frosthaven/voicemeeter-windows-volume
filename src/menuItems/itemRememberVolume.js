@@ -1,4 +1,4 @@
-import { rememberThisVolume } from '../lib/audioSyncManager';
+import { rememberCurrentVolume } from '../lib/audioSyncManager';
 
 /**
  * menu entry to remember volume levels for next launch
@@ -15,7 +15,7 @@ const itemRememberVolume = (props) => {
             // do nothing
         },
         activate: function (checked) {
-            checked && rememberThisVolume();
+            checked && rememberrememberCurrentVolumeThisVolume();
         },
     };
 };
