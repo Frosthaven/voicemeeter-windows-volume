@@ -13,11 +13,9 @@ import { setupPersistantSystray } from './lib/persistantSysTray';
 import { startAudioSync } from './lib/audioSyncManager';
 
 // menu items
-import { itemBindList } from './menuItems/itemBindList';
-import { itemRememberVolume } from './menuItems/itemRememberVolume';
+import { itemListBindings } from './menuItems/itemListBindings';
+import { itemListPatches } from './menuItems/itemListPatches';
 import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
-import { itemCrackleFix } from './menuItems/itemCrackleFix';
-import { itemVolumeFix } from './menuItems/itemVolumeFix';
 import { itemVisitGithub } from './menuItems/itemVisitGithub';
 import { itemDonate } from './menuItems/itemDonate';
 import { itemExit } from './menuItems/itemExit';
@@ -48,11 +46,9 @@ const trayApp = {
         title: 'Voicemeeter Windows Volume',
         tooltip: 'Voicemeeter Windows Volume',
         items: [
-            itemBindList(),
+            itemListBindings(),
             SysTray.separator,
-            itemRememberVolume(),
-            itemVolumeFix(),
-            itemCrackleFix(),
+            itemListPatches(),
             SysTray.separator,
             itemStartWithWindows(),
             SysTray.separator,
