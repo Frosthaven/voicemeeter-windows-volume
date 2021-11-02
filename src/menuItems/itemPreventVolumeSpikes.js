@@ -4,15 +4,16 @@ import {
     setProcessPriority,
     setProcessAffinity,
 } from '../lib/processManager';
+import { STRING_MENU_ITEMS } from '../lib/strings';
 
 /**
  * menu entry for fixing audio crackle by setting process priority and affinity
  * @param {object} props properties passed to the menu item
  * @returns
  */
-const itemVolumeFix = (props) => {
+const itemPreventVolumeSpikes = (props) => {
     return {
-        title: 'Prevent 100% Volume Spikes',
+        title: STRING_MENU_ITEMS['itemPreventVolumeSpikes'].t,
         checked: false,
         sid: 'apply_volume_fix',
         enabled: true,
@@ -21,4 +22,4 @@ const itemVolumeFix = (props) => {
     };
 };
 
-export { itemVolumeFix };
+export { itemPreventVolumeSpikes };

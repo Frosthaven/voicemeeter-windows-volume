@@ -2,6 +2,7 @@ import {
     enableStartOnLaunch,
     disableStartOnLaunch,
 } from '../lib/autoStartManager';
+import { STRING_MENU_ITEMS } from '../lib/strings';
 
 /**
  * menu entry for starting the tray application when Windows starts
@@ -10,7 +11,7 @@ import {
  */
 const itemStartWithWindows = (props) => {
     return {
-        title: 'Automatically Start With Windows',
+        title: STRING_MENU_ITEMS['itemStartWithWindows'].t,
         checked: true,
         sid: 'start_with_windows',
         enabled: true,

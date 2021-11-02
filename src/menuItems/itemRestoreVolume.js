@@ -1,13 +1,14 @@
 import { rememberCurrentVolume } from '../lib/audioSyncManager';
+import { STRING_MENU_ITEMS } from '../lib/strings';
 
 /**
  * menu entry to remember volume levels for next launch
  * @param {object} props properties passed to the menu item
  * @returns
  */
-const itemRememberVolume = (props) => {
+const itemRestoreVolume = (props) => {
     return {
-        title: 'Restore Volume At Launch',
+        title: STRING_MENU_ITEMS['itemRestoreVolume'].t,
         checked: false,
         sid: 'remember_volume',
         enabled: true,
@@ -20,4 +21,4 @@ const itemRememberVolume = (props) => {
     };
 };
 
-export { itemRememberVolume };
+export { itemRestoreVolume };

@@ -1,3 +1,5 @@
+import { STRING_MENU_ITEMS } from '../lib/strings';
+
 /**
  * menu entry for exiting the program
  * @param {object} props properties passed to the menu item
@@ -6,7 +8,7 @@
  */
 const itemExit = ({ click }) => {
     return {
-        title: 'Exit',
+        title: STRING_MENU_ITEMS['itemExit'].t,
         checked: false,
         enabled: true,
         click,

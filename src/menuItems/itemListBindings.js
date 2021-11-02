@@ -1,6 +1,8 @@
 // for now, we're hard coding 7 of each. This is the maximum available if the
 // user has the Voicemeeter Potato edition.
 
+import { STRING_MENU_ITEMS } from '../lib/strings';
+
 let strips = [],
     buses = [];
 
@@ -29,13 +31,13 @@ for (let i = 0; i <= 7; i++) {
  */
 const itemListBindings = (props) => {
     return {
-        title: 'Bind Windows Volume To',
+        title: STRING_MENU_ITEMS['itemListBindings'].t,
         enabled: false,
         items: [
-            { Title: 'INPUTS' },
+            { Title: STRING_MENU_ITEMS['itemTitleInputs'] },
             ...strips,
             { Title: '' },
-            { Title: 'OUTPUTS' },
+            { Title: STRING_MENU_ITEMS['itemTitleOutputs'] },
             ...buses,
         ],
     };

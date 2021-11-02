@@ -1,5 +1,5 @@
 import { waitForProcess } from '../lib/processManager';
-import { VOICEMEETER_FRIENDLY_NAMES } from '../lib/strings';
+import { STRING_VOICEMEETER_FRIENDLY_NAMES } from '../lib/strings';
 import {
     getToggle,
     getSettings,
@@ -211,7 +211,7 @@ const runWinAudio = () => {
 };
 
 const updateBindingLabels = (vm) => {
-    const friendlyNames = VOICEMEETER_FRIENDLY_NAMES[vm.$type];
+    const friendlyNames = STRING_VOICEMEETER_FRIENDLY_NAMES[vm.$type];
 
     if (friendlyNames) {
         for (let [key, value] of systray.internalIdMap) {

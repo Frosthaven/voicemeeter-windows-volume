@@ -1,6 +1,7 @@
-import { itemRememberVolume } from './itemRememberVolume';
-import { itemVolumeFix } from './itemVolumeFix';
+import { itemRestoreVolume } from './itemRestoreVolume';
+import { itemPreventVolumeSpikes } from './itemPreventVolumeSpikes';
 import { itemCrackleFix } from './itemCrackleFix';
+import { STRING_MENU_ITEMS } from '../lib/strings';
 
 /**
  * menu entry for misc patches and workarounds
@@ -9,9 +10,13 @@ import { itemCrackleFix } from './itemCrackleFix';
  */
 const itemListPatches = (props) => {
     return {
-        title: 'Extra Patches And Features',
+        title: STRING_MENU_ITEMS['itemListPatches'].t,
         enabled: true,
-        items: [itemRememberVolume(), itemVolumeFix(), itemCrackleFix()],
+        items: [
+            itemRestoreVolume(),
+            itemPreventVolumeSpikes(),
+            itemCrackleFix(),
+        ],
     };
 };
 

@@ -1,15 +1,15 @@
 import { systray } from '../lib/persistantSysTray';
 import { runPowershell } from '../lib/runPowershell';
 import { getSettings } from '../lib/settingsManager';
+import { STRING_MENU_ITEMS } from '../lib/strings';
 /**
  * menu entry for launching the donation page in the default browser
  * @param {object} props properties passed to the menu item
  * @returns
  */
-const label = 'Donate (Optional)';
 const itemDonate = (props) => {
     return {
-        title: label,
+        title: STRING_MENU_ITEMS['itemDonate'].t,
         enabled: true,
         checked: false,
         button: true,

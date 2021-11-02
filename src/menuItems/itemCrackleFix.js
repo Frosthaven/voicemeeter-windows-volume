@@ -4,6 +4,7 @@ import {
     setProcessPriority,
     setProcessAffinity,
 } from '../lib/processManager';
+import { STRING_MENU_ITEMS } from '../lib/strings';
 
 /**
  * menu entry for fixing audio crackle by setting process priority and affinity
@@ -12,7 +13,8 @@ import {
  */
 const itemCrackleFix = (props) => {
     return {
-        title: 'Apply Crackle Fix (USB Interfaces)',
+        title: STRING_MENU_ITEMS['itemCrackleFix'].t,
+        tooltip: STRING_MENU_ITEMS['itemCrackleFix'].d,
         checked: false,
         sid: 'apply_crackle_fix',
         enabled: true,
