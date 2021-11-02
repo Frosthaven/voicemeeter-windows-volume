@@ -1,3 +1,5 @@
+// these could probably be simplified and logically chosen rather than
+// explicitely duplicating names across voicemeeter versions
 const STRING_VOICEMEETER_FRIENDLY_NAMES = {
     voicemeeter: {
         Strip: ['Hardware 1', 'Hardware 2', 'Virtual 1 [VAIO]'],
@@ -46,6 +48,7 @@ const STRING_VOICEMEETER_FRIENDLY_NAMES = {
 const STRING_MENU_ITEMS = {
     itemTitleInputs: 'INPUTS',
     itemTitleOutputs: 'OUTPUTS',
+    itemTitleDriverWorkarounds: 'DRIVER WORKAROUNDS',
     itemListBindings: {
         t: 'Bind Windows Volume To',
     },

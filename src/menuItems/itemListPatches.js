@@ -13,6 +13,7 @@ const itemListPatches = (props) => {
         title: STRING_MENU_ITEMS['itemListPatches'].t,
         enabled: true,
         items: [
+            { title: STRING_MENU_ITEMS['itemTitleDriverWorkarounds'] },
             itemRestoreVolume(),
             itemPreventVolumeSpikes(),
             itemCrackleFix(),
