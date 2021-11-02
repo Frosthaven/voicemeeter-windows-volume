@@ -1,11 +1,10 @@
-// for now, we're hard coding 7 of each. This is the maximum available if the
-// user has the Voicemeeter Potato edition.
-
 import { STRING_MENU_ITEMS } from '../lib/strings';
 
 let strips = [],
     buses = [];
 
+// generate maximum amount of strips and buses, assuming Voicemeeter Potato
+// audioSyncManager will disable the ones not used
 for (let i = 0; i <= 7; i++) {
     strips.push({
         title: `Input Strip ${i}`,

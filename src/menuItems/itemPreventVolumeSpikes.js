@@ -7,7 +7,7 @@ import {
 import { STRING_MENU_ITEMS } from '../lib/strings';
 
 /**
- * menu entry for fixing audio crackle by setting process priority and affinity
+ * menu entry for preventing 100% volume spikes from Windows/driver issues
  * @param {object} props properties passed to the menu item
  * @returns
  */

@@ -210,6 +210,10 @@ const runWinAudio = () => {
     });
 };
 
+/**
+ * updates all binding entries in the menu with real names, and disables unused
+ * @param {*} vm the voicemeeter connection handle
+ */
 const updateBindingLabels = (vm) => {
     const friendlyNames = STRING_VOICEMEETER_FRIENDLY_NAMES[vm.$type];
 
