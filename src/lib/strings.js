@@ -53,7 +53,7 @@ const STRING_MENU_ITEMS = {
         t: 'Bind Windows Volume To',
     },
     itemListPatches: {
-        t: 'Extra Patches And Features',
+        t: 'Extra Features And Patches',
         d: '',
     },
     itemRestoreVolume: {
