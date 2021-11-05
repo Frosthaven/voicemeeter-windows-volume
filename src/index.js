@@ -19,6 +19,7 @@ import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemVisitGithub } from './menuItems/itemVisitGithub';
 import { itemDonate } from './menuItems/itemDonate';
 import { itemExit } from './menuItems/itemExit';
+import { STRING_MENU_ITEMS } from './lib/strings';
 
 // configuration ***************************************************************
 
@@ -47,9 +48,7 @@ const trayApp = {
         tooltip: 'Voicemeeter Windows Volume',
         items: [
             itemListBindings(),
-            SysTray.separator,
             itemListPatches(),
-            SysTray.separator,
             itemStartWithWindows(),
             SysTray.separator,
             itemVisitGithub(),
