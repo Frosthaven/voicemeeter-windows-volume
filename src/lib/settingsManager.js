@@ -105,12 +105,13 @@ const setSettings = (settingsObj) => {
 };
 
 /**
- * gets the state of a checkbox title associated with a provided sid
+ * gets the checked state of a toggle by unique setting id (sid)
  * @param {string} toggleSID the sid of the checkmark toggle to get
  * @returns {boolean} true if checked, false if unchecked
  */
-const getToggle = (toggleSID) => {
-    return getSettings().toggles.filter((x) => x.setting === toggleSID)[0];
+const isToggleChecked = (toggleSID) => {
+    return getSettings().toggles.filter((x) => x.setting === toggleSID)[0]
+        ?.value;
 };
 
 /**
@@ -121,4 +122,10 @@ const getSettings = () => {
     return settings;
 };
 
-export { saveSettings, loadSettings, getSettings, setSettings, getToggle };
+export {
+    saveSettings,
+    loadSettings,
+    getSettings,
+    setSettings,
+    isToggleChecked,
+};

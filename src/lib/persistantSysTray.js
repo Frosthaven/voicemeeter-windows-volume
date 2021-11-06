@@ -1,7 +1,7 @@
 import SysTray from 'systray2';
 
 import {
-    getToggle,
+    isToggleChecked,
     saveSettings,
     getSettings,
     loadSettings,
@@ -92,7 +92,7 @@ const setupPersistantSystray = ({
 
         if (action?.item?.sid && typeof action?.item?.activate === 'function') {
             action.item.activate.bind(action.item);
-            action.item.activate(getToggle(action.item.sid).value);
+            action.item.activate(isToggleChecked(action.item.sid));
         }
     });
 

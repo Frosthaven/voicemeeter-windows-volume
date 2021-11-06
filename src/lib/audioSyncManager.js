@@ -1,7 +1,7 @@
 import { waitForProcess } from '../lib/processManager';
 import { STRING_VOICEMEETER_FRIENDLY_NAMES } from '../lib/strings';
 import {
-    getToggle,
+    isToggleChecked,
     getSettings,
     setSettings,
     saveSettings,
@@ -23,7 +23,7 @@ let lastVolumeTime = Date.now();
  * @param {int} volume.old the old volume
  */
 const winAudioChanged = (volume) => {
-    getToggle('remember_volume')?.value && rememberCurrentVolume(volume.new);
+    isToggleChecked('remember_volume') && rememberCurrentVolume(volume.new);
 };
 
 /**
@@ -54,7 +54,7 @@ const rememberCurrentVolume = () => {
 const setInitialVolume = () => {
     let settings = getSettings();
 
-    if (getToggle('remember_volume')?.value && settings.initial_volume) {
+    if (isToggleChecked('remember_volume') && settings.initial_volume) {
         lastVolumeTime = Date.now();
         console.log(`Set initial volume to ${settings.initial_volume}%`);
         speaker.set(settings.initial_volume);
@@ -122,6 +122,10 @@ const connectVoicemeeter = () => {
  * converts a A windows volume level (0-100) to Voicemeeter decibel level
  */
 const convertVolumeToVoicemeeterGain = (windowsVolume, gain_min, gain_max) => {
+    if (isToggleChecked('limit_db_gain_to_0')) {
+        gain_max = 0;
+    }
+
     const gain = (windowsVolume * (gain_max - gain_min)) / 100 + gain_min;
     const roundedGain = Math.round(gain * 10) / 10;
     return roundedGain;
@@ -145,7 +149,7 @@ const runWinAudio = () => {
         let timeSinceLastVolume = currentTime - lastVolumeTime;
 
         if (volume.new === 100 && timeSinceLastVolume >= 1000) {
-            let fixingVolume = getToggle('apply_volume_fix');
+            let fixingVolume = isToggleChecked('apply_volume_fix');
 
             if (
                 fixingVolume &&

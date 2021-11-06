@@ -1,7 +1,9 @@
+import { itemLimitdBGain } from './itemLimitdBGain';
 import { itemRestoreVolume } from './itemRestoreVolume';
 import { itemPreventVolumeSpikes } from './itemPreventVolumeSpikes';
 import { itemCrackleFix } from './itemCrackleFix';
 import { STRING_MENU_ITEMS } from '../lib/strings';
+import { itemStartWithWindows } from './itemStartWithWindows';
 
 /**
  * menu entry for misc patches and workarounds
@@ -13,6 +15,10 @@ const itemListPatches = (props) => {
         title: STRING_MENU_ITEMS['itemListPatches'].t,
         enabled: true,
         items: [
+            { title: STRING_MENU_ITEMS['itemTitleSettings'] },
+            itemStartWithWindows(),
+            itemLimitdBGain(),
+            { Title: '' },
             { title: STRING_MENU_ITEMS['itemTitleDriverWorkarounds'] },
             itemRestoreVolume(),
             itemPreventVolumeSpikes(),

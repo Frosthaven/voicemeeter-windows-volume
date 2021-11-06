@@ -15,11 +15,9 @@ import { startAudioSync } from './lib/audioSyncManager';
 // menu items
 import { itemListBindings } from './menuItems/itemListBindings';
 import { itemListPatches } from './menuItems/itemListPatches';
-import { itemStartWithWindows } from './menuItems/itemStartWithWindows';
 import { itemVisitGithub } from './menuItems/itemVisitGithub';
 import { itemDonate } from './menuItems/itemDonate';
 import { itemExit } from './menuItems/itemExit';
-import { STRING_MENU_ITEMS } from './lib/strings';
 
 // configuration ***************************************************************
 
@@ -28,6 +26,8 @@ const defaults = {
     polling_rate: 100,
     gain_min: -60,
     gain_max: 12,
+    start_with_windows: true,
+    limit_db_gain_to_0: false,
     remember_volume: false,
     disable_donate: false,
     audiodg: {
@@ -49,7 +49,6 @@ const trayApp = {
         items: [
             itemListBindings(),
             itemListPatches(),
-            itemStartWithWindows(),
             SysTray.separator,
             itemVisitGithub(),
             itemDonate(),

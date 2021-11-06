@@ -48,12 +48,18 @@ const STRING_VOICEMEETER_FRIENDLY_NAMES = {
 const STRING_MENU_ITEMS = {
     itemTitleInputs: 'INPUTS',
     itemTitleOutputs: 'OUTPUTS',
+    itemTitleSettings: 'SETTINGS',
     itemTitleDriverWorkarounds: 'DRIVER WORKAROUNDS',
     itemListBindings: {
         t: 'Bind Windows Volume To',
+        d: '',
     },
     itemListPatches: {
-        t: 'Extra Features And Patches',
+        t: 'Settings',
+        d: '',
+    },
+    itemLimitdBGain: {
+        t: 'Limit Max Gain To 0dB',
         d: '',
     },
     itemRestoreVolume: {
