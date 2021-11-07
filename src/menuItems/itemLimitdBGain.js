@@ -15,7 +15,11 @@ const itemLimitdBGain = (props) => {
             // do nothing
         },
         activate: function (checked) {
-            // do nothing
+            if (checked) {
+                console.log('Limiting max gain to 0dB');
+            } else {
+                console.log('No longer limiting max gain to 0dB');
+            }
         },
     };
 };
