@@ -66,7 +66,7 @@ const setInitialVolume = () => {
  */
 const connectVoicemeeter = () => {
     return new Promise((resolve, reject) => {
-        waitForProcess(/voicemeeter(.*)?[^(setup)].exe/g, () => {
+        waitForProcess(/voicemeeter(.*[^(setup)])?.exe/g, () => {
             Voicemeeter.init().then(async (voicemeeter) => {
                 try {
                     voicemeeter.connect();
