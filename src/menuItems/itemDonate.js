@@ -19,7 +19,7 @@ const itemDonate = (props) => {
 
             if (isDisabled) {
                 for (let [key, value] of systray.internalIdMap) {
-                    if (value.title === label) {
+                    if (value.title === STRING_MENU_ITEMS['itemDonate'].t) {
                         value.hidden = true;
                         systray.sendAction({
                             type: 'update-item',
