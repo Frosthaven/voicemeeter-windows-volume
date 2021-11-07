@@ -10,7 +10,7 @@ import { systray } from './persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
 import { speaker } from 'win-audio';
 
-let vm = null;
+let voicemeeterConnection = null;
 let voicemeeterLoaded = false;
 let lastVolume = null;
 let lastEventTimestamp = Date.now();
@@ -105,7 +105,7 @@ const connectVoicemeeter = () => {
                         }
                     }, 1000);
 
-                    vm = voicemeeter;
+                    voicemeeterConnection = voicemeeter;
                 } catch {
                     systray.kill(false);
                     setTimeout(() => {
@@ -166,7 +166,7 @@ const runWinAudio = () => {
         lastVolumeTime = currentTime;
 
         // propagate volume to Voicemeeter
-        if (vm) {
+        if (voicemeeterConnection) {
             for (let [key, value] of systray.internalIdMap) {
                 if (
                     value.checked &&
@@ -180,7 +180,7 @@ const runWinAudio = () => {
                     );
                     const tokens = value.sid.split('_');
                     try {
-                        vm.setParameter(
+                        voicemeeterConnection.setParameter(
                             tokens[0],
                             tokens[1],
                             'Gain',
@@ -195,7 +195,7 @@ const runWinAudio = () => {
 
     speaker.events.on('toggle', (status) => {
         // status.new = true or false to indicate mute
-        if (vm) {
+        if (voicemeeterConnection) {
             for (let [key, value] of systray.internalIdMap) {
                 if (
                     value.checked &&
@@ -206,7 +206,12 @@ const runWinAudio = () => {
                     const type = '';
                     const isMute = status.new ? 1 : 0;
                     try {
-                        vm.setParameter(tokens[0], tokens[1], 'Mute', isMute);
+                        voicemeeterConnection.setParameter(
+                            tokens[0],
+                            tokens[1],
+                            'Mute',
+                            isMute
+                        );
                     } catch (e) {}
                 }
             }
@@ -216,10 +221,11 @@ const runWinAudio = () => {
 
 /**
  * updates all binding entries in the menu with real names, and disables unused
- * @param {*} vm the voicemeeter connection handle
+ * @param {*} voicemeeterConnection the voicemeeter connection handle
  */
-const updateBindingLabels = (vm) => {
-    const friendlyNames = STRING_VOICEMEETER_FRIENDLY_NAMES[vm.$type];
+const updateBindingLabels = (voicemeeterConnection) => {
+    const friendlyNames =
+        STRING_VOICEMEETER_FRIENDLY_NAMES[voicemeeterConnection.$type];
 
     if (friendlyNames) {
         for (let [key, value] of systray.internalIdMap) {
@@ -242,8 +248,16 @@ const updateBindingLabels = (vm) => {
                     index = parseInt(tokens[1]);
                 let lastTitle = value.title;
                 let lastHidden = value.hidden;
-                let label = vm.getParameter(type, index, 'Label');
-                let deviceName = vm.getParameter(type, index, 'device.name');
+                let label = voicemeeterConnection.getParameter(
+                    type,
+                    index,
+                    'Label'
+                );
+                let deviceName = voicemeeterConnection.getParameter(
+                    type,
+                    index,
+                    'device.name'
+                );
 
                 let newFriendlyNames = friendlyNames[type];
                 if (newFriendlyNames[index]) {
@@ -274,16 +288,24 @@ const updateBindingLabels = (vm) => {
 };
 
 /**
+ * gets the instance of the voicemeeter connection
+ * @returns {*} the voicemeeter connection object
+ */
+const getVoicemeeterConnection = () => {
+    return voicemeeterConnection;
+};
+
+/**
  * begins synchronizing audio between Voicemeeter and Windows
  */
 const startAudioSync = () => {
     connectVoicemeeter()
-        .then((vm) => {
+        .then((voicemeeterConnection) => {
             runWinAudio();
             setInitialVolume();
-            updateBindingLabels(vm);
+            updateBindingLabels(voicemeeterConnection);
         })
         .catch((err) => console.log);
 };
 
-export { startAudioSync, rememberCurrentVolume };
+export { startAudioSync, getVoicemeeterConnection, rememberCurrentVolume };
