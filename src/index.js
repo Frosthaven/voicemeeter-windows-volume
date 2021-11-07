@@ -15,6 +15,7 @@ import { startAudioSync } from './lib/audioSyncManager';
 // menu items
 import { itemListBindings } from './menuItems/itemListBindings';
 import { itemListPatches } from './menuItems/itemListPatches';
+import { itemRestartVoicemeeter } from './menuItems/itemRestartVoicemeeter';
 import { itemVisitGithub } from './menuItems/itemVisitGithub';
 import { itemDonate } from './menuItems/itemDonate';
 import { itemExit } from './menuItems/itemExit';
@@ -49,6 +50,9 @@ const trayApp = {
         items: [
             itemListBindings(),
             itemListPatches(),
+            SysTray.separator,
+            itemRestartVoicemeeter(),
+            // itemRestartAudioEngine(),
             SysTray.separator,
             itemVisitGithub(),
             itemDonate(),

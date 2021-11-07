@@ -58,6 +58,10 @@ const STRING_MENU_ITEMS = {
         t: 'Settings',
         d: '',
     },
+    itemRestartVoicemeeter: {
+        t: 'Restart Voicemeeter',
+        d: '',
+    },
     itemLimitdBGain: {
         t: 'Limit Max Gain To 0dB',
         d: '',

@@ -37,7 +37,7 @@ const waitForProcess = (processNameRegex, callback) => {
  * checks if a process is running by matching a regex against the current task
  * list
  * @param {regexp} processNameRegex regex that matches a running process name
- * @param {function} cb a function with true|false parameter to call when done
+ * @param {function} cb a function with parameter of process name or false
  */
 const isProcessRunning = (processNameRegex, cb) => {
     let platform = process.platform;
@@ -59,6 +59,21 @@ const isProcessRunning = (processNameRegex, cb) => {
         const haystack = stdout.toLowerCase();
         let match = processNameRegex.exec(haystack);
         cb(match !== null ? match[0] : false);
+    });
+};
+
+/**
+ * uses Powershell to restart a currently running process
+ * @param {string} processName the name of the target process
+ */
+const restartProcess = (processName) => {
+    let process = processName.replace('.exe', '');
+    runPowershell({
+        stdout: false,
+        commands: [
+            `$processes = Get-Process ${process}; foreach($process in $processes) { $path = $process.Path; $process.Kill(); $process.WaitForExit(); } Start-Process "$path"`,
+        ],
+        callback: () => {},
     });
 };
 
@@ -95,6 +110,7 @@ const setProcessAffinity = (processName, affinityCode) => {
 export {
     PRIORITIES,
     isProcessRunning,
+    restartProcess,
     waitForProcess,
     setProcessAffinity,
     setProcessPriority,
