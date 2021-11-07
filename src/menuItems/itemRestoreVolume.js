@@ -16,7 +16,7 @@ const itemRestoreVolume = (props) => {
             // do nothing
         },
         activate: function (checked) {
-            checked && rememberrememberCurrentVolumeThisVolume();
+            checked && rememberCurrentVolume();
         },
     };
 };
