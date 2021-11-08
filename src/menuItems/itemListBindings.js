@@ -35,7 +35,7 @@ const itemListBindings = (props) => {
         items: [
             { Title: STRING_MENU_ITEMS['itemTitleInputs'] },
             ...strips,
-            { Title: '' },
+            { Title: '', enabled: false },
             { Title: STRING_MENU_ITEMS['itemTitleOutputs'] },
             ...buses,
         ],

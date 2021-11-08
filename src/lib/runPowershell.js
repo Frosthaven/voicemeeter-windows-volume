@@ -31,26 +31,27 @@ const runPowershell = ({ commands, callback, stdout = false }) => {
     const child = spawn('powershell.exe', commands);
 
     // script output
-    if (stdout) {
-        console.log('Running Powershell Command:', commands.join(' '));
-        child.on('exit', function () {
-            console.log('Powershell Script finished');
-        });
-        child.stdout.on('data', function (data) {
-            console.log('Powershell Data: ' + data);
-        });
-        child.stderr.on('data', function (data) {
-            console.log('Powershell Errors: ' + data);
-        });
-    }
+
+    let output = '';
+    let errorOutput = '';
+    stdout && console.log('Running Powershell Command:', commands.join(' '));
+    child.on('exit', function () {
+        stdout && console.log('Powershell Script finished');
+        if (typeof callback === 'function') {
+            callback(output, errorOutput);
+        }
+    });
+    child.stdout.on('data', function (data) {
+        stdout && console.log('' + data);
+        output += data;
+    });
+    child.stderr.on('data', function (data) {
+        stdout && console.log('' + data);
+        errorOutput += data;
+    });
 
     // close powershell input
     child.stdin.end();
-
-    // callback
-    if (typeof callback === 'function') {
-        callback();
-    }
 };
 
 export { runPowershell };

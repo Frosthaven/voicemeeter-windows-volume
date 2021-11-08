@@ -20,6 +20,8 @@ import { itemRestartAudioEngine } from './menuItems/itemRestartAudioEngine';
 import { itemVisitGithub } from './menuItems/itemVisitGithub';
 import { itemDonate } from './menuItems/itemDonate';
 import { itemExit } from './menuItems/itemExit';
+import { STRING_MENU_ITEMS } from './lib/strings';
+import { itemShowVoicemeeter } from './menuItems/itemShowVoicemeeter';
 
 // configuration ***************************************************************
 
@@ -30,6 +32,7 @@ const defaults = {
     gain_max: 12,
     start_with_windows: true,
     limit_db_gain_to_0: false,
+    restart_audio_engine_on_device_change: true,
     remember_volume: false,
     disable_donate: false,
     audiodg: {
@@ -49,12 +52,16 @@ const trayApp = {
         title: 'Voicemeeter Windows Volume',
         tooltip: 'Voicemeeter Windows Volume',
         items: [
+            { title: STRING_MENU_ITEMS['itemAppTitle'], enabled: false },
             itemListBindings(),
             itemListPatches(),
             SysTray.separator,
+            { title: STRING_MENU_ITEMS['itemVMTitle'], enabled: false },
+            itemShowVoicemeeter(),
             itemRestartVoicemeeter(),
             itemRestartAudioEngine(),
             SysTray.separator,
+            { title: STRING_MENU_ITEMS['itemSupportTitle'], enabled: false },
             itemVisitGithub(),
             itemDonate(),
             SysTray.separator,

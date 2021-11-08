@@ -301,8 +301,10 @@ const getVoicemeeterConnection = () => {
 const startAudioSync = () => {
     connectVoicemeeter()
         .then((voicemeeterConnection) => {
-            isToggleChecked('apply_crackle_fix') &&
+            if (isToggleChecked('apply_crackle_fix')) {
+                console.log('restarting audio engine');
                 voicemeeterConnection.sendCommand('Restart', 1);
+            }
             runWinAudio();
             setInitialVolume();
             updateBindingLabels(voicemeeterConnection);

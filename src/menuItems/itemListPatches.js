@@ -4,6 +4,8 @@ import { itemPreventVolumeSpikes } from './itemPreventVolumeSpikes';
 import { itemCrackleFix } from './itemCrackleFix';
 import { STRING_MENU_ITEMS } from '../lib/strings';
 import { itemStartWithWindows } from './itemStartWithWindows';
+import SysTray from 'systray2';
+import { itemRestartAudioEngineOnDeviceChange } from './itemRestartAudioEngineOnDeviceChange';
 
 /**
  * menu entry for misc patches and workarounds
@@ -18,8 +20,9 @@ const itemListPatches = (props) => {
             { title: STRING_MENU_ITEMS['itemTitleSettings'] },
             itemStartWithWindows(),
             itemLimitdBGain(),
-            { Title: '' },
+            { title: '', enabled: false },
             { title: STRING_MENU_ITEMS['itemTitleDriverWorkarounds'] },
+            itemRestartAudioEngineOnDeviceChange(),
             itemRestoreVolume(),
             itemPreventVolumeSpikes(),
             itemCrackleFix(),

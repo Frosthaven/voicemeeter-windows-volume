@@ -46,16 +46,23 @@ const STRING_VOICEMEETER_FRIENDLY_NAMES = {
 };
 
 const STRING_MENU_ITEMS = {
+    itemAppTitle: 'VOICEMEETER WINDOWS VOLUME',
+    itemVMTitle: 'VOICEMEETER',
+    itemSupportTitle: 'SUPPORT',
     itemTitleInputs: 'INPUTS',
     itemTitleOutputs: 'OUTPUTS',
     itemTitleSettings: 'SETTINGS',
-    itemTitleDriverWorkarounds: 'DRIVER WORKAROUNDS',
+    itemTitleDriverWorkarounds: 'PATCHES AND WORKAROUNDS',
     itemListBindings: {
         t: 'Bind Windows Volume To',
         d: '',
     },
     itemListPatches: {
         t: 'Settings',
+        d: '',
+    },
+    itemShowVoicemeeter: {
+        t: 'Show Voicemeeter',
         d: '',
     },
     itemRestartVoicemeeter: {
@@ -80,6 +87,10 @@ const STRING_MENU_ITEMS = {
     },
     itemCrackleFix: {
         t: 'Apply Crackle Fix (USB Interfaces)',
+        d: '',
+    },
+    itemRestartAudioEngineOnDeviceChange: {
+        t: 'Restart Audio Engine On Device Changes',
         d: '',
     },
     itemStartWithWindows: {
