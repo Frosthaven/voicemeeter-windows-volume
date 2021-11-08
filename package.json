@@ -40,7 +40,7 @@
     "dependencies": {
         "@babel/runtime": "^7.15.4",
         "systray2": "^2.1.2",
-        "voicemeeter-connector": "^1.0.3",
+        "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#678156bb59595e015ab6b8485758b57e44871baa",
         "win-audio": "^2.0.2"
     }
 }
