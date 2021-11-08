@@ -1,10 +1,10 @@
-import { getSettings } from '../lib/settingsManager';
+import { getSettings } from '../../lib/settingsManager';
 import {
     PRIORITIES,
     setProcessPriority,
     setProcessAffinity,
-} from '../lib/processManager';
-import { STRING_MENU_ITEMS } from '../lib/strings';
+} from '../../lib/processManager';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**
  * menu entry for fixing audio crackle by setting process priority and affinity

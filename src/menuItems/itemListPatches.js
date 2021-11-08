@@ -1,11 +1,11 @@
 import { itemLimitdBGain } from './itemLimitdBGain';
-import { itemRestoreVolume } from './itemRestoreVolume';
-import { itemPreventVolumeSpikes } from './itemPreventVolumeSpikes';
-import { itemCrackleFix } from './itemCrackleFix';
+import { itemRestartAudioEngineOnDeviceChange } from './patches/itemRestartAudioEngineOnDeviceChange';
+import { itemRestoreVolume } from './patches/itemRestoreVolume';
+import { itemPreventVolumeSpikes } from './patches/itemPreventVolumeSpikes';
+import { itemCrackleFix } from './patches/itemCrackleFix';
 import { STRING_MENU_ITEMS } from '../lib/strings';
 import { itemStartWithWindows } from './itemStartWithWindows';
 import SysTray from 'systray2';
-import { itemRestartAudioEngineOnDeviceChange } from './itemRestartAudioEngineOnDeviceChange';
 
 /**
  * menu entry for misc patches and workarounds

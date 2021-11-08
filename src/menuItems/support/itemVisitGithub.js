@@ -1,5 +1,5 @@
-import { runPowershell } from '../lib/runPowershell';
-import { STRING_MENU_ITEMS } from '../lib/strings';
+import { runPowershell } from '../../lib/runPowershell';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 /**
  * menu entry for launching the github page in the default browser
  * @param {object} props properties passed to the menu item

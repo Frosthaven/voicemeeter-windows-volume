@@ -1,5 +1,5 @@
-import { getVoicemeeterConnection } from '../lib/audioSyncManager';
-import { STRING_MENU_ITEMS } from '../lib/strings';
+import { getVoicemeeterConnection } from '../../lib/audioSyncManager';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**
  * menu entry for misc patches and workarounds

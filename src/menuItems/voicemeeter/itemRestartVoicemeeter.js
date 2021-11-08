@@ -1,5 +1,5 @@
-import { isProcessRunning, restartProcess } from '../lib/processManager';
-import { STRING_MENU_ITEMS } from '../lib/strings';
+import { isProcessRunning, restartProcess } from '../../lib/processManager';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 /**
  * menu entry for restarting the Voicemeeter executable
  * @param {object} props properties passed to the menu item

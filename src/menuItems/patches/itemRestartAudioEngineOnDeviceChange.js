@@ -1,6 +1,6 @@
-import { getVoicemeeterConnection } from '../lib/audioSyncManager';
-import { STRING_MENU_ITEMS } from '../lib/strings';
-import { systemEvents } from '../lib/systemEvents';
+import { getVoicemeeterConnection } from '../../lib/audioSyncManager';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
+import { systemEvents } from '../../lib/systemEvents';
 
 /**
  * menu entry for automatically restarting the audio engine when devices change

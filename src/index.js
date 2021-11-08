@@ -15,13 +15,13 @@ import { startAudioSync } from './lib/audioSyncManager';
 // menu items
 import { itemListBindings } from './menuItems/itemListBindings';
 import { itemListPatches } from './menuItems/itemListPatches';
-import { itemRestartVoicemeeter } from './menuItems/itemRestartVoicemeeter';
-import { itemRestartAudioEngine } from './menuItems/itemRestartAudioEngine';
-import { itemVisitGithub } from './menuItems/itemVisitGithub';
-import { itemDonate } from './menuItems/itemDonate';
+import { itemShowVoicemeeter } from './menuItems/voicemeeter/itemShowVoicemeeter';
+import { itemRestartVoicemeeter } from './menuItems/voicemeeter/itemRestartVoicemeeter';
+import { itemRestartAudioEngine } from './menuItems/voicemeeter/itemRestartAudioEngine';
+import { itemVisitGithub } from './menuItems/support/itemVisitGithub';
+import { itemDonate } from './menuItems/support/itemDonate';
 import { itemExit } from './menuItems/itemExit';
 import { STRING_MENU_ITEMS } from './lib/strings';
-import { itemShowVoicemeeter } from './menuItems/itemShowVoicemeeter';
 
 // configuration ***************************************************************
 

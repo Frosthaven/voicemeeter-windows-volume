@@ -1,5 +1,5 @@
-import { rememberCurrentVolume } from '../lib/audioSyncManager';
-import { STRING_MENU_ITEMS } from '../lib/strings';
+import { rememberCurrentVolume } from '../../lib/audioSyncManager';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**
  * menu entry to remember volume levels for next launch
