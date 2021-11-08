@@ -301,13 +301,13 @@ const getVoicemeeterConnection = () => {
 const startAudioSync = () => {
     connectVoicemeeter()
         .then((voicemeeterConnection) => {
+            runWinAudio();
+            setInitialVolume();
+            updateBindingLabels(voicemeeterConnection);
             if (isToggleChecked('restart_audio_engine_on_device_change')) {
                 console.log('restarting audio engine');
                 voicemeeterConnection.sendCommand('Restart', 1);
             }
-            runWinAudio();
-            setInitialVolume();
-            updateBindingLabels(voicemeeterConnection);
         })
         .catch((err) => console.log);
 };
