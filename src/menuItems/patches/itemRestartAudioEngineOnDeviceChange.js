@@ -15,7 +15,9 @@ const itemRestartAudioEngineOnDeviceChange = (props) => {
         enabled: true,
         init: function (checked) {
             systemEvents.on('any', (data) => {
-                console.log('restarting audio engine');
+                console.log(
+                    `restarting audio engine due to system event: ${data.type}`
+                );
                 let vm = getVoicemeeterConnection();
                 vm && vm.sendCommand('Restart', 1);
             });
