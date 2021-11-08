@@ -301,7 +301,7 @@ const getVoicemeeterConnection = () => {
 const startAudioSync = () => {
     connectVoicemeeter()
         .then((voicemeeterConnection) => {
-            if (isToggleChecked('apply_crackle_fix')) {
+            if (isToggleChecked('restart_audio_engine_on_device_change')) {
                 console.log('restarting audio engine');
                 voicemeeterConnection.sendCommand('Restart', 1);
             }
