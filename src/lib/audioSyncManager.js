@@ -305,7 +305,9 @@ const startAudioSync = () => {
             setInitialVolume();
             updateBindingLabels(voicemeeterConnection);
             if (isToggleChecked('restart_audio_engine_on_device_change')) {
-                console.log('restarting audio engine');
+                console.log(
+                    'restarting audio engine due to system event: App Launch'
+                );
                 voicemeeterConnection.sendCommand('Restart', 1);
             }
         })
