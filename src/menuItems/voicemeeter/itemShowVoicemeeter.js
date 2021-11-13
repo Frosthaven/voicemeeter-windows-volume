@@ -15,6 +15,7 @@ const itemShowVoicemeeter = (props) => {
         click: () => {
             let vm = getVoicemeeterConnection();
             vm && vm.sendCommand('Show', 1);
+            vm = null;
         },
     };
 };

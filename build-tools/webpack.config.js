@@ -1,5 +1,6 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const fs = require('fs');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const pkg = require('../package.json');
@@ -16,7 +17,6 @@ const hard_copy_modules = [
     'ref-array-napi',
     'systray2',
     'voicemeeter-connector',
-    'win-audio',
 ];
 hard_copy_modules.forEach((module) => {
     hard_copy.push({

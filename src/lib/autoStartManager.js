@@ -6,7 +6,7 @@ import { runPowershell } from './runPowershell';
  */
 const enableStartOnLaunch = () => {
     console.log('Enabling automatic start with Windows');
-    const actionPath = path.normalize(
+    let actionPath = path.normalize(
         __dirname + '/../voicemeeter-windows-volume.vbs'
     );
 
@@ -28,6 +28,9 @@ const enableStartOnLaunch = () => {
         commands: [psCommand],
         callback: () => {},
     });
+
+    actionPath = null;
+    psCommand = null;
 };
 
 /**
@@ -44,6 +47,8 @@ const disableStartOnLaunch = () => {
         commands: [psCommand],
         callback: () => {},
     });
+
+    psCommand = null;
 };
 
 export { enableStartOnLaunch, disableStartOnLaunch };

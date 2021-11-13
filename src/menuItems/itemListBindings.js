@@ -31,7 +31,7 @@ for (let i = 0; i <= 7; i++) {
 const itemListBindings = (props) => {
     return {
         title: STRING_MENU_ITEMS['itemListBindings'].t,
-        enabled: false,
+        enabled: true,
         items: [
             { Title: STRING_MENU_ITEMS['itemTitleInputs'] },
             ...strips,

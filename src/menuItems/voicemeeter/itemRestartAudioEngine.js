@@ -1,5 +1,5 @@
 import { getVoicemeeterConnection } from '../../lib/audioSyncManager';
-import { STRING_MENU_ITEMS } from '../../lib/strings';
+import { STRING_MENU_ITEMS, STRING_CONSOLE_ENTRIES } from '../../lib/strings';
 /**
  * menu entry for restarting the Voicemeeter audio engine
  * @param {object} props properties passed to the menu item
@@ -14,7 +14,13 @@ const itemRestartAudioEngine = (props) => {
         click: () => {
             let voicemeeterConnection = getVoicemeeterConnection();
             if (voicemeeterConnection) {
-                console.log('Restarting audio engine');
+                console.log(
+                    STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(
+                        '{{REASON}}',
+                        STRING_CONSOLE_ENTRIES.restartAudioEngineReasons
+                            .userinput
+                    )
+                );
                 voicemeeterConnection.sendCommand('Restart', 1);
             }
         },

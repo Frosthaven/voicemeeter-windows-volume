@@ -1,3 +1,7 @@
+/*
+ This handles creating a custom systray instance that is bound to a settings file
+*/
+
 import SysTray from 'systray2';
 
 import {

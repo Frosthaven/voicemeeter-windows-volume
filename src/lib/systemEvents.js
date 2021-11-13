@@ -1,52 +1,27 @@
 import { EventEmitter } from 'events';
-import { runPowershell } from './runPowershell';
+import { powershellEvents, startPowershellWorker } from './runPowershell';
+import { isToggleChecked } from '../lib/settingsManager';
+import { getVoicemeeterConnection } from './audioSyncManager';
 
 let systemEvents = new EventEmitter();
-let lastDeviceEntry = null;
 let pollInterval = null;
 let polling_rate = 5000;
-let lastTime = null;
 
 /**
- * detects when audio devices change by referencing the current audio device list
+ * watch for powershell host events that we can trigger
  */
-const audioDeviceScan = () => {
-    runPowershell({
-        stdout: false,
-        commands: ['get-wmiobject win32_sounddevice'],
-        callback: (output) => {
-            if (output && lastDeviceEntry && lastDeviceEntry !== output) {
-                console.log('Audio devices changed');
-                systemEvents.emit('any', {
-                    type: 'AudioDeviceChange',
-                    old: lastDeviceEntry,
-                    new: output,
-                });
-                systemEvents.emit('AudioDeviceChange', {
-                    old: lastDeviceEntry,
-                    new: output,
-                });
-                lastDeviceEntry = output;
-            } else if (output && !lastDeviceEntry) {
-                lastDeviceEntry = output;
-            }
-        },
-    });
-};
-
-/**
- * detects when the system wakes from sleep by looking for delayed interval
- * calls
- */
-const resumeFromStandbyScan = () => {
-    var currentTime = new Date().getTime();
-    if (lastTime && currentTime > lastTime + polling_rate + 2000) {
-        console.log('System has resumed from standby mode');
-        systemEvents.emit('any', { type: 'Resume' });
-        systemEvents.emit('Resume');
-    }
-    lastTime = currentTime;
-};
+// powershellEvents.on('CustomSystemEvents', (response) => {
+//     console.log(response.data);
+//     if (
+//         response.event === 'changed' &&
+//         response.data.old &&
+//         response.data.old.length !== 0
+//     ) {
+//         let vm = getVoicemeeterConnection();
+//         console.log(`Restarting Audio Engine. Reason: ${response.label}`);
+//         //vm && vm.sendCommand('Restart', 1);
+//     }
+// });
 
 /**
  * defines and starts the polling interval timer
@@ -54,11 +29,93 @@ const resumeFromStandbyScan = () => {
 systemEvents.startPolling = () => {
     console.log('Starting system event polling');
 
-    let lastTime = new Date().getTime();
+    /*
+        isToggleChecked('restart_audio_engine_on_device_change') &&
+            runOnPowerShellHost({
+                hostName: 'CustomSystemEvents',
+                label: 'AudioDeviceChange',
+                commands: ['get-wmiobject win32_sounddevice'],
+            });
+        isToggleChecked('restart_audio_engine_on_device_change') &&
+            runOnPowerShellHost({
+                hostName: 'CustomSystemEvents',
+                label: 'ResumeStandby',
+                commands: [
+                    'Get-EventLog -LogName System -Source Microsoft-Windows-Kernel-Power -Newest 30 | Where-Object {$_.EventID -eq 507} | Select-Object -Property Source,TimeWritten',
+                ],
+            });
+        isToggleChecked('restart_audio_engine_on_device_change') &&
+            runOnPowerShellHost({
+                hostName: 'CustomSystemEvents',
+                label: 'Help',
+                commands: ['Help'],
+            });
+        */
+
+    // rememeber to pipe into Out-Host to get the results
+    // @todo skip intervals that are run while worker is busy
+    isToggleChecked('restart_audio_engine_on_device_change') &&
+        startPowershellWorker({
+            interval: 500,
+            label: 'AudioDeviceChange',
+            command: 'get-wmiobject win32_sounddevice | Out-Host',
+            onResponse: (data) => {
+                // compare results from prior results to know if device changed
+                console.log(Date.now(), 'AudioDeviceChange', data);
+                if (changed) {
+                }
+            },
+        });
+
+    /*
+    let stdoutCollection = [];
+
+    fs.stat(outputPath, function (err) {
+        if (err?.code === 'ENOENT') {
+            fs.mkdirSync(outputPath);
+        }
+    });
+    fs.watch(outputPath, (event, filename) => {
+        if (event === 'change') {
+            let label = filename.slice(0, -4);
+            let fullPath = `${outputPath}\\${filename}`;
+
+            // get the value of the file and load it into our values
+            fs.readFile(path.normalize(fullPath), (err, buff) => {
+                // if any error
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
+                // get the md5 hash of the file contents
+                const fileContents = buff.toString().trim();
+                const hash = md5(fileContents);
+
+                // save the hash to our registry
+                stdoutCollection[label] = {
+                    hash: hash,
+                    value: fileContents,
+                };
+                console.log(stdoutCollection);
+            });
+        }
+
+    });
+
     pollInterval = setInterval(() => {
-        audioDeviceScan();
-        resumeFromStandbyScan();
+        isToggleChecked('restart_audio_engine_on_device_change') &&
+            runPowershellScan(
+                'AudioDeviceChange',
+                `get-wmiobject win32_sounddevice`
+            );
+        isToggleChecked('restart_audio_engine_on_device_change') &&
+            runPowershellScan(
+                'ResumeFromStandby',
+                `Get-EventLog -LogName System -Source Microsoft-Windows-Kernel-Power -Newest 30 | Where-Object {$_.EventID -eq 507} | Select-Object -Property Source,TimeWritten`
+            );
     }, polling_rate);
+    */
 };
 
 /**

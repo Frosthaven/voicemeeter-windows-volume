@@ -45,6 +45,15 @@ const STRING_VOICEMEETER_FRIENDLY_NAMES = {
     },
 };
 
+const STRING_CONSOLE_ENTRIES = {
+    restartAudioEngine: 'Restaring audio engine. Reason: {{REASON}}',
+    restartAudioEngineReasons: {
+        userinput: 'User Input',
+        applaunch: 'App Launch',
+        devicechange: 'Audio Device Change',
+    },
+};
+
 const STRING_MENU_ITEMS = {
     itemAppTitle: 'VOICEMEETER WINDOWS VOLUME',
     itemVMTitle: 'VOICEMEETER',
@@ -54,7 +63,15 @@ const STRING_MENU_ITEMS = {
     itemTitleSettings: 'SETTINGS',
     itemTitleDriverWorkarounds: 'PATCHES AND WORKAROUNDS',
     itemListBindings: {
-        t: 'Bind Windows Volume To',
+        t: 'Bind Windows Volume To...',
+        d: '',
+    },
+    itemListRestarts: {
+        t: 'Restart Audio Engine On...',
+        d: '',
+    },
+    itemRestartAudioEngineOnDeviceChange: {
+        t: 'Audio Devices Change',
         d: '',
     },
     itemListPatches: {
@@ -89,10 +106,6 @@ const STRING_MENU_ITEMS = {
         t: 'Apply Crackle Fix (USB Interfaces)',
         d: '',
     },
-    itemRestartAudioEngineOnDeviceChange: {
-        t: 'Restart Audio Engine On Device Changes',
-        d: '',
-    },
     itemStartWithWindows: {
         t: 'Automatically Start With Windows',
         d: '',
@@ -111,4 +124,8 @@ const STRING_MENU_ITEMS = {
     },
 };
 
-export { STRING_VOICEMEETER_FRIENDLY_NAMES, STRING_MENU_ITEMS };
+export {
+    STRING_VOICEMEETER_FRIENDLY_NAMES,
+    STRING_CONSOLE_ENTRIES,
+    STRING_MENU_ITEMS,
+};

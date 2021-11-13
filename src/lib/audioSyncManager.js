@@ -1,5 +1,8 @@
 import { waitForProcess } from '../lib/processManager';
-import { STRING_VOICEMEETER_FRIENDLY_NAMES } from '../lib/strings';
+import {
+    STRING_VOICEMEETER_FRIENDLY_NAMES,
+    STRING_CONSOLE_ENTRIES,
+} from '../lib/strings';
 import {
     isToggleChecked,
     getSettings,
@@ -8,7 +11,12 @@ import {
 } from './settingsManager';
 import { systray } from './persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
-import { speaker } from 'win-audio';
+import {
+    AudioEvents,
+    getVolume,
+    setVolume,
+    startAudioScanner,
+} from './windowsAudioScanner';
 
 let voicemeeterConnection = null;
 let voicemeeterLoaded = false;
@@ -31,19 +39,19 @@ const winAudioChanged = (volume) => {
  * @param {*} voicemeeter the voicemeeter connection handle
  */
 const voicemeeterChanged = (voicemeeter) => {
-    updateBindingLabels(voicemeeter);
+    //updateBindingLabels(voicemeeter);
 };
 
 /**
  * saves the current volume to be loaded on next launch
  */
 const rememberCurrentVolume = () => {
-    let volume = speaker.get();
-    console.log(`remembering volume: ${volume}`);
+    console.log(`remembering volume: ${getVolume()}`);
     let settings = getSettings();
-    settings.initial_volume = volume;
+    settings.initial_volume = getVolume();
     setSettings(settings);
     saveSettings();
+    settings = null;
 };
 
 /**
@@ -57,8 +65,10 @@ const setInitialVolume = () => {
     if (isToggleChecked('remember_volume') && settings.initial_volume) {
         lastVolumeTime = Date.now();
         console.log(`Set initial volume to ${settings.initial_volume}%`);
-        speaker.set(settings.initial_volume);
+        setVolume(settings.initial_volume);
     }
+
+    settings = null;
 };
 
 /**
@@ -76,20 +86,16 @@ const connectVoicemeeter = () => {
                     // to detect when the voicemeeter engine is fully loaded
                     let voicemeeterEngineWaiter;
 
-                    // console.log(
-                    //     voicemeeter.updateDeviceList(),
-                    //     voicemeeter.$outputDevices,
-                    //     voicemeeter.$inputDevices
-                    // );
                     voicemeeter.attachChangeEvent(() => {
                         if (!voicemeeterLoaded) {
                             lastEventTimestamp = Date.now();
                         }
 
                         let moment = new Date();
-                        console.log(
-                            `Voicemeeter: [${moment.getHours()}:${moment.getMinutes()}:${moment.getSeconds()}] Changed detected`
-                        );
+                        // console.log(
+                        //     `Voicemeeter: [${moment.getHours()}:${moment.getMinutes()}:${moment.getSeconds()}] Changed detected`
+                        // );
+                        moment = null;
                         voicemeeterChanged(voicemeeter);
                     });
 
@@ -137,9 +143,9 @@ const convertVolumeToVoicemeeterGain = (windowsVolume, gain_min, gain_max) => {
  */
 const runWinAudio = () => {
     let settings = getSettings();
-    speaker.polling(settings.polling_rate);
+    startAudioScanner(settings.polling_rate);
 
-    speaker.events.on('change', (volume) => {
+    AudioEvents.on('volume', (volume) => {
         // There is an issue with some drivers and Windows versions where the
         // associated audio device will spike to 100% volume when either devices
         // change or the audio engine is reset. This will revert any 100%
@@ -159,8 +165,9 @@ const runWinAudio = () => {
                 console.log(
                     `Driver Anomoly Detected: Volume reached 100% from ${lastVolume}%. Reverting to ${lastVolume}%`
                 );
-                speaker.set(lastVolume);
+                setVolume(lastVolume);
             }
+            fixingVolume = null;
         }
         lastVolume = volume.new;
         lastVolumeTime = currentTime;
@@ -173,12 +180,12 @@ const runWinAudio = () => {
                     (value?.sid?.startsWith('Strip') ||
                         value?.sid?.startsWith('Bus'))
                 ) {
-                    const voicemeeterGain = convertVolumeToVoicemeeterGain(
+                    let voicemeeterGain = convertVolumeToVoicemeeterGain(
                         volume.new,
                         settings.gain_min,
                         settings.gain_max
                     );
-                    const tokens = value.sid.split('_');
+                    let tokens = value.sid.split('_');
                     try {
                         voicemeeterConnection.setParameter(
                             tokens[0],
@@ -187,13 +194,19 @@ const runWinAudio = () => {
                             voicemeeterGain
                         );
                     } catch (e) {}
+                    voicemeeterGain = null;
+                    tokens.length = 0;
+                    tokens = null;
                 }
             }
         }
+
+        currentTime = null;
+        timeSinceLastVolume = null;
         winAudioChanged(volume);
     });
 
-    speaker.events.on('toggle', (status) => {
+    AudioEvents.on('mute', (status) => {
         // status.new = true or false to indicate mute
         if (voicemeeterConnection) {
             for (let [key, value] of systray.internalIdMap) {
@@ -224,7 +237,9 @@ const runWinAudio = () => {
  * @param {*} voicemeeterConnection the voicemeeter connection handle
  */
 const updateBindingLabels = (voicemeeterConnection) => {
-    const friendlyNames =
+    // @todo THIS IS A HUGE MEMORY LEAK, MAKE THIS OPERABLE ON VOICEMEETERR CHANGE
+
+    let friendlyNames =
         STRING_VOICEMEETER_FRIENDLY_NAMES[voicemeeterConnection.$type];
 
     if (friendlyNames) {
@@ -282,9 +297,20 @@ const updateBindingLabels = (voicemeeterConnection) => {
                         item: value,
                     });
                 }
+
+                tokens = null;
+                type = null;
+                index = null;
+                lastTitle = null;
+                lastHidden = null;
+                label = null;
+                deviceName = null;
+                newFriendlyNames = null;
             }
         }
     }
+
+    friendlyNames = null;
 };
 
 /**
@@ -299,19 +325,28 @@ const getVoicemeeterConnection = () => {
  * begins synchronizing audio between Voicemeeter and Windows
  */
 const startAudioSync = () => {
+    AudioEvents.on('started', () => {
+        setInitialVolume();
+    });
+
     connectVoicemeeter()
         .then((voicemeeterConnection) => {
             runWinAudio();
-            setInitialVolume();
             updateBindingLabels(voicemeeterConnection);
-            if (isToggleChecked('restart_audio_engine_on_device_change')) {
+            if (isToggleChecked('restart_audio_engine_on_app_launch')) {
                 console.log(
-                    'restarting audio engine due to system event: App Launch'
+                    STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(
+                        '{{REASON}}',
+                        STRING_CONSOLE_ENTRIES.restartAudioEngineReasons
+                            .applaunch
+                    )
                 );
                 voicemeeterConnection.sendCommand('Restart', 1);
             }
         })
-        .catch((err) => console.log);
+        .catch((error) => {
+            console.log(error);
+        });
 };
 
 export { startAudioSync, getVoicemeeterConnection, rememberCurrentVolume };

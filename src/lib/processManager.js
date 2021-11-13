@@ -1,3 +1,7 @@
+/*
+ manages running Windows processes
+*/
+
 import { exec } from 'child_process';
 import { runPowershell } from './runPowershell';
 

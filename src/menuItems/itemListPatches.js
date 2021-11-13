@@ -1,11 +1,10 @@
 import { itemLimitdBGain } from './itemLimitdBGain';
-import { itemRestartAudioEngineOnDeviceChange } from './patches/itemRestartAudioEngineOnDeviceChange';
+import { itemRestartAudioEngineOnDeviceChange } from './restarts/itemRestartAudioEngineOnDeviceChange';
 import { itemRestoreVolume } from './patches/itemRestoreVolume';
 import { itemPreventVolumeSpikes } from './patches/itemPreventVolumeSpikes';
 import { itemCrackleFix } from './patches/itemCrackleFix';
 import { STRING_MENU_ITEMS } from '../lib/strings';
 import { itemStartWithWindows } from './itemStartWithWindows';
-import SysTray from 'systray2';
 
 /**
  * menu entry for misc patches and workarounds
@@ -22,7 +21,6 @@ const itemListPatches = (props) => {
             itemLimitdBGain(),
             { title: '', enabled: false },
             { title: STRING_MENU_ITEMS['itemTitleDriverWorkarounds'] },
-            itemRestartAudioEngineOnDeviceChange(),
             itemRestoreVolume(),
             itemPreventVolumeSpikes(),
             itemCrackleFix(),

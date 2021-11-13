@@ -1,3 +1,7 @@
+/**
+ * main entry point for voicemeeter-windows-volume
+ */
+
 // imports *********************************************************************
 
 // built-in
@@ -14,6 +18,7 @@ import { startAudioSync } from './lib/audioSyncManager';
 
 // menu items
 import { itemListBindings } from './menuItems/itemListBindings';
+import { itemListRestarts } from './menuItems/itemListRestarts';
 import { itemListPatches } from './menuItems/itemListPatches';
 import { itemShowVoicemeeter } from './menuItems/voicemeeter/itemShowVoicemeeter';
 import { itemRestartVoicemeeter } from './menuItems/voicemeeter/itemRestartVoicemeeter';
@@ -32,13 +37,22 @@ const defaults = {
     gain_max: 12,
     start_with_windows: true,
     limit_db_gain_to_0: false,
-    restart_audio_engine_on_device_change: true,
     remember_volume: false,
     disable_donate: false,
     audiodg: {
         priority: PRIORITIES.HIGH,
         affinity: 2,
     },
+    toggles: [
+        {
+            setting: 'restart_audio_engine_on_device_change',
+            value: false,
+        },
+        {
+            setting: 'restart_audio_engine_on_app_launch',
+            value: false,
+        },
+    ],
 };
 const settingsPath = `${__dirname}/settings.json`;
 
@@ -54,6 +68,7 @@ const trayApp = {
         items: [
             { title: STRING_MENU_ITEMS['itemAppTitle'], enabled: false },
             itemListBindings(),
+            itemListRestarts(),
             itemListPatches(),
             SysTray.separator,
             { title: STRING_MENU_ITEMS['itemVMTitle'], enabled: false },
@@ -78,6 +93,7 @@ const trayApp = {
 
 // initialize the tray app *****************************************************
 
+console.log('Voicemeeter Windows Volume started, Process ID: ', process.pid);
 const systray = setupPersistantSystray({
     trayApp,
     defaults,

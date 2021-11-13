@@ -54,7 +54,6 @@ const loadSettings = ({ settingsPath, defaults, callback }) => {
         // something went wrong, lets write the file with defaults
         console.log(err);
         setSettings(defaults);
-        const data = JSON.stringify(defaults);
         fs.writeFileSync(
             settingsFilePath,
             JSON.stringify(getSettings(), null, 2)
@@ -75,13 +74,13 @@ const loadSettings = ({ settingsPath, defaults, callback }) => {
  * @returns null
  */
 const updateSysTrayFromSettings = () => {
-    const settings = getSettings();
+    settings = getSettings();
     if (!settings.toggles) {
         return;
     }
     for (let [key, value] of systray.internalIdMap) {
         if (value.sid) {
-            const matchedToggle = settings.toggles.filter((x) => {
+            let matchedToggle = settings.toggles.filter((x) => {
                 return x.setting === value.sid;
             });
 
@@ -92,6 +91,9 @@ const updateSysTrayFromSettings = () => {
                     item: value,
                 });
             }
+
+            matchedToggle.length = 0;
+            matchedToggle = null;
         }
     }
 };
