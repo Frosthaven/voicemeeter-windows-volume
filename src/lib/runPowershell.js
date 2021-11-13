@@ -196,11 +196,15 @@ const runPowershell = ({ commands, callback, stdout = false }) => {
     let output = '';
     let errorOutput = '';
     stdout && console.log('Running Powershell Command:', commands.join(' '));
-    child.on('exit', function () {
+    child.on('end', function () {
         stdout && console.log('Powershell Script finished');
         if (typeof callback === 'function') {
             callback(output, errorOutput);
         }
+        child.kill();
+        child = null;
+        output = null;
+        errorOutput = null;
     });
     child.stdout.on('data', function (data) {
         stdout && console.log('' + data);
@@ -213,10 +217,6 @@ const runPowershell = ({ commands, callback, stdout = false }) => {
 
     // close powershell input
     child.stdin.end();
-    child.kill();
-    child = null;
-    output = null;
-    errorOutput = null;
 };
 
 export {
