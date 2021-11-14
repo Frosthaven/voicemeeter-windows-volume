@@ -1,3 +1,5 @@
+// imports *********************************************************************
+
 // built-in
 import os from 'os';
 import path from 'path';
@@ -18,6 +20,8 @@ import { itemRestartAudioEngine } from './menuItems/voicemeeter/itemRestartAudio
 import { itemVisitGithub } from './menuItems/support/itemVisitGithub';
 import { itemDonate } from './menuItems/support/itemDonate';
 import { itemExit } from './menuItems/itemExit';
+
+// tray app setup **************************************************************
 
 const trayApp = {
     menu: {
