@@ -7,6 +7,7 @@ let pattern = /{{INJECT_(?:START):(?:.)*}}([\s\S]*){{INJECT_(?:END):(?:.)*}}/;
 
 let file, fileContents, match, replaceTarget, newContents;
 
+console.log('\x1b[36m', 'i', '\x1b[0m', 'Updating metadata in files...');
 // update app strings with package metadata
 file = './src/lib/strings.js';
 fileContents = fs.readFileSync(path.normalize(file), 'utf8').toString();
@@ -24,6 +25,7 @@ if (match) {
             `\n\/\/`
     );
     fs.writeFileSync(file, newContents, 'utf8');
+    console.log('\x1b[32m', '    √ ', '\x1b[35m', `${file}`, '\x1b[0m');
 }
 
 // update nsi installer script with package metadata
@@ -51,4 +53,5 @@ if (match) {
             `\n;`
     );
     fs.writeFileSync(file, newContents, 'utf8');
+    console.log('\x1b[32m', '    √ ', '\x1b[35m', `${file}`, '\x1b[0m');
 }
