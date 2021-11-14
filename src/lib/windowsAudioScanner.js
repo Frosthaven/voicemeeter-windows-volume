@@ -182,22 +182,12 @@ public class Audio {\r\n
             // (the first two indexes will be headers, and then divider lines)
             let newDevices = data;
             let events = {
-                first_start: {
-                    enable: false,
-                },
-                volume: {
-                    enable: false,
-                    data: null,
-                },
-                muted: {
-                    enable: false,
-                    data: null,
-                },
                 device: {
                     enable: false,
                     data: null,
                 },
             };
+
             if (newDevices.length > 0 && !arraysEqual(devices, newDevices)) {
                 if (devices.length > 0) {
                     events.device.enable = true;
@@ -205,9 +195,9 @@ public class Audio {\r\n
                         old: devices,
                         new: newDevices,
                     };
-                } else {
-                    devices = Array.from(newDevices);
                 }
+
+                devices = Array.from(newDevices);
             }
 
             if (events.device.enable) {
