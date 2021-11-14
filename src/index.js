@@ -63,11 +63,11 @@ const trayApp = {
             os.platform() === 'win32'
                 ? path.normalize(__dirname + '/assets/app.ico')
                 : path.normalize(__dirname + '/assets/app.png'),
-        title: 'Voicemeeter Windows Volume',
-        tooltip: 'Voicemeeter Windows Volume',
+        title: STRING_METADATA.friendlyname,
+        tooltip: STRING_METADATA.friendlyname,
         items: [
             {
-                title: `${STRING_METADATA.name.toUpperCase()}\tv${
+                title: `${STRING_METADATA.friendlyname.toUpperCase()}\tv${
                     STRING_METADATA.version
                 }`,
                 enabled: false,
