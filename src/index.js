@@ -23,7 +23,7 @@ const exitHandler = (options, exitCode) => {
         systray.kill(false);
         console.log('clean exit');
     }
-    if (exitCode || exitCode === 0) console.log('Exit Code:', exitCode);
+    if (exitCode) console.log('Exit Code:', exitCode);
     if (options.exit) process.exit();
 };
 // do something when app is closing
