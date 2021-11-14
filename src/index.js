@@ -26,7 +26,7 @@ import { itemRestartAudioEngine } from './menuItems/voicemeeter/itemRestartAudio
 import { itemVisitGithub } from './menuItems/support/itemVisitGithub';
 import { itemDonate } from './menuItems/support/itemDonate';
 import { itemExit } from './menuItems/itemExit';
-import { STRING_MENU_ITEMS } from './lib/strings';
+import { STRING_MENU_ITEMS, STRING_METADATA } from './lib/strings';
 
 // configuration ***************************************************************
 
@@ -66,7 +66,12 @@ const trayApp = {
         title: 'Voicemeeter Windows Volume',
         tooltip: 'Voicemeeter Windows Volume',
         items: [
-            { title: STRING_MENU_ITEMS['itemAppTitle'], enabled: false },
+            {
+                title: `${STRING_METADATA.name.toUpperCase()}\tv${
+                    STRING_METADATA.version
+                }`,
+                enabled: false,
+            },
             itemListBindings(),
             itemListRestarts(),
             itemListPatches(),

@@ -1,16 +1,18 @@
 {
     "name": "voicemeeter-windows-volume",
-    "version": "1.6.1",
+    "friendly_name": "Voicemeeter Windows Volume",
+    "version": "1.6.1.0",
     "description": "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
+        "start": "npm run update_metadata && nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
         "startb": "nodemon --exec ./node_modules/.bin/babel-node ./_build/build.js",
         "clean": "rimraf _build && rimraf _dist",
+        "update_metadata": "node ./build-tools/metadata.injector.js",
         "build_webpack": "webpack --config ./build-tools/webpack.config.js",
         "build_nexe": "node ./build-tools/build.nexe.js",
         "build_installer": "makensis build-tools/build.installer.nsi",
-        "build": "npm run clean && npm run build_webpack && npm run build_nexe && npm run build_installer && npm run archive",
+        "build": "npm run clean && npm run update_metadata && npm run build_webpack && npm run build_nexe && npm run build_installer && npm run archive",
         "archive": "node ./build-tools/build.archive.js",
         "rebuild": "npm run clean && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
     },
