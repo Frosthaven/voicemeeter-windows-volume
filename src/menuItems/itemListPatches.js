@@ -1,10 +1,10 @@
-import { itemLimitdBGain } from './itemLimitdBGain';
+import { itemLimitdBGain } from './settings/itemLimitdBGain';
 import { itemRestartAudioEngineOnDeviceChange } from './restarts/itemRestartAudioEngineOnDeviceChange';
 import { itemRestoreVolume } from './patches/itemRestoreVolume';
 import { itemPreventVolumeSpikes } from './patches/itemPreventVolumeSpikes';
 import { itemCrackleFix } from './patches/itemCrackleFix';
 import { STRING_MENU_ITEMS } from '../lib/strings';
-import { itemStartWithWindows } from './itemStartWithWindows';
+import { itemStartWithWindows } from './settings/itemStartWithWindows';
 
 /**
  * menu entry for misc patches and workarounds
