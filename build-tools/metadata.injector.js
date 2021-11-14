@@ -53,5 +53,5 @@ if (match) {
             `\n;`
     );
     fs.writeFileSync(file, newContents, 'utf8');
-    console.log('\x1b[32m', '    √ ', '\x1b[35m', `${file}`, '\x1b[0m');
+    console.log('\x1b[32m', '    √ ', '\x1b[35m', `${file}`, '\x1b[0m\n');
 }
