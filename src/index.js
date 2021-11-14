@@ -7,9 +7,8 @@
 // local
 import { setupPersistantSystray } from './lib/persistantSysTray';
 import { startAudioSync } from './lib/audioSyncManager';
-
-import { defaults } from './defaultSettings';
 import { trayApp } from './trayApp';
+import { defaults } from './defaultSettings';
 
 const settingsPath = `${__dirname}/settings.json`;
 
