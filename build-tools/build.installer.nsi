@@ -17,7 +17,7 @@ OutFile "../_dist/Install_voicemeeter-windows-volume_v1.6.1.0_x64.exe"
 !define PRODUCT_DESCRIPTION "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls"
 !define PRODUCT_VERSION "1.6.1.0"
 !define SETUP_VERSION 1.6.1.0
-!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of voicemeeter-windows-volume v1.6.1.0.$\r$\n$\r$\nClick Next to continue."
+!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of Voicemeeter Windows Volume v1.6.1.0.$\r$\n$\r$\nClick Next to continue."
 
 Name "Voicemeeter Windows Volume"
 BrandingText "Voicemeeter Windows Volume v1.6.1.0"

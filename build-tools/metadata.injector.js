@@ -41,7 +41,7 @@ if (match) {
             `\n!define PRODUCT_DESCRIPTION "${pkg.description}"` +
             `\n!define PRODUCT_VERSION "${pkg.version}"` +
             `\n!define SETUP_VERSION ${pkg.version}` +
-            `\n!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of ${pkg.name} v${pkg.version}.$\\r$\\n$\\r$\\nClick Next to continue."` +
+            `\n!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of ${pkg.friendly_name} v${pkg.version}.$\\r$\\n$\\r$\\nClick Next to continue."` +
             `\n` +
             `\nName "${pkg.friendly_name}"` +
             `\nBrandingText "${pkg.friendly_name} v${pkg.version}"` +
