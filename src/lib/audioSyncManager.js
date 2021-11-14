@@ -17,6 +17,7 @@ import {
     setVolume,
     startAudioScanner,
 } from './windowsAudioScanner';
+import { startWindowsEventScanner } from './windowsEventScanner';
 
 let voicemeeterConnection = null;
 let voicemeeterLoaded = false;
@@ -327,6 +328,7 @@ const getVoicemeeterConnection = () => {
 const startAudioSync = () => {
     AudioEvents.on('started', () => {
         setInitialVolume();
+        startWindowsEventScanner();
     });
 
     connectVoicemeeter()
