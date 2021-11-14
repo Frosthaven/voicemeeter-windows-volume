@@ -6,6 +6,7 @@ import {
 } from './runPowershell';
 
 const label = 'AudioScanner';
+const labelDevices = 'DeviceScanner';
 
 let AudioEvents = new EventEmitter();
 let started = null;
@@ -45,16 +46,16 @@ const setVolume = (volume) => {
 };
 
 const setMuted = (isMuted) => {
-    console.log('setMuted implemented');
     // PS C:\> [Audio]::Mute = $true   # Mute speaker
+    console.log('setMuted not yet implemented');
 };
 
 const startAudioScanner = (interval) => {
     if (started) {
         return;
     }
-
     started = true;
+
     startPowershellWorker({
         interval: interval,
         label: label,
@@ -106,21 +107,12 @@ public class Audio {\r\n
     }\r\n
 };\r\n
 '@\r\n`,
-        command:
-            '[Audio]::Volume | Out-Host; [Audio]::Mute | Out-Host; get-wmiobject win32_sounddevice | Out-Host;',
+        command: '[Audio]::Volume | Out-Host; [Audio]::Mute | Out-Host;',
         onResponse: (data) => {
-            if (data && data.length > 2) {
+            if (data && data.length > 0) {
                 // get volume and mute state out of the top two lines
                 let newVolume = Math.round(parseFloat(data.shift()) * 100);
                 let newMuted = data.shift() === 'True' ? true : false;
-
-                // remove the device header and divider lines
-                data.splice(0, 2);
-
-                // remaining data is active audio device status. if we need more
-                // data control later, we can split the lines via regex /\s{2,}/
-                // which will give us a 2 dimensional array of device info
-                let newDevices = data;
 
                 let events = {
                     first_start: {
@@ -131,10 +123,6 @@ public class Audio {\r\n
                         data: null,
                     },
                     muted: {
-                        enable: false,
-                        data: null,
-                    },
-                    device: {
                         enable: false,
                         data: null,
                     },
@@ -164,16 +152,6 @@ public class Audio {\r\n
                     }
                     muted = newMuted;
                 }
-                if (!arraysEqual(devices, newDevices)) {
-                    if (devices.length > 0) {
-                        events.device.enable = true;
-                        events.device.data = {
-                            old: devices,
-                            new: newDevices,
-                        };
-                    }
-                    devices = Array.from(newDevices);
-                }
                 if (events.first_start.enable) {
                     AudioEvents.emit('started');
                 }
@@ -184,22 +162,66 @@ public class Audio {\r\n
                 if (events.muted.enable) {
                     AudioEvents.emit('muted', events.muted.data);
                 }
-                if (events.device.enable) {
-                    AudioEvents.emit('device', events.device.data);
-                }
 
                 //cleanup
                 events = null;
                 newVolume = null;
                 newMuted = null;
-                newDevices = null;
             }
+        },
+    });
+
+    startPowershellWorker({
+        interval: 5000,
+        label: labelDevices,
+        command: 'get-wmiobject win32_sounddevice | Out-Host;',
+        onResponse: (data) => {
+            // remaining data is active audio device status. if we need more
+            // data control later, we can split the lines via regex /\s{2,}/
+            // which will give us a 2 dimensional array of device info
+            // (the first two indexes will be headers, and then divider lines)
+            let newDevices = data;
+            let events = {
+                first_start: {
+                    enable: false,
+                },
+                volume: {
+                    enable: false,
+                    data: null,
+                },
+                muted: {
+                    enable: false,
+                    data: null,
+                },
+                device: {
+                    enable: false,
+                    data: null,
+                },
+            };
+            if (newDevices.length > 0 && !arraysEqual(devices, newDevices)) {
+                if (devices.length > 0) {
+                    events.device.enable = true;
+                    events.device.data = {
+                        old: devices,
+                        new: newDevices,
+                    };
+                } else {
+                    devices = Array.from(newDevices);
+                }
+            }
+
+            if (events.device.enable) {
+                AudioEvents.emit('device', events.device.data);
+            }
+
+            newDevices = null;
         },
     });
 };
 
 const stopAudioScanner = () => {
     stopPowershellWorker(label);
+    stopPowershellWorker(labelDevices);
     AudioEvents.emit('stopped');
     started = false;
 };
