@@ -1,9 +1,9 @@
-import { getSettings } from '../../lib/settingsManager';
+import { getSettings } from '../../lib/managers/settingsManager';
 import {
     PRIORITIES,
     setProcessPriority,
     setProcessAffinity,
-} from '../../lib/processManager';
+} from '../../lib/managers/processManager';
 import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**

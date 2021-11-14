@@ -1,7 +1,7 @@
 import {
     enableStartOnLaunch,
     disableStartOnLaunch,
-} from '../../lib/autoStartManager';
+} from '../../lib/managers/autoStartManager';
 import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**

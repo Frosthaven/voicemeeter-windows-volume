@@ -1,6 +1,6 @@
 import { systray } from '../../lib/persistantSysTray';
 import { runPowershell } from '../../lib/runPowershell';
-import { getSettings } from '../../lib/settingsManager';
+import { getSettings } from '../../lib/managers/settingsManager';
 import { STRING_MENU_ITEMS } from '../../lib/strings';
 /**
  * menu entry for launching the donation page in the default browser

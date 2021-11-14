@@ -1,5 +1,5 @@
 import path from 'path';
-import { runPowershell } from './runPowershell';
+import { runPowershell } from '../runPowershell';
 
 /**
  * Uses Powershell to generate a scheduled task that starts the tray application

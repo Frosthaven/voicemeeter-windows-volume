@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 
-import { systray } from './persistantSysTray';
+import { systray } from '../persistantSysTray';
 let settingsFilePath = '';
 let settings = null;
 

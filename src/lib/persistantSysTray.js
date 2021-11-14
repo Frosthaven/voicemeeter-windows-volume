@@ -4,7 +4,11 @@
 
 import SysTray from 'systray2';
 
-import { isToggleChecked, saveSettings, loadSettings } from './settingsManager';
+import {
+    isToggleChecked,
+    saveSettings,
+    loadSettings,
+} from './managers/settingsManager';
 
 let systray = null;
 

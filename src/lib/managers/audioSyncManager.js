@@ -1,23 +1,23 @@
-import { waitForProcess } from '../lib/processManager';
+import { waitForProcess } from './processManager';
 import {
     STRING_VOICEMEETER_FRIENDLY_NAMES,
     STRING_CONSOLE_ENTRIES,
-} from '../lib/strings';
+} from '../strings';
 import {
     isToggleChecked,
     getSettings,
     setSettings,
     saveSettings,
 } from './settingsManager';
-import { systray } from './persistantSysTray';
+import { systray } from '../persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
 import {
     AudioEvents,
     getVolume,
     setVolume,
     startAudioScanner,
-} from './windowsAudioScanner';
-import { startWindowsEventScanner } from './windowsEventScanner';
+} from '../workers/windowsAudioScanner';
+import { startWindowsEventScanner } from '../workers/windowsEventScanner';
 
 let voicemeeterConnection = null;
 let voicemeeterLoaded = false;

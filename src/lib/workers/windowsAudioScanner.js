@@ -3,7 +3,7 @@ import {
     startPowershellWorker,
     stopPowershellWorker,
     sendToPowershellWorker,
-} from './runPowershell';
+} from '../runPowershell';
 
 const label = 'AudioScanner';
 const labelDevices = 'DeviceScanner';

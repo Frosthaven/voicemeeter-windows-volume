@@ -3,16 +3,9 @@
 */
 
 import { spawn } from 'child_process';
-import { EventEmitter } from 'events';
-import os from 'os';
-import path from 'path';
 
 let powershellHosts = [];
 let powershellWorkers = [];
-
-const scriptDirectory = path.normalize(__dirname);
-const powershellEvents = new EventEmitter();
-const outputPath = path.normalize(`${os.tmpdir}\\voicemeeter-windows-volume`);
 
 /**
  * takes a code block and removes newlines and whitespaces

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import { startPowershellWorker, stopPowershellWorker } from './runPowershell';
+import { startPowershellWorker, stopPowershellWorker } from '../runPowershell';
 
 const label = 'EventScanner';
 let WindowsEvents = new EventEmitter();

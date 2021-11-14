@@ -6,7 +6,7 @@
 
 // local
 import { setupPersistantSystray } from './lib/persistantSysTray';
-import { startAudioSync } from './lib/audioSyncManager';
+import { startAudioSync } from './lib/managers/audioSyncManager';
 import { trayApp } from './trayApp';
 import { defaults } from './defaultSettings';
 
