@@ -20,7 +20,7 @@ const startWindowsEventScanner = () => {
                     .replace(/\,\}/g, '}')
                     .replace(/\{\,/g, '{');
                 data = `{"PSDATA":[${data}]}`;
-                data = JSON.parse(data);
+                data = JSON.parse(data).PSDATA;
                 console.log(label, data);
             }
         },
