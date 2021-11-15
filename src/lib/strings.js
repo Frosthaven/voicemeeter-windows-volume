@@ -56,7 +56,7 @@ const STRING_CONSOLE_ENTRIES = {
     restartAudioEngineReasons: {
         userinput: 'User Input',
         applaunch: 'App Launch',
-        devicechange: 'Audio Device Connection Change',
+        devicechange: 'Audio Device Connection Changes',
     },
 };
 
