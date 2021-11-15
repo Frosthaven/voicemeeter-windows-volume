@@ -10,7 +10,7 @@
 ;-------------------------------------------------------------------------------
 ; Injected
 
-;{{INJECT_START:PKG}}
+;{{INJECT_START:PKG}} Injected 11/15/2021 02:17:53 
 OutFile "../_dist/Install_voicemeeter-windows-volume_v1.6.1.0_x64.exe"
 !define PRODUCT_NAME "Voicemeeter Windows Volume"
 !define PACKAGE_NAME "voicemeeter-windows-volume"
@@ -18,10 +18,8 @@ OutFile "../_dist/Install_voicemeeter-windows-volume_v1.6.1.0_x64.exe"
 !define PRODUCT_VERSION "1.6.1.0"
 !define SETUP_VERSION 1.6.1.0
 !define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of Voicemeeter Windows Volume v1.6.1.0.$\r$\n$\r$\nClick Next to continue."
-
 Name "Voicemeeter Windows Volume"
 BrandingText "Voicemeeter Windows Volume v1.6.1.0"
-
 InstallDir "$PROGRAMFILES\Voicemeeter Windows Volume"
 InstallDirRegKey HKCU "Software\Voicemeeter Windows Volume" ""
 ;{{INJECT_END:PKG}}
@@ -92,6 +90,13 @@ Section "Tray Application" MyApp1
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "${PRODUCT_NAME} (remove only)"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
     WriteUninstaller "$INSTDIR\Uninstall.exe"
+
+;{{INJECT_START:UNINSTALLER}} Injected 11/15/2021 02:17:53 
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "Publisher" "Frosthaven"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "Voicemeeter Windows Volume"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" 1.6.1.0
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayIcon" "$INSTDIR\required\app-engine.exe,0"
+;{{INJECT_END:UNINSTALLER}}
 
     ; Start the application
     Exec `$\"$SYSDIR\wscript.exe$\" $\"$INSTDIR\${PACKAGE_NAME}.vbs$\"`
