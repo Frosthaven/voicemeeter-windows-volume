@@ -76,6 +76,11 @@ const injector = (file, sectionHandler) => {
     }
 };
 
+console.log(
+    '\x1b[1m\x1b[34mi',
+    '\x1b[0mEnsuring files have the latest metadata...' + os.EOL
+);
+
 injector('./src/lib/strings.js', (section_name) => {
     switch (section_name) {
         case 'PKG':
