@@ -8,9 +8,21 @@ const startWindowsEventScanner = () => {
     startPowershellWorker({
         interval: 5000,
         label: label,
-        command: 'echo "to be implemented" | Out-Host',
+        command:
+            'Get-EventLog -LogName system -Source "Microsoft-Windows-Kernel-Power" -Newest 15 | Where-Object {$_.EventID -eq 507} | Select-Object -Property Source, TimeWritten, InstanceID | ConvertTo-json | Out-Host',
         onResponse: (data) => {
-            console.log(label, data);
+            if (data.length > 0) {
+                data.shift();
+                data.pop();
+                data = data
+                    .join()
+                    .replace(/\,\,/g, ',')
+                    .replace(/\,\}/g, '}')
+                    .replace(/\{\,/g, '{');
+                data = `{"PSDATA":[${data}]}`;
+                data = JSON.parse(data);
+                console.log(label, data);
+            }
         },
     });
 };
