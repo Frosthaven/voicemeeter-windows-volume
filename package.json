@@ -3,6 +3,7 @@
     "friendlyName": "Voicemeeter Windows Volume",
     "version": "1.6.1.0",
     "description": "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls",
+    "author": "Frosthaven",
     "main": "index.js",
     "scripts": {
         "start": "npm run meta && nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
@@ -17,7 +18,6 @@
         "rebuild": "npm run clean && npm run meta && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
     },
     "keywords": [],
-    "author": "Frosthaven",
     "license": "ISC",
     "devDependencies": {
         "@babel/cli": "^7.15.4",
