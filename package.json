@@ -17,7 +17,7 @@
         "rebuild": "npm run clean && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
     },
     "keywords": [],
-    "author": "",
+    "author": "Frosthaven",
     "license": "ISC",
     "devDependencies": {
         "@babel/cli": "^7.15.4",
