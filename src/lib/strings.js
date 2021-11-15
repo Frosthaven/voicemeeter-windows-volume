@@ -1,4 +1,4 @@
-//{{INJECT_START:PKG}} Injected 11/15/2021 06:56:38
+//{{INJECT_START:PKG}}
 const STRING_METADATA = {
     name: 'voicemeeter-windows-volume',
     friendlyname: 'Voicemeeter Windows Volume',

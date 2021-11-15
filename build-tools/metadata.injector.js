@@ -12,19 +12,7 @@ Number.prototype.padLeft = function (base, chr) {
 };
 
 const injector = (file, sectionHandler) => {
-    var d = new Date(),
-        dformat =
-            [
-                (d.getMonth() + 1).padLeft(),
-                d.getDate().padLeft(),
-                d.getFullYear(),
-            ].join('/') +
-            ' ' +
-            [
-                d.getHours().padLeft(),
-                d.getMinutes().padLeft(),
-                d.getSeconds().padLeft(),
-            ].join(':');
+    let newChanges = false;
     let fileContents = fs.readFileSync(path.normalize(file)).toString();
     let matches = fileContents.matchAll(pattern);
     let newFileContents = fileContents;
@@ -41,21 +29,50 @@ const injector = (file, sectionHandler) => {
             };
 
             // replace matching group
-            let newSectionBody = sectionHandler(component.name).join('\r\n');
-            newFileContents = newFileContents.replace(
-                component.full,
+            let newSectionBody = sectionHandler(component.name).join(os.EOL);
+            let newComponent =
                 component.start +
-                    ` Injected ${dformat}\r\n` +
-                    newSectionBody +
-                    '\r\n' +
-                    component.syntax +
-                    component.end
-            );
+                os.EOL +
+                newSectionBody +
+                os.EOL +
+                component.syntax +
+                component.end;
+
+            if (newComponent !== component.full) {
+                newChanges = true;
+                newFileContents = newFileContents.replace(
+                    component.full,
+                    newComponent
+                );
+            }
         }
 
         // done @todo make sure things change before writing...
-        fs.writeFileSync(file, newFileContents, 'utf8');
-        console.log('\x1b[32m', '    √ ', '\x1b[35m', `${file}`, '\x1b[0m');
+        if (newChanges) {
+            try {
+                fs.writeFileSync(file, newFileContents);
+                console.log(
+                    '\x1b[32m',
+                    '    ✔ ',
+                    '\x1b[32m',
+                    `${file}`,
+                    '\x1b[0m'
+                );
+            } catch (e) {
+                console.log(os.EOL);
+                console.log(
+                    '\x1b[31m',
+                    '    ✖ ',
+                    '\x1b[31m',
+                    `${file}`,
+                    '\x1b[0m'
+                );
+                console.log(os.EOL);
+                console.log(e);
+            }
+        } else {
+            console.log('\x1b[32m', '    ✔ ', '\x1b[0m', `${file}`, '\x1b[0m');
+        }
     }
 };
 
