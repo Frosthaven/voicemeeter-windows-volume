@@ -4,7 +4,7 @@ const os = require('os');
 let pkg = require('./../package.json');
 
 let pattern =
-    /({{INJECT_(?:START):(.*)}})([\s\S]*)(;|\/\/|\#)({{INJECT_(?:END):(\2)}})/g;
+    /({{INJECT_(?:START):(.*)}})([\s\S]*)(;|\/\/|\#|\')({{INJECT_(?:END):(\2)}})/g;
 
 Number.prototype.padLeft = function (base, chr) {
     let len = String(base || 10).length - String(this).length + 1;
@@ -78,18 +78,17 @@ const injector = (file, sectionHandler) => {
 
 console.log(
     '\x1b[1m\x1b[34mi',
-    '\x1b[0mEnsuring files have the latest metadata...' + os.EOL
+    '\x1b[0mEnsuring files have the latest package.json metadata...' + os.EOL
 );
 
-injector('./src/lib/strings.js', (section_name) => {
+injector('./build-tools/build.nexe.js', (section_name) => {
     switch (section_name) {
         case 'PKG':
             return [
-                `const STRING_METADATA = {`,
-                `    name: '${pkg.name}',`,
-                `    friendlyname: '${pkg.friendlyName}',`,
-                `    version: '${pkg.version}',`,
-                `};`,
+                `    output: \`../_dist/${pkg.name}/required/${pkg.binaryName}\`,`,
+                `    rc: {`,
+                `        CompanyName: '${pkg.author}'`,
+                `    },`,
             ];
     }
 });
@@ -101,6 +100,7 @@ injector('./build-tools/build.installer.nsi', (section_name) => {
                 `OutFile "../_dist/Install_${pkg.name}_v${pkg.version}_${os.arch}.exe"`,
                 `!define PRODUCT_NAME "${pkg.friendlyName}"`,
                 `!define PACKAGE_NAME "${pkg.name}"`,
+                `!define EXE_NAME "${pkg.binaryName}"`,
                 `!define PRODUCT_DESCRIPTION "${pkg.description}"`,
                 `!define PRODUCT_VERSION "${pkg.version}"`,
                 `!define SETUP_VERSION ${pkg.version}`,
@@ -115,7 +115,29 @@ injector('./build-tools/build.installer.nsi', (section_name) => {
                 `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "Publisher" "${pkg.author}"`,
                 `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayName" "${pkg.friendlyName}"`,
                 `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayVersion" ${pkg.version}`,
-                `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayIcon" "$INSTDIR\\required\\app-engine.exe,0"`,
+                `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayIcon" "$INSTDIR\\required\\$\{EXE_NAME\},0"`,
+            ];
+    }
+});
+
+injector('./build-tools/include/app-launcher.vbs', (section_name) => {
+    switch (section_name) {
+        case 'PKG':
+            return [
+                `Shell.ShellExecute scriptDir & "\\required\\${pkg.binaryName}", , , "runas", 0`,
+            ];
+    }
+});
+
+injector('./src/lib/strings.js', (section_name) => {
+    switch (section_name) {
+        case 'PKG':
+            return [
+                `const STRING_METADATA = {`,
+                `    name: '${pkg.name}',`,
+                `    friendlyname: '${pkg.friendlyName}',`,
+                `    version: '${pkg.version}',`,
+                `};`,
             ];
     }
 });

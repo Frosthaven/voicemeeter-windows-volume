@@ -5,6 +5,7 @@
     "description": "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls",
     "author": "Frosthaven",
     "main": "index.js",
+    "binaryName": "VMWV.exe",
     "scripts": {
         "start": "npm run meta && nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
         "startb": "nodemon --exec ./node_modules/.bin/babel-node ./_build/build.js",

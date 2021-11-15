@@ -32,7 +32,7 @@ hard_copy.push({
 });
 hard_copy.push({
     from: './build-tools/include/app-launcher.vbs',
-    to: `../_dist/${pkg.name}/${pkg.name}.vbs`,
+    to: `../_dist/${pkg.name}/app-launcher.vbs`,
 });
 
 /// WEBPACK CONFIG *************************************************************

@@ -5,7 +5,12 @@ let clean = process.argv.slice(2)[0] === 'clean' ? true : false;
 
 compile({
     input: './webpack.bundle.js',
-    output: `../_dist/${pkg.name}/required/app-engine.exe`,
+    //{{INJECT_START:PKG}}
+    output: `../_dist/voicemeeter-windows-volume/required/VMWV.exe`,
+    rc: {
+        CompanyName: 'Frosthaven'
+    },
+//{{INJECT_END:PKG}}
     build: true, //required to use patches
     resources: [],
     ico: './src/assets/app.ico',
@@ -13,9 +18,6 @@ compile({
     clean: clean,
     enableNodeCli: true,
     verbose: true,
-    rc: {
-        CompanyName: 'Frosthaven',
-    },
 }).then(() => {
     console.log('success');
 });
