@@ -10,7 +10,7 @@
 ;-------------------------------------------------------------------------------
 ; Injected
 
-;{{INJECT_START:PKG}} Injected 11/15/2021 02:17:53 
+;{{INJECT_START:PKG}} Injected 11/15/2021 06:56:38
 OutFile "../_dist/Install_voicemeeter-windows-volume_v1.6.1.0_x64.exe"
 !define PRODUCT_NAME "Voicemeeter Windows Volume"
 !define PACKAGE_NAME "voicemeeter-windows-volume"
@@ -91,7 +91,7 @@ Section "Tray Application" MyApp1
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-;{{INJECT_START:UNINSTALLER}} Injected 11/15/2021 02:17:53 
+;{{INJECT_START:UNINSTALLER}} Injected 11/15/2021 06:56:38
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "Publisher" "Frosthaven"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "Voicemeeter Windows Volume"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" 1.6.1.0

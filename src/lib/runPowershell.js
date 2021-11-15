@@ -16,6 +16,26 @@ const formatCode = (typedCode) => {
     return typedCode.replace(/\r?\n|\r/g, ' ').trim();
 };
 
+const JSONPS = {
+    /**
+     * prepares powershell json results using ConvertTo-Json for JS consumption
+     * by removing ALL leading, trailing, and repeating commas.
+     * @param {array} jsonResultLines the powershell json result lines
+     */
+    parse: (jsonResultLines) => {
+        return JSON.parse(
+            jsonResultLines
+                .filter((x) => x !== '')
+                .join()
+                .replace(/\,\,/g, ',')
+                .replace(/\{\,/g, '{')
+                .replace(/\,\}/g, '}')
+                .replace(/\[\,/g, '[')
+                .replace(/\,\]/g, ']')
+        );
+    },
+};
+
 /**
  * creates a labeled powershell host the continues to run
  * @param {string} label the unique label for the host
@@ -217,4 +237,5 @@ export {
     startPowershellWorker,
     stopPowershellWorker,
     sendToPowershellWorker,
+    JSONPS,
 };

@@ -53,7 +53,7 @@ const injector = (file, sectionHandler) => {
             );
         }
 
-        // done
+        // done @todo make sure things change before writing...
         fs.writeFileSync(file, newFileContents, 'utf8');
         console.log('\x1b[32m', '    √ ', '\x1b[35m', `${file}`, '\x1b[0m');
     }
