@@ -45,7 +45,7 @@ const injector = (file, sectionHandler) => {
             newFileContents = newFileContents.replace(
                 component.full,
                 component.start +
-                    ` Injected ${dformat} \r\n` +
+                    ` Injected ${dformat}\r\n` +
                     newSectionBody +
                     '\r\n' +
                     component.syntax +
