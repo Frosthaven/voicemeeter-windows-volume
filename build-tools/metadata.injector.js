@@ -82,7 +82,7 @@ injector('./src/lib/strings.js', (section_name) => {
             return [
                 `const STRING_METADATA = {`,
                 `    name: '${pkg.name}',`,
-                `    friendlyname: '${pkg.friendly_name}',`,
+                `    friendlyname: '${pkg.friendlyName}',`,
                 `    version: '${pkg.version}',`,
                 `};`,
             ];
@@ -94,21 +94,21 @@ injector('./build-tools/build.installer.nsi', (section_name) => {
         case 'PKG':
             return [
                 `OutFile "../_dist/Install_${pkg.name}_v${pkg.version}_${os.arch}.exe"`,
-                `!define PRODUCT_NAME "${pkg.friendly_name}"`,
+                `!define PRODUCT_NAME "${pkg.friendlyName}"`,
                 `!define PACKAGE_NAME "${pkg.name}"`,
                 `!define PRODUCT_DESCRIPTION "${pkg.description}"`,
                 `!define PRODUCT_VERSION "${pkg.version}"`,
                 `!define SETUP_VERSION ${pkg.version}`,
-                `!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of ${pkg.friendly_name} v${pkg.version}.$\\r$\\n$\\r$\\nClick Next to continue."`,
-                `Name "${pkg.friendly_name}"`,
-                `BrandingText "${pkg.friendly_name} v${pkg.version}"`,
-                `InstallDir "$PROGRAMFILES\\${pkg.friendly_name}"`,
-                `InstallDirRegKey HKCU "Software\\${pkg.friendly_name}" ""`,
+                `!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of ${pkg.friendlyName} v${pkg.version}.$\\r$\\n$\\r$\\nClick Next to continue."`,
+                `Name "${pkg.friendlyName}"`,
+                `BrandingText "${pkg.friendlyName} v${pkg.version}"`,
+                `InstallDir "$PROGRAMFILES\\${pkg.friendlyName}"`,
+                `InstallDirRegKey HKCU "Software\\${pkg.friendlyName}" ""`,
             ];
         case 'UNINSTALLER':
             return [
                 `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "Publisher" "${pkg.author}"`,
-                `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayName" "${pkg.friendly_name}"`,
+                `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayName" "${pkg.friendlyName}"`,
                 `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayVersion" ${pkg.version}`,
                 `    WriteRegStr HKLM "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\\$\{PRODUCT_NAME\}\" "DisplayIcon" "$INSTDIR\\required\\app-engine.exe,0"`,
             ];
