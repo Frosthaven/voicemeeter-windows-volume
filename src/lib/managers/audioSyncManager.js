@@ -322,12 +322,14 @@ const getVoicemeeterConnection = () => {
 const startAudioSync = () => {
     AudioEvents.on('started', () => {
         setInitialVolume();
-        startWindowsEventScanner();
+        //@todo this is temporarily disabled so we can push out version 1.6.1.0
+        //startWindowsEventScanner();
     });
 
     connectVoicemeeter()
         .then((voicemeeterConnection) => {
             runWinAudio();
+            updateBindingLabels();
             if (isToggleChecked('restart_audio_engine_on_app_launch')) {
                 console.log(
                     STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(
