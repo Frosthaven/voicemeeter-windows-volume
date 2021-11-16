@@ -16,8 +16,12 @@ const startWindowsEventScanner = () => {
             'Get-EventLog -LogName system -Source "Microsoft-Windows-Kernel-Power" -Newest 15 | Where-Object {$_.EventID -eq 507} | Select-Object -Property Source, TimeWritten, InstanceID | ConvertTo-json | Out-Host',
         onResponse: (data) => {
             if (data.length > 0) {
-                data = JSONPS.parse(data);
-                console.log(data);
+                try {
+                    data = JSONPS.parse(data);
+                    console.log(data);
+                } catch (e) {
+                    cocnsole.log(e);
+                }
             }
         },
     });
