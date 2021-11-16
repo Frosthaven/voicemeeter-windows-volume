@@ -8,21 +8,29 @@
 !include "x64.nsh"
 
 ;-------------------------------------------------------------------------------
-; Constants
-!define PRODUCT_NAME "Voiceemeeter Windows Volume"
+; Injected
+
+;{{INJECT_START:PKG}}
+OutFile "../_dist/Install_voicemeeter-windows-volume_v1.6.1.0_x64.exe"
+!define PRODUCT_NAME "Voicemeeter Windows Volume"
 !define PACKAGE_NAME "voicemeeter-windows-volume"
-!define EXE_NAME "app-engine.exe"
+!define EXE_NAME "VMWV.exe"
 !define PRODUCT_DESCRIPTION "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls"
+!define PRODUCT_VERSION "1.6.1.0"
+!define SETUP_VERSION 1.6.1.0
+!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of Voicemeeter Windows Volume v1.6.1.0.$\r$\n$\r$\nClick Next to continue."
+Name "Voicemeeter Windows Volume"
+BrandingText "Voicemeeter Windows Volume v1.6.1.0"
+InstallDir "$PROGRAMFILES\Voicemeeter Windows Volume"
+InstallDirRegKey HKCU "Software\Voicemeeter Windows Volume" ""
+;{{INJECT_END:PKG}}
+
+;-------------------------------------------------------------------------------
+; Constants
 !define COPYRIGHT "Opensource"
-!define PRODUCT_VERSION "1.0.0.0"
-!define SETUP_VERSION 1.0.0.0
 
 ;-------------------------------------------------------------------------------
 ; Attributes
-Name "Voiceemeeter Windows Volume"
-OutFile "../_dist/Install_Voicemeeter_Windows_Volume_x64.exe"
-InstallDir "$PROGRAMFILES\Voicemeeter Windows Volume"
-InstallDirRegKey HKCU "Software\Voicemeeter Windows Volume" ""
 RequestExecutionLevel admin ; user|highest|admin
 
 ;-------------------------------------------------------------------------------
@@ -51,7 +59,7 @@ VIAddVersionKey "FileVersion" "${SETUP_VERSION}"
 !insertmacro MUI_PAGE_INSTFILES
 ; the below two lines need some investigation - doesn't work. will add to end of
 ; installation section for now
-; !define MUI_FINISHPAGE_RUN "$\"wscript.exe$\" $\"$INSTDIR\${PACKAGE_NAME}.vbs$\""
+; !define MUI_FINISHPAGE_RUN "$\"wscript.exe$\" $\"$INSTDIR\app-launcher.vbs$\""
 ; !define MUI_FINISHPAGE_RUN_TEXT "Run Now"
 !insertmacro MUI_PAGE_FINISH
 
@@ -70,39 +78,46 @@ VIAddVersionKey "FileVersion" "${SETUP_VERSION}"
 ; Installer Sections
 Section "Tray Application" MyApp1
     ; Stop the running process
-    ExecWait `"$SYSDIR\taskkill.exe" /im app-engine.exe`
+    ExecWait `"$SYSDIR\taskkill.exe" /im ${EXE_NAME}`
 
     ; Copy Files & Folders
     SetOutPath "$INSTDIR"
 
     File /nonfatal /a /r "..\_dist\${PACKAGE_NAME}\required"
-    File "..\_dist\${PACKAGE_NAME}\${PACKAGE_NAME}.vbs"
+    File "..\_dist\${PACKAGE_NAME}\app-launcher.vbs"
 
     ; Uninstaller
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "${PRODUCT_NAME} (remove only)"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "UninstallString" "$INSTDIR\Uninstall.exe"
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
+;{{INJECT_START:UNINSTALLER}}
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "Publisher" "Frosthaven"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "Voicemeeter Windows Volume"
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" 1.6.1.0
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayIcon" "$INSTDIR\required\${EXE_NAME},0"
+;{{INJECT_END:UNINSTALLER}}
+
     ; Start the application
-    Exec `$\"$SYSDIR\wscript.exe$\" $\"$INSTDIR\${PACKAGE_NAME}.vbs$\"`
+    Exec `$\"$SYSDIR\wscript.exe$\" $\"$INSTDIR\app-launcher.vbs$\"`
 
 SectionEnd
 
 Section "Start Menu Entry" MyApp2
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\${PACKAGE_NAME}.vbs" "" "$INSTDIR\required\assets\app.ico" 0
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app.ico" 0
 SectionEnd
 
 Section "Desktop Link" MyApp3
-    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\${PACKAGE_NAME}.vbs" "" "$INSTDIR\required\assets\app.ico" 0
+    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app.ico" 0
 SectionEnd
 
 ;-------------------------------------------------------------------------------
 ; Uninstaller Sections
 Section "Uninstall"
     ; Stop the running process
-    ExecWait `"$SYSDIR\taskkill.exe" /im app-engine.exe`
+    ExecWait `"$SYSDIR\taskkill.exe" /im ${EXE_NAME}`
 
     ; Remove the directory
     RMDir /r "$INSTDIR\*.*"

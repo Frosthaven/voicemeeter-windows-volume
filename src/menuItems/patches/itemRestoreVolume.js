@@ -1,4 +1,4 @@
-import { rememberCurrentVolume } from '../../lib/audioSyncManager';
+import { rememberCurrentVolume } from '../../lib/managers/audioSyncManager';
 import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**

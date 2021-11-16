@@ -1,5 +1,11 @@
-// these could probably be simplified and logically chosen rather than
-// explicitely duplicating names across voicemeeter versions
+//{{INJECT_START:PKG}}
+const STRING_METADATA = {
+    name: 'voicemeeter-windows-volume',
+    friendlyname: 'Voicemeeter Windows Volume',
+    version: '1.6.1.0',
+};
+//{{INJECT_END:PKG}}
+
 const STRING_VOICEMEETER_FRIENDLY_NAMES = {
     voicemeeter: {
         Strip: ['Hardware 1', 'Hardware 2', 'Virtual 1 [VAIO]'],
@@ -50,12 +56,11 @@ const STRING_CONSOLE_ENTRIES = {
     restartAudioEngineReasons: {
         userinput: 'User Input',
         applaunch: 'App Launch',
-        devicechange: 'Audio Device Change',
+        devicechange: 'Audio Device Connection Changes',
     },
 };
 
 const STRING_MENU_ITEMS = {
-    itemAppTitle: 'VOICEMEETER WINDOWS VOLUME',
     itemVMTitle: 'VOICEMEETER',
     itemSupportTitle: 'SUPPORT',
     itemTitleInputs: 'INPUTS',
@@ -128,4 +133,5 @@ export {
     STRING_VOICEMEETER_FRIENDLY_NAMES,
     STRING_CONSOLE_ENTRIES,
     STRING_MENU_ITEMS,
+    STRING_METADATA,
 };

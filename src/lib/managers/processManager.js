@@ -3,7 +3,7 @@
 */
 
 import { exec } from 'child_process';
-import { runPowershell } from './runPowershell';
+import { runPowershell } from '../runPowershell';
 
 /**
  * This is an enumeration of system priorities for ease of development

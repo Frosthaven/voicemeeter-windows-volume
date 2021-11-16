@@ -1,4 +1,4 @@
-import { getVoicemeeterConnection } from '../../lib/audioSyncManager';
+import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
 import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**

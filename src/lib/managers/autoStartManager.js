@@ -1,18 +1,17 @@
 import path from 'path';
-import { runPowershell } from './runPowershell';
+import { runPowershell } from '../runPowershell';
+import { STRING_METADATA } from '../strings';
 
 /**
  * Uses Powershell to generate a scheduled task that starts the tray application
  */
 const enableStartOnLaunch = () => {
     console.log('Enabling automatic start with Windows');
-    let actionPath = path.normalize(
-        __dirname + '/../voicemeeter-windows-volume.vbs'
-    );
+    let actionPath = path.normalize(__dirname + '/../app-launcher.vbs');
 
     let psCommand = `
-        $name = "voicemeeter-windows-volume";
-        $description = "Runs voicemeeter-windows-volume app at login";
+        $name = "${STRING_METADATA.name}";
+        $description = "Runs ${STRING_METADATA.friendlyname} app at login";
         $action = New-ScheduledTaskAction -Execute "${actionPath}";
         $trigger = New-ScheduledTaskTrigger -AtLogon;
         $principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\\Administrators" -RunLevel Highest;
@@ -39,7 +38,7 @@ const enableStartOnLaunch = () => {
 const disableStartOnLaunch = () => {
     console.log('Disabling automatic start with Windows');
     let psCommand = `
-        $name = "voicemeeter-windows-volume";
+        $name = "${STRING_METADATA.name}";
         Unregister-ScheduledTask -TaskName $name -Confirm:$false;
     `;
     runPowershell({

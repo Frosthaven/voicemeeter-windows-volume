@@ -1,7 +1,7 @@
-import { getVoicemeeterConnection } from '../../lib/audioSyncManager';
-import { isToggleChecked } from '../../lib/settingsManager';
+import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
+import { isToggleChecked } from '../../lib/managers/settingsManager';
 import { STRING_CONSOLE_ENTRIES } from '../../lib/strings';
-import { AudioEvents } from '../../lib/windowsAudioScanner';
+import { AudioEvents } from '../../lib/workers/windowsAudioScanner';
 
 /**
  * menu entry for automatically restarting the audio engine when devices change

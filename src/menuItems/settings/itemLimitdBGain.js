@@ -1,4 +1,4 @@
-import { STRING_MENU_ITEMS } from '../lib/strings';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**
  * menu entry to limit Voicemeeter dB gain to 0

@@ -1,22 +1,24 @@
-import { waitForProcess } from '../lib/processManager';
+import { waitForProcess } from './processManager';
 import {
     STRING_VOICEMEETER_FRIENDLY_NAMES,
     STRING_CONSOLE_ENTRIES,
-} from '../lib/strings';
+} from '../strings';
 import {
     isToggleChecked,
     getSettings,
     setSettings,
     saveSettings,
 } from './settingsManager';
-import { systray } from './persistantSysTray';
+import { systray } from '../persistantSysTray';
 import { Voicemeeter } from 'voicemeeter-connector';
 import {
     AudioEvents,
     getVolume,
     setVolume,
     startAudioScanner,
-} from './windowsAudioScanner';
+} from '../workers/windowsAudioScanner';
+import { startWindowsEventScanner } from '../workers/windowsEventScanner';
+import { debounce } from '../util';
 
 let voicemeeterConnection = null;
 let voicemeeterLoaded = false;
@@ -39,7 +41,7 @@ const winAudioChanged = (volume) => {
  * @param {*} voicemeeter the voicemeeter connection handle
  */
 const voicemeeterChanged = (voicemeeter) => {
-    //updateBindingLabels(voicemeeter);
+    updateBindingLabels();
 };
 
 /**
@@ -234,13 +236,14 @@ const runWinAudio = () => {
 
 /**
  * updates all binding entries in the menu with real names, and disables unused
- * @param {*} voicemeeterConnection the voicemeeter connection handle
  */
-const updateBindingLabels = (voicemeeterConnection) => {
-    // @todo THIS IS A HUGE MEMORY LEAK, MAKE THIS OPERABLE ON VOICEMEETERR CHANGE
+const updateBindingLabels = debounce(() => {
+    let vm = getVoicemeeterConnection();
+    if (!vm) {
+        return;
+    }
 
-    let friendlyNames =
-        STRING_VOICEMEETER_FRIENDLY_NAMES[voicemeeterConnection.$type];
+    let friendlyNames = STRING_VOICEMEETER_FRIENDLY_NAMES[vm.$type];
 
     if (friendlyNames) {
         for (let [key, value] of systray.internalIdMap) {
@@ -263,16 +266,8 @@ const updateBindingLabels = (voicemeeterConnection) => {
                     index = parseInt(tokens[1]);
                 let lastTitle = value.title;
                 let lastHidden = value.hidden;
-                let label = voicemeeterConnection.getParameter(
-                    type,
-                    index,
-                    'Label'
-                );
-                let deviceName = voicemeeterConnection.getParameter(
-                    type,
-                    index,
-                    'device.name'
-                );
+                let label = vm.getParameter(type, index, 'Label');
+                let deviceName = vm.getParameter(type, index, 'device.name');
 
                 let newFriendlyNames = friendlyNames[type];
                 if (newFriendlyNames[index]) {
@@ -309,9 +304,9 @@ const updateBindingLabels = (voicemeeterConnection) => {
             }
         }
     }
-
+    vm = null;
     friendlyNames = null;
-};
+}, 5000);
 
 /**
  * gets the instance of the voicemeeter connection
@@ -327,12 +322,14 @@ const getVoicemeeterConnection = () => {
 const startAudioSync = () => {
     AudioEvents.on('started', () => {
         setInitialVolume();
+        //@todo this is temporarily disabled so we can push out version 1.6.1.0
+        //startWindowsEventScanner();
     });
 
     connectVoicemeeter()
         .then((voicemeeterConnection) => {
             runWinAudio();
-            updateBindingLabels(voicemeeterConnection);
+            updateBindingLabels();
             if (isToggleChecked('restart_audio_engine_on_app_launch')) {
                 console.log(
                     STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(

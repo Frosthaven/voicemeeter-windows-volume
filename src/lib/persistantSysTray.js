@@ -7,9 +7,8 @@ import SysTray from 'systray2';
 import {
     isToggleChecked,
     saveSettings,
-    getSettings,
     loadSettings,
-} from './settingsManager';
+} from './managers/settingsManager';
 
 let systray = null;
 

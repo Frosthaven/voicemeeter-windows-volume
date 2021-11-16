@@ -1,8 +1,8 @@
 import {
     enableStartOnLaunch,
     disableStartOnLaunch,
-} from '../lib/autoStartManager';
-import { STRING_MENU_ITEMS } from '../lib/strings';
+} from '../../lib/managers/autoStartManager';
+import { STRING_MENU_ITEMS } from '../../lib/strings';
 
 /**
  * menu entry for starting the tray application when Windows starts

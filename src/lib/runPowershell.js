@@ -3,16 +3,9 @@
 */
 
 import { spawn } from 'child_process';
-import { EventEmitter } from 'events';
-import os from 'os';
-import path from 'path';
 
 let powershellHosts = [];
 let powershellWorkers = [];
-
-const scriptDirectory = path.normalize(__dirname);
-const powershellEvents = new EventEmitter();
-const outputPath = path.normalize(`${os.tmpdir}\\voicemeeter-windows-volume`);
 
 /**
  * takes a code block and removes newlines and whitespaces
@@ -21,6 +14,26 @@ const outputPath = path.normalize(`${os.tmpdir}\\voicemeeter-windows-volume`);
  */
 const formatCode = (typedCode) => {
     return typedCode.replace(/\r?\n|\r/g, ' ').trim();
+};
+
+const JSONPS = {
+    /**
+     * prepares powershell json results using ConvertTo-Json for JS consumption
+     * by removing ALL leading, trailing, and repeating commas.
+     * @param {array} jsonResultLines the powershell json result lines
+     */
+    parse: (jsonResultLines) => {
+        return JSON.parse(
+            jsonResultLines
+                .filter((x) => x !== '')
+                .join()
+                .replace(/\,\,/g, ',')
+                .replace(/\{\,/g, '{')
+                .replace(/\,\}/g, '}')
+                .replace(/\[\,/g, '[')
+                .replace(/\,\]/g, ']')
+        );
+    },
 };
 
 /**
@@ -224,4 +237,5 @@ export {
     startPowershellWorker,
     stopPowershellWorker,
     sendToPowershellWorker,
+    JSONPS,
 };
