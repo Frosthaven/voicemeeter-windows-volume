@@ -50,9 +50,9 @@ archive.directory(
     'required'
 );
 archive.file(
-    path.normalize(`${__dirname}/../_dist/${pkg.name}/${pkg.name}.vbs`),
+    path.normalize(`${__dirname}/../_dist/${pkg.name}/app-launcher.vbs`),
     {
-        name: `${pkg.name}.vbs`,
+        name: `app-launcher.vbs`,
     }
 );
 
