@@ -160,7 +160,7 @@ public class Audio {\r\n
                     AudioEvents.emit('volume', events.volume.data);
                 }
                 if (events.muted.enable) {
-                    AudioEvents.emit('muted', events.muted.data);
+                    AudioEvents.emit('mute', events.muted.data);
                 }
 
                 //cleanup
