@@ -57,6 +57,7 @@ const STRING_CONSOLE_ENTRIES = {
         userinput: 'User Input',
         applaunch: 'App Launch',
         devicechange: 'Audio Device Connection Changes',
+        resume: 'Resume From Sleep And Standby',
     },
 };
 
