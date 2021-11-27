@@ -6,16 +6,28 @@ import {
     startWindowsEventScanner,
     stopWindowsEventScanner,
 } from '../../lib/workers/windowsEventScanner';
+import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
 
 // event handlers **************************************************************
 
 WindowsEvents.on('resume', () => {
-    console.log('not implemented: resume');
+    restartVM(STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.resume);
 });
 
 WindowsEvents.on('modern_resume', () => {
-    console.log('not implimented: modern resume');
+    restartVM(STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.modern_resume);
 });
+
+// helper **********************************************************************
+
+const restartVM = (reason) => {
+    console.log(
+        STRING_CONSOLE_ENTRIES.restartAudioEngine.replace('{{REASON}}', reason)
+    );
+    let vm = getVoicemeeterConnection();
+    vm && vm.sendCommand('Restart', 1);
+    vm = null;
+};
 
 // menu entry ******************************************************************
 
