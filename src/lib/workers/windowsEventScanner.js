@@ -40,19 +40,73 @@ const startWindowsEventScanner = () => {
         interval: interval,
         label: label,
         command:
-            'Get-EventLog -LogName system -Source "Microsoft-Windows-Kernel-Power" -Newest 15 | Where-Object {$_.EventID -eq 507} | Select-Object -Property Source, TimeWritten, InstanceID | ConvertTo-json | Out-Host',
+            'echo "resume-event:"; Get-EventLog -LogName system -Source "Microsoft-Windows-Kernel-Power" -Newest 15 | Where-Object {$_.EventID -eq 507} | Select-Object -Property Source, TimeWritten, InstanceID | Out-Host; echo "monitor-sleep:"; powercfg /query;',
         onResponse: (data) => {
-            data = data.join();
+            let separatedOutputs = {};
 
-            if (data.length > 0) {
+            // split output lines into categorical arrays
+            let bucket = null;
+            let recordThis = false;
+            data.forEach((line) => {
+                switch (line) {
+                    case 'monitor-sleep:':
+                        bucket = 'monitor-sleep';
+                        recordThis = false;
+                        break;
+                    case 'resume-event:':
+                        bucket = 'resume-event';
+                        recordThis = false;
+                        break;
+                    default:
+                        recordThis = true;
+                        break;
+                }
+
+                if (recordThis) {
+                    if (!separatedOutputs[bucket]) {
+                        separatedOutputs[bucket] = [];
+                    }
+                    separatedOutputs[bucket].push(line);
+                }
+            });
+
+            // handle resume events chunk
+            if (
+                separatedOutputs['resume-event'] &&
+                separatedOutputs['resume-event'].length > 0
+            ) {
+                let resumeData = separatedOutputs['resume-event'].join();
                 if (null === lastStandbyScan) {
                     // first scan
-                    lastStandbyScan = data;
-                } else if (data !== lastStandbyScan) {
+                    lastStandbyScan = resumeData;
+                } else if (resumeData !== lastStandbyScan) {
                     // data has changed, resumed from modern standby
                     emitEvent('modern_resume');
-                    lastStandbyScan = data;
+                    lastStandbyScan = resumeData;
                 }
+                resumeData = null;
+            }
+
+            // handle monitor sleep chunk - atm this gets the current setting of when
+            // monitor goes to sleep in hex
+            if (
+                separatedOutputs['monitor-sleep'] &&
+                separatedOutputs['monitor-sleep'].length > 0
+            ) {
+                let monitorData = separatedOutputs['monitor-sleep'].join();
+                let reg =
+                    /VIDEOIDLE[\s\S]*?Index:,*([0-9|a-z]*)[\s\S]*?Index:,*([0-9|a-z]*)/;
+                let matches = monitorData.match(reg);
+                if (matches && matches[1] && matches[2]) {
+                    console.log(
+                        parseInt(matches[1], 16),
+                        parseInt(matches[2], 16)
+                    );
+                }
+
+                matches = null;
+                reg = null;
+                monitorData = null;
             }
         },
     });
