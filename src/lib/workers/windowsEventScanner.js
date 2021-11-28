@@ -1,9 +1,5 @@
 import { EventEmitter } from 'events';
-import {
-    JSONPS,
-    startPowershellWorker,
-    stopPowershellWorker,
-} from '../runPowershell';
+import { startPowershellWorker, stopPowershellWorker } from '../runPowershell';
 
 const label = 'StandbyScanner';
 const interval = 5000;
@@ -98,10 +94,7 @@ const startWindowsEventScanner = () => {
                     /VIDEOIDLE[\s\S]*?Index:,*([0-9|a-z]*)[\s\S]*?Index:,*([0-9|a-z]*)/;
                 let matches = monitorData.match(reg);
                 if (matches && matches[1] && matches[2]) {
-                    console.log(
-                        parseInt(matches[1], 16),
-                        parseInt(matches[2], 16)
-                    );
+                    let timeout = parseInt(matches[1], 16);
                 }
 
                 matches = null;
