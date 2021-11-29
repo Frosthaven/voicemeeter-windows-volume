@@ -18,15 +18,25 @@ WindowsEvents.on('modern_resume', () => {
     restartVM(STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.modern_resume);
 });
 
+WindowsEvents.on('monitor_resume', () => {
+    restartVM(STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.monitor_resume);
+});
+
 // helper **********************************************************************
 
 const restartVM = (reason) => {
-    console.log(
-        STRING_CONSOLE_ENTRIES.restartAudioEngine.replace('{{REASON}}', reason)
-    );
-    let vm = getVoicemeeterConnection();
-    vm && vm.sendCommand('Restart', 1);
-    vm = null;
+    // we wait one second to ensure system is fully resumed
+    setTimeout(() => {
+        console.log(
+            STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(
+                '{{REASON}}',
+                reason
+            )
+        );
+        let vm = getVoicemeeterConnection();
+        vm && vm.sendCommand('Restart', 1);
+        vm = null;
+    }, 1000);
 };
 
 // menu entry ******************************************************************
