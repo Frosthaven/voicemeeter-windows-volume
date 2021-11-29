@@ -43,9 +43,7 @@ Close the program if it is running, and open that file in a text editor. Here ar
 
 These are features I currently want to add to the application. This is a spare-time project, so these are in no particular order or time-table.
 
--   Two-way binding so that changes in bound voicemeeter channels can also update Windows volume.
--   Ability to restart audio-engine and additionally a feature to restart voicemeeter entirely from the tray app.
--   Ability to track Windows audio device changes and restore them on launch (Default audio devices like to change during some OS updates)
+-   Ability to control voicemeeter remotely, through both the browser and mobile devices.
 
 If you have a feature you want added, be sure to let me know with a new ticket!
 
