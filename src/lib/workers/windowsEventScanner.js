@@ -152,25 +152,12 @@ namespace PInvoke.Win32 {\r\n
                             );
                         let idletime = parseInt(match[1]);
 
-                        // set the known monitor state - we subtract the current
-                        // interval speed from the screen timeout timer to
-                        // account for the fact this code block doesn't run
-                        // every second. it allows enough time buffer to ensure
-                        // we capture screen timeouts with high accuracy
-                        console.log(
-                            timeout,
-                            idletime,
-                            timeout - interval * 0.001
-                        );
-                        if (
-                            isMonitorOn &&
-                            idletime >= timeout - interval * 0.001
-                        ) {
+                        // we use a more lenient timeout since this code block
+                        // doesn't check every second.
+                        let lenientTimeout = timeout - interval * 0.001 * 1.2;
+                        if (isMonitorOn && idletime >= lenientTimeout) {
                             isMonitorOn = false;
-                        } else if (
-                            !isMonitorOn &&
-                            idletime < timeout - interval * 0.001
-                        ) {
+                        } else if (!isMonitorOn && idletime < lenientTimeout) {
                             isMonitorOn = true;
                             emitEvent('monitor_resume');
                         }
