@@ -13,7 +13,7 @@ compile({
 //{{INJECT_END:PKG}}
     build: true, //required to use patches
     resources: [],
-    ico: './src/assets/app.ico',
+    ico: './src/assets/app-default.ico',
     cwd: './_build',
     clean: clean,
     enableNodeCli: true,

@@ -10,7 +10,7 @@
         "start": "npm run meta && npm run icon && nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
         "startb": "nodemon --exec ./node_modules/.bin/babel-node ./_build/build.js",
         "clean": "rimraf _build && rimraf _dist",
-        "icon_global": "magick convert ./src/assets/global/icon-16.png ./src/assets/global/icon-32.png ./src/assets/global/icon-64.png ./src/assets/global/icon-128.png ./src/assets/app-global.ico",
+        "icon_global": "magick convert ./src/assets/default/icon-16.png ./src/assets/default/icon-32.png ./src/assets/default/icon-64.png ./src/assets/default/icon-128.png ./src/assets/app-default.ico",
         "icon_dark": "magick convert ./src/assets/dark/icon-16.png ./src/assets/dark/icon-32.png ./src/assets/dark/icon-64.png ./src/assets/dark/icon-128.png ./src/assets/app-dark.ico",
         "icon_light": "magick convert ./src/assets/light/icon-16.png ./src/assets/light/icon-32.png ./src/assets/light/icon-64.png ./src/assets/light/icon-128.png ./src/assets/app-light.ico",
         "icon": "npm run icon_global && npm run icon_dark && npm run icon_light",
@@ -48,6 +48,7 @@
         "@babel/runtime": "^7.15.4",
         "node-gyp": "^8.4.1",
         "systray2": "^2.1.2",
-        "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#678156bb59595e015ab6b8485758b57e44871baa"
+        "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#678156bb59595e015ab6b8485758b57e44871baa",
+        "winreg": "^1.2.4"
     }
 }

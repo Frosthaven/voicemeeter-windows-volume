@@ -106,11 +106,11 @@ SectionEnd
 Section "Start Menu Entry" MyApp2
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app.ico" 0
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app-default.ico" 0
 SectionEnd
 
 Section "Desktop Link" MyApp3
-    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app.ico" 0
+    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app-default.ico" 0
 SectionEnd
 
 ;-------------------------------------------------------------------------------
