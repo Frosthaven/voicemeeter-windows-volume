@@ -56,6 +56,7 @@ If you have a feature you want added, be sure to let me know with a new ticket!
 -   [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
 -   [Windows Build Tools](https://www.npmjs.com/package/windows-build-tools) _(Visual Studio Community may also be required)_
 -   [NSIS v3.07+](https://nsis.sourceforge.io/Download) _(Manually add the NSIS folder that contains makensis.exe to the environmental PATH variable)_
+-   [ImageMagick](https://imagemagick.org/script/download.php#windows)
 
 Once you have the above tools installed as described, you will need to reboot your computer.
 

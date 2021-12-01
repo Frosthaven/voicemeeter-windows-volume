@@ -7,16 +7,20 @@
     "main": "index.js",
     "binaryName": "VMWV.exe",
     "scripts": {
-        "start": "npm run meta && nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
+        "start": "npm run meta && npm run icon && nodemon --exec ./node_modules/.bin/babel-node ./src/index.js",
         "startb": "nodemon --exec ./node_modules/.bin/babel-node ./_build/build.js",
         "clean": "rimraf _build && rimraf _dist",
+        "icon_global": "magick convert ./src/assets/global/icon-16.png ./src/assets/global/icon-32.png ./src/assets/global/icon-64.png ./src/assets/global/icon-128.png ./src/assets/app-global.ico",
+        "icon_dark": "magick convert ./src/assets/dark/icon-16.png ./src/assets/dark/icon-32.png ./src/assets/dark/icon-64.png ./src/assets/dark/icon-128.png ./src/assets/app-dark.ico",
+        "icon_light": "magick convert ./src/assets/light/icon-16.png ./src/assets/light/icon-32.png ./src/assets/light/icon-64.png ./src/assets/light/icon-128.png ./src/assets/app-light.ico",
+        "icon": "npm run icon_global && npm run icon_dark && npm run icon_light",
         "meta": "node ./build-tools/metadata.injector.js",
         "build_webpack": "webpack --config ./build-tools/webpack.config.js",
         "build_nexe": "node ./build-tools/build.nexe.js",
         "build_installer": "makensis build-tools/build.installer.nsi",
-        "build": "npm run clean && npm run meta && npm run build_webpack && npm run build_nexe && npm run build_installer && npm run archive",
         "archive": "node ./build-tools/build.archive.js",
-        "rebuild": "npm run clean && npm run meta && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
+        "build": "npm run clean && npm run icon && npm run meta && npm run build_webpack && npm run build_nexe && npm run build_installer && npm run archive",
+        "rebuild": "npm run clean && npm run icon && npm run meta && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
     },
     "keywords": [],
     "license": "ISC",
@@ -42,6 +46,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.15.4",
+        "node-gyp": "^8.4.1",
         "systray2": "^2.1.2",
         "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#678156bb59595e015ab6b8485758b57e44871baa"
     }

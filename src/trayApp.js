@@ -25,10 +25,7 @@ import { itemExit } from './menuItems/itemExit';
 
 const trayApp = {
     menu: {
-        icon:
-            os.platform() === 'win32'
-                ? path.normalize(__dirname + '/assets/app.ico')
-                : path.normalize(__dirname + '/assets/app.png'),
+        icon: path.normalize(__dirname + '/assets/app-global.ico'),
         title: STRING_METADATA.friendlyname,
         tooltip: STRING_METADATA.friendlyname,
         items: [
