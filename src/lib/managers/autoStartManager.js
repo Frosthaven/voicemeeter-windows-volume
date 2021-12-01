@@ -1,6 +1,6 @@
 import path from 'path';
-import { runPowershell } from '../runPowershell';
-import { STRING_METADATA } from '../strings';
+import { runPowershell } from '../runPowershell.js';
+import { STRING_METADATA } from '../strings.js';
 
 /**
  * Uses Powershell to generate a scheduled task that starts the tray application

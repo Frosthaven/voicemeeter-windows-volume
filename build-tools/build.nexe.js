@@ -1,10 +1,9 @@
-const { compile } = require('nexe');
-const pkg = require('../package.json');
+import { compile } from 'nexe';
 
 let clean = process.argv.slice(2)[0] === 'clean' ? true : false;
 
 compile({
-    input: './webpack.bundle.js',
+    input: './webpack.bundle.cjs',
     //{{INJECT_START:PKG}}
     output: `../_dist/voicemeeter-windows-volume/required/VMWV.exe`,
     rc: {
@@ -12,8 +11,8 @@ compile({
     },
 //{{INJECT_END:PKG}}
     build: true, //required to use patches
-    resources: [],
-    ico: './src/assets/app.ico',
+    resources: ['./webpack.bundle.cjs'],
+    ico: './src/assets/app-default.ico',
     cwd: './_build',
     clean: clean,
     enableNodeCli: true,

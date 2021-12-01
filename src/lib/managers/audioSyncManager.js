@@ -1,24 +1,23 @@
-import { waitForProcess } from './processManager';
+import { waitForProcess } from './processManager.js';
 import {
     STRING_VOICEMEETER_FRIENDLY_NAMES,
     STRING_CONSOLE_ENTRIES,
-} from '../strings';
+} from '../strings.js';
 import {
     isToggleChecked,
     getSettings,
     setSettings,
     saveSettings,
-} from './settingsManager';
-import { systray } from '../persistantSysTray';
+} from './settingsManager.js';
+import { systray } from '../persistantSysTray.js';
 import { Voicemeeter } from 'voicemeeter-connector';
 import {
     AudioEvents,
     getVolume,
     setVolume,
     startAudioScanner,
-} from '../workers/windowsAudioScanner';
-import { startWindowsEventScanner } from '../workers/windowsEventScanner';
-import { debounce } from '../util';
+} from '../workers/windowsAudioScanner.js';
+import { debounce } from '../util.js';
 
 let voicemeeterConnection = null;
 let voicemeeterLoaded = false;
@@ -33,7 +32,7 @@ let lastVolumeTime = Date.now();
  * @param {int} volume.old the old volume
  */
 const winAudioChanged = (volume) => {
-    isToggleChecked('remember_volume') && rememberCurrentVolume(volume.new);
+    isToggleChecked('remember_volume') && rememberCurrentVolume();
 };
 
 /**

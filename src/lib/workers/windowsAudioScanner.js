@@ -3,7 +3,7 @@ import {
     startPowershellWorker,
     stopPowershellWorker,
     sendToPowershellWorker,
-} from '../runPowershell';
+} from '../runPowershell.js';
 
 const label = 'AudioScanner';
 const labelDevices = 'DeviceScanner';
@@ -173,6 +173,7 @@ public class Audio {\r\n
 
     startPowershellWorker({
         interval: 5000,
+        setup: false,
         label: labelDevices,
         command: 'get-wmiobject win32_sounddevice | Out-Host;',
         onResponse: (data) => {

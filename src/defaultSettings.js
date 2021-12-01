@@ -1,4 +1,4 @@
-import { PRIORITIES } from './lib/managers/processManager';
+import { PRIORITIES } from './lib/managers/processManager.js';
 
 const defaults = {
     polling_rate: 100,

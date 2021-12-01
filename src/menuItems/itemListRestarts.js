@@ -1,7 +1,7 @@
-import { STRING_MENU_ITEMS } from '../lib/strings';
-import { itemRestartAudioEngineOnDeviceChange } from './restarts/itemRestartAudioEngineOnDeviceChange';
-import { itemRestartAudioEngineOnAppLaunch } from './restarts/itemRestartAudioEngineOnAppLaunch';
-import { itemRestartAudioEngineOnResume } from './restarts/itemRestartAudioEngineOnResume';
+import { STRING_MENU_ITEMS } from '../lib/strings.js';
+import { itemRestartAudioEngineOnDeviceChange } from './restarts/itemRestartAudioEngineOnDeviceChange.js';
+import { itemRestartAudioEngineOnAppLaunch } from './restarts/itemRestartAudioEngineOnAppLaunch.js';
+import { itemRestartAudioEngineOnResume } from './restarts/itemRestartAudioEngineOnResume.js';
 
 /**
  * menu entry for misc patches and workarounds

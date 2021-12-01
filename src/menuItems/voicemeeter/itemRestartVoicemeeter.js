@@ -1,10 +1,13 @@
-import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
+import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager.js';
 import {
     isProcessRunning,
     restartProcess,
-} from '../../lib/managers/processManager';
-import { STRING_MENU_ITEMS, STRING_CONSOLE_ENTRIES } from '../../lib/strings';
-import { isToggleChecked } from '../../lib/managers/settingsManager';
+} from '../../lib/managers/processManager.js';
+import {
+    STRING_MENU_ITEMS,
+    STRING_CONSOLE_ENTRIES,
+} from '../../lib/strings.js';
+import { isToggleChecked } from '../../lib/managers/settingsManager.js';
 /**
  * menu entry for restarting the Voicemeeter executable
  * @param {object} props properties passed to the menu item

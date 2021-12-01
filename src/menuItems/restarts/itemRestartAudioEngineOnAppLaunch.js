@@ -1,4 +1,4 @@
-import { STRING_CONSOLE_ENTRIES } from '../../lib/strings';
+import { STRING_CONSOLE_ENTRIES } from '../../lib/strings.js';
 
 /**
  * menu entry for automatically restarting the audio engine when devices change

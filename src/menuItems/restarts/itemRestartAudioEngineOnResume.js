@@ -1,12 +1,12 @@
 // imports *********************************************************************
 
-import { STRING_CONSOLE_ENTRIES } from '../../lib/strings';
+import { STRING_CONSOLE_ENTRIES } from '../../lib/strings.js';
 import {
     WindowsEvents,
     startWindowsEventScanner,
     stopWindowsEventScanner,
-} from '../../lib/workers/windowsEventScanner';
-import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
+} from '../../lib/workers/windowsEventScanner.js';
+import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager.js';
 
 // event handlers **************************************************************
 

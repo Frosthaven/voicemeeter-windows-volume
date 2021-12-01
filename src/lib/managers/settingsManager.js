@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 
-import { systray } from '../persistantSysTray';
+import { systray } from '../persistantSysTray.js';
 let settingsFilePath = '';
 let settings = null;
 
@@ -48,7 +48,7 @@ const loadSettings = ({ settingsPath, defaults, callback }) => {
     // attempt to load our settings
     try {
         // settings loaded successfully
-        setSettings(JSON.parse(fs.readFileSync(settingsFilePath)));
+        setSettings(JSON.parse(fs.readFileSync(settingsFilePath).toString()));
         console.log('Using settings file:', settingsFilePath);
     } catch (err) {
         // something went wrong, or the file doesn't exist

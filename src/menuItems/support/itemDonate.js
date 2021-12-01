@@ -1,7 +1,7 @@
-import { systray } from '../../lib/persistantSysTray';
-import { runPowershell } from '../../lib/runPowershell';
-import { getSettings } from '../../lib/managers/settingsManager';
-import { STRING_MENU_ITEMS } from '../../lib/strings';
+import { systray } from '../../lib/persistantSysTray.js';
+import { runPowershell } from '../../lib/runPowershell.js';
+import { getSettings } from '../../lib/managers/settingsManager.js';
+import { STRING_MENU_ITEMS } from '../../lib/strings.js';
 /**
  * menu entry for launching the donation page in the default browser
  * @param {object} props properties passed to the menu item

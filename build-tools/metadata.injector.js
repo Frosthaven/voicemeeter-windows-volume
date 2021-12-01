@@ -1,7 +1,10 @@
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-let pkg = require('./../package.json');
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+
+import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
+const pkg = require('./../package.json');
 
 let pattern =
     /({{INJECT_(?:START):(.*)}})([\s\S]*)(;|\/\/|\#|\')({{INJECT_(?:END):(\2)}})/g;
@@ -129,7 +132,7 @@ injector('./build-tools/include/app-launcher.vbs', (section_name) => {
     }
 });
 
-injector('./src/lib/strings.js', (section_name) => {
+injector('./src/lib/strings.ts', (section_name) => {
     switch (section_name) {
         case 'PKG':
             return [

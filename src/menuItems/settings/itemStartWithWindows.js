@@ -1,8 +1,8 @@
 import {
     enableStartOnLaunch,
     disableStartOnLaunch,
-} from '../../lib/managers/autoStartManager';
-import { STRING_MENU_ITEMS } from '../../lib/strings';
+} from '../../lib/managers/autoStartManager.js';
+import { STRING_MENU_ITEMS } from '../../lib/strings.js';
 
 /**
  * menu entry for starting the tray application when Windows starts

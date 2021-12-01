@@ -1,10 +1,15 @@
-const os = require('os');
+import os from 'os';
+import fs from 'fs';
+import path from 'path';
+import archiver from 'archiver';
 
-// require modules
-const fs = require('fs');
-const archiver = require('archiver');
-const pkg = require('../package.json');
-const path = require('path');
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url); // construct the require method
+const pkg = require('./../package.json');
 
 // name the file
 const zipName = `Portable_${pkg.name}_v${pkg.version}_${os.arch}.zip`;

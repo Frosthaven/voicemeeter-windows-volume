@@ -2,25 +2,38 @@
  * main entry point for voicemeeter-windows-volume
  */
 
+console.log('typescript conversion ready...');
+setTimeout(() => {
+    process.exit(1);
+}, 10000);
+/*
 // imports *********************************************************************
 
 // local
-import { systray, setupPersistantSystray } from './lib/persistantSysTray';
-import { startAudioSync } from './lib/managers/audioSyncManager';
-import { getVoicemeeterConnection } from './lib/managers/audioSyncManager';
-import { trayApp } from './trayApp';
-import { defaults } from './defaultSettings';
+import { systray, setupPersistantSystray } from './lib/persistantSysTray.js';
+import { startAudioSync } from './lib/managers/audioSyncManager.js';
+import { getVoicemeeterConnection } from './lib/managers/audioSyncManager.js';
+import { getTrayApp } from './trayApp.js';
+import { defaults } from './defaultSettings.js';
+import { getDirName, getSystemColor } from './lib/util.js';
 
-const settingsPath = `${__dirname}/settings.json`;
+const settingsPath = `${getDirName()}/settings.json`;
+
+// types ***********************************************************************
+
+type exitOptions = {
+    cleanup?: boolean;
+    exit?: boolean;
+};
 
 // handle app exit *************************************************************
 
-const exitHandler = (options, exitCode) => {
+const exitHandler = (options: exitOptions, exitCode: string) => {
     if (options.cleanup) {
         let vm = getVoicemeeterConnection();
         vm && vm.disconnect();
         vm = null;
-        systray.kill(false);
+        systray && systray.kill(false);
         console.log('clean exit');
     }
     if (exitCode) console.log('Exit Code:', exitCode);
@@ -37,14 +50,16 @@ process.on('SIGUSR2', exitHandler.bind(null, { exit: true }));
 process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 // initialize the tray app *****************************************************
-
 console.log('Voicemeeter Windows Volume started, Process ID: ', process.pid);
-setupPersistantSystray({
-    trayApp,
-    defaults,
-    settingsPath,
-    onReady: () => {
-        console.log('Starting audio synchronization');
-        startAudioSync();
-    },
+getSystemColor().then((color: any) => {
+    setupPersistantSystray({
+        trayApp: getTrayApp(color),
+        defaults,
+        settingsPath,
+        onReady: () => {
+            console.log('Starting audio synchronization');
+            startAudioSync();
+        },
+    });
 });
+*/

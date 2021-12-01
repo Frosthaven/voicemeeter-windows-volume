@@ -1,5 +1,8 @@
 import { EventEmitter } from 'events';
-import { startPowershellWorker, stopPowershellWorker } from '../runPowershell';
+import {
+    startPowershellWorker,
+    stopPowershellWorker,
+} from '../runPowershell.js';
 
 const label = 'StandbyScanner';
 const interval = 5000;

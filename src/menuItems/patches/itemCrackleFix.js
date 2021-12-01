@@ -1,10 +1,10 @@
-import { getSettings } from '../../lib/managers/settingsManager';
+import { getSettings } from '../../lib/managers/settingsManager.js';
 import {
     PRIORITIES,
     setProcessPriority,
     setProcessAffinity,
-} from '../../lib/managers/processManager';
-import { STRING_MENU_ITEMS } from '../../lib/strings';
+} from '../../lib/managers/processManager.js';
+import { STRING_MENU_ITEMS } from '../../lib/strings.js';
 
 /**
  * menu entry for fixing audio crackle by setting process priority and affinity

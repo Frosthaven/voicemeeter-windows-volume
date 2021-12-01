@@ -3,7 +3,7 @@
 */
 
 import { exec } from 'child_process';
-import { runPowershell } from '../runPowershell';
+import { runPowershell } from '../runPowershell.js';
 
 /**
  * This is an enumeration of system priorities for ease of development
@@ -51,6 +51,8 @@ const isProcessRunning = (processNameRegex, cb) => {
             cmd = `tasklist`;
             break;
         case 'darwin':
+            //
+            /* @ts-ignore - necessary if not running on OSX */
             cmd = `ps -ax | grep ${query}`;
             break;
         case 'linux':

@@ -1,0 +1,6 @@
+{
+    "watch": ["src"],
+    "ext": "js,ts,json",
+    "ignore": ["settings.json", "README"],
+    "exec": "npx rimraf types && npm run types && node --no-warnings --loader ts-node/esm ./src/index.ts"
+}

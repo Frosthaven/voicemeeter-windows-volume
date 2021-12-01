@@ -2,15 +2,13 @@
  This handles creating a custom systray instance that is bound to a settings file
 */
 
-import SysTray from 'systray2';
+import SysTray, { ClickEvent, MenuItem } from 'systray2';
 
 import {
     isToggleChecked,
     saveSettings,
     loadSettings,
-} from './managers/settingsManager';
-
-let systray = null;
+} from './managers/settingsManager.js';
 
 /**
  * looks through the systray menu items and runs any existing init() method
@@ -23,6 +21,8 @@ const runInitCode = () => {
         }
     }
 };
+
+let systray = null;
 
 /**
  * creates a system tray instance with settings saving capabilities
@@ -47,10 +47,10 @@ const setupPersistantSystray = ({
     onReady,
 }) => {
     // create the systray instance
-    systray = new SysTray(trayApp);
+    let newSysTray = new SysTray(trayApp);
 
     // load the settings once ready
-    systray.ready().then(() => {
+    newSysTray.ready().then(() => {
         loadSettings({
             settingsPath,
             defaults,
@@ -64,7 +64,7 @@ const setupPersistantSystray = ({
     });
 
     // change the settings when a checkbox changes
-    systray.onClick((action) => {
+    newSysTray.onClick((action) => {
         if (action.item.click != null) {
             action.item.click();
         }
@@ -90,7 +90,7 @@ const setupPersistantSystray = ({
                 type: 'update-item',
                 item: action.item,
             });
-            saveSettings(systray);
+            saveSettings();
         }
 
         if (action?.item?.sid && typeof action?.item?.activate === 'function') {
@@ -99,6 +99,7 @@ const setupPersistantSystray = ({
         }
     });
 
+    systray = newSysTray;
     return systray;
 };
 

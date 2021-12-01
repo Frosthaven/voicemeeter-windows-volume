@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "outDir": "../_build",
+        "baseUrl": "../src",
+        "typeRoots": ["../node_modules/@types", "../types"],
+        "allowJs": true,
+        "target": "es5",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "emitDeclarationOnly": false,
+        "declaration": false,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noUnusedLocals": true,
+        "strict": true
+    },
+    "files": ["../src/index.ts"]
+}

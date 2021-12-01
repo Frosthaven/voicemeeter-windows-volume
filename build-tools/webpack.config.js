@@ -1,9 +1,16 @@
-const path = require('path');
-const nodeExternals = require('webpack-node-externals');
-const fs = require('fs');
-const CopyPlugin = require('copy-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const pkg = require('../package.json');
+import path from 'path';
+import nodeExternals from 'webpack-node-externals';
+import CopyPlugin from 'copy-webpack-plugin';
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+import { createRequire } from 'module'; // Bring in the ability to create the 'require' method
+const require = createRequire(import.meta.url); // construct the require method
+const pkg = require('./../package.json');
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /// PRE-CONFIG *****************************************************************
 //******************************************************************************
@@ -37,20 +44,40 @@ hard_copy.push({
 
 /// WEBPACK CONFIG *************************************************************
 //******************************************************************************
-module.exports = {
+const config = {
     context: path.resolve(__dirname, '../'),
-    entry: './src/index.js',
+    entry: './src/index.ts',
     output: {
         path: path.resolve('./_build'),
-        filename: 'webpack.bundle.js',
+        filename: 'webpack.bundle.cjs',
     },
     target: 'node',
     externalsPresets: { node: true },
     externals: [nodeExternals()],
 
     mode: 'production',
+    devtool: 'source-map',
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+    },
     module: {
         rules: [
+            {
+                test: /\.ts$/,
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: path.resolve(
+                                __dirname,
+                                '../build-tools/tsconfig.production.json'
+                            ),
+                        },
+                    },
+                ],
+                exclude: /node_modules/,
+            },
             { test: /\.node$/, use: 'node-loader' },
             {
                 test: /\.m?js$/,
@@ -58,7 +85,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['@babel/preset-env'],
+                        presets: ['@babel/typescript', '@babel/preset-env'],
                         plugins: ['@babel/transform-runtime'],
                     },
                 },
@@ -75,12 +102,7 @@ module.exports = {
     ],
     optimization: {
         minimize: true,
-        minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    mangle: true,
-                },
-            }),
-        ],
     },
 };
+
+export default config;

@@ -1,5 +1,8 @@
-import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
-import { STRING_MENU_ITEMS, STRING_CONSOLE_ENTRIES } from '../../lib/strings';
+import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager.js';
+import {
+    STRING_MENU_ITEMS,
+    STRING_CONSOLE_ENTRIES,
+} from '../../lib/strings.js';
 /**
  * menu entry for restarting the Voicemeeter audio engine
  * @param {object} props properties passed to the menu item
