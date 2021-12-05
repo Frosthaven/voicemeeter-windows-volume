@@ -34,7 +34,6 @@
         "@babel/core": "^7.15.5",
         "@babel/node": "^7.15.4",
         "@babel/plugin-transform-runtime": "^7.15.0",
-        "@babel/polyfill": "^7.12.1",
         "@babel/preset-env": "^7.15.4",
         "@babel/preset-typescript": "^7.16.0",
         "@types/node": "^16.11.11",
@@ -49,10 +48,10 @@
         "npm": "^8.2.0",
         "rimraf": "^3.0.2",
         "source-map-loader": "^3.0.0",
-        "terser-webpack-plugin": "^5.2.3",
         "ts-loader": "^9.2.6",
         "ts-node": "^10.4.0",
         "tslib": "^2.3.1",
+        "typescript": "^4.5.2",
         "webpack": "^5.52.0",
         "webpack-cli": "^4.8.0",
         "webpack-node-externals": "^3.0.0"
@@ -62,7 +61,6 @@
         "mkdirp": "^1.0.4",
         "node-gyp": "^8.4.1",
         "systray2": "^2.1.2",
-        "typescript": "^4.5.2",
         "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#678156bb59595e015ab6b8485758b57e44871baa",
         "winreg": "^1.2.4"
     }
