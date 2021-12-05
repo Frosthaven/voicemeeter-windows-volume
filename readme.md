@@ -56,9 +56,10 @@ If you have a feature you want added, be sure to let me know with a new ticket!
 -   [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
 -   [Windows Build Tools](https://visualstudio.microsoft.com/downloads/?q=build+tools)
     -   _Scroll down until you reach the build tools download link - You'll want to check "Desktop Development with C++"_
-    -   _If you are using Visual Studio 2022 or newer, you may need to update node-gyp in powershell: - ```ps1
-        npm install --global node-gyp@latest
-        npm prefix -g | % {npm config set node_gyp "$_\node_modules\node-gyp\bin\node-gyp.js"}
+    -   _If you are using Visual Studio 2022 or newer, you may need to update node-gyp in powershell:_
+    -   ```ps1
+          npm install --global node-gyp@latest
+          npm prefix -g | % {npm config set node_gyp "$_\node_modules\node-gyp\bin\node-gyp.js"}
         ```
 -   [NSIS v3.07+](https://nsis.sourceforge.io/Download) _(Manually add the NSIS folder that contains makensis.exe to the environmental PATH variable)_
 -   [ImageMagick](https://imagemagick.org/script/download.php#windows)
