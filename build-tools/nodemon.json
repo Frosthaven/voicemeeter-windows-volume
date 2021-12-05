@@ -1,6 +1,6 @@
 {
-    "watch": ["src"],
+    "watch": ["build-tools", "src"],
     "ext": "js,ts,json",
-    "ignore": ["_build","settings.json", "README"],
-    "exec": "npx webpack --config ./build-tools/webpack.config.js && node ./_build/webpack.bundle.cjs"
+    "ignore": ["_build", "settings.json", "README"],
+    "exec": "npx webpack --config ./build-tools/webpack.config.js --env development && node ./_build/webpack.bundle.cjs"
 }

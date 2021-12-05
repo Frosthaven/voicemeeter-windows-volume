@@ -11,6 +11,7 @@
         "emitDeclarationOnly": false,
         "declaration": false,
         "forceConsistentCasingInFileNames": true,
+        "noImplicitAny": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "strict": true

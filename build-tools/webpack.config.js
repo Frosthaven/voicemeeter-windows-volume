@@ -44,65 +44,67 @@ hard_copy.push({
 
 /// WEBPACK CONFIG *************************************************************
 //******************************************************************************
-const config = {
-    context: path.resolve(__dirname, '../'),
-    entry: './src/index.ts',
-    output: {
-        path: path.resolve('./_build'),
-        filename: 'webpack.bundle.cjs',
-    },
-    target: 'node',
-    externalsPresets: { node: true },
-    externals: [nodeExternals()],
 
-    mode: 'production',
-    devtool: 'source-map',
-    resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
-    },
-    module: {
-        rules: [
-            {
-                test: /\.ts$/,
-                use: [
-                    {
-                        loader: 'ts-loader',
+export default (env) => {
+    let mode = env.development ? 'development' : 'production';
+    console.log(`webpack configured for ${mode}`);
+    return {
+        context: path.resolve(__dirname, '../'),
+        entry: './src/index.ts',
+        output: {
+            path: path.resolve('./_build'),
+            filename: 'webpack.bundle.cjs',
+        },
+        target: 'node',
+        externalsPresets: { node: true },
+        externals: [nodeExternals()],
+        mode: mode,
+        devtool: 'source-map',
+        resolve: {
+            // Add '.ts' and '.tsx' as resolvable extensions.
+            extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.ts$/,
+                    use: [
+                        {
+                            loader: 'ts-loader',
+                            options: {
+                                configFile: path.resolve(
+                                    __dirname,
+                                    '../build-tools/tsconfig.production.json'
+                                ),
+                            },
+                        },
+                    ],
+                    exclude: /node_modules/,
+                },
+                { test: /\.node$/, use: 'node-loader' },
+                {
+                    test: /\.m?js$/,
+                    exclude: /(node_modules|bower_components)/,
+                    use: {
+                        loader: 'babel-loader',
                         options: {
-                            configFile: path.resolve(
-                                __dirname,
-                                '../build-tools/tsconfig.production.json'
-                            ),
+                            presets: ['@babel/typescript', '@babel/preset-env'],
+                            plugins: ['@babel/transform-runtime'],
                         },
                     },
-                ],
-                exclude: /node_modules/,
-            },
-            { test: /\.node$/, use: 'node-loader' },
-            {
-                test: /\.m?js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/typescript', '@babel/preset-env'],
-                        plugins: ['@babel/transform-runtime'],
-                    },
                 },
-            },
+            ],
+        },
+        plugins: [
+            new CopyPlugin({
+                patterns: hard_copy,
+                options: {
+                    concurrency: 100,
+                },
+            }),
         ],
-    },
-    plugins: [
-        new CopyPlugin({
-            patterns: hard_copy,
-            options: {
-                concurrency: 100,
-            },
-        }),
-    ],
-    optimization: {
-        minimize: true,
-    },
+        optimization: {
+            minimize: mode === 'production' ? true : false,
+        },
+    };
 };
-
-export default config;
