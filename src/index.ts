@@ -3,9 +3,7 @@
  */
 
 console.log('typescript conversion ready...');
-setTimeout(() => {
-    process.exit(1);
-}, 10000);
+setTimeout(() => {}, 10000);
 /*
 // imports *********************************************************************
 
