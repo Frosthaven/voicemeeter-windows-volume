@@ -54,7 +54,7 @@ If you have a feature you want added, be sure to let me know with a new ticket!
 -   [NodeJS](https://nodejs.org/) _(Currently on the 16.x line)_
 -   [Python v3.6-v3.9](https://www.python.org/downloads/) _(Ensure the python binary and scripts folder are in the system PATH variable)_
 -   [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
--   [Windows Build Tools](https://visualstudio.microsoft.com/downloads/?q=build+tools) _(Scroll down until you reach the build tools download link)_
+-   [Windows Build Tools](https://visualstudio.microsoft.com/downloads/?q=build+tools) _(Scroll down until you reach the build tools download link - You'll want to check "Desktop Development with C++")_
 -   [NSIS v3.07+](https://nsis.sourceforge.io/Download) _(Manually add the NSIS folder that contains makensis.exe to the environmental PATH variable)_
 -   [ImageMagick](https://imagemagick.org/script/download.php#windows)
 
