@@ -1,6 +1,6 @@
 {
     "watch": ["src"],
     "ext": "js,ts,json",
-    "ignore": ["settings.json", "README"],
-    "exec": "npx rimraf types && npm run types && node --no-warnings --loader ts-node/esm ./src/index.ts"
+    "ignore": ["_build","settings.json", "README"],
+    "exec": "npx webpack --config ./build-tools/webpack.config.js && node ./_build/webpack.bundle.cjs"
 }
