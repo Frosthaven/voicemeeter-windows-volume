@@ -63,6 +63,7 @@ Once you have the above tools installed as described, you will need to reboot yo
 ## Commands
 
 -   `npm install` _Installs dependencies_
+-   `npm run dev` _Runs the project from source (Note:some features require administrative prompt to function)_
 -   `npm run build` _Builds the projects into the \_dist folder_
 -   `npm run rebuild` _Triggers a full rebuild of the node binary, including any changes made to the exe details_
 
