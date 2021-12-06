@@ -2,7 +2,7 @@ import { waitForProcess } from './processManager.js';
 import {
     STRING_VOICEMEETER_FRIENDLY_NAMES,
     STRING_CONSOLE_ENTRIES,
-} from '../strings.js';
+} from '../strings.ts';
 import {
     isToggleChecked,
     getSettings,

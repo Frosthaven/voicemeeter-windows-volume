@@ -2,8 +2,25 @@
  * main entry point for voicemeeter-windows-volume
  */
 
-console.log('typescript conversion ready...');
-setTimeout(() => {}, 10000);
+// imports *********************************************************************
+// *****************************************************************************
+
+import { init } from './lib/lifecycle';
+
+// main ************************************************************************
+// *****************************************************************************
+// we wrap our main logic in a function to provide async/await at top-level and
+// also ensure POSIX compliant exit status is conveyed
+
+init()
+    .then(() => {
+        process.exit(0);
+    })
+    .catch((err) => {
+        console.error(err);
+        process.exit(1);
+    });
+
 /*
 // imports *********************************************************************
 
@@ -61,3 +78,5 @@ getSystemColor().then((color: any) => {
     });
 });
 */
+
+export {};

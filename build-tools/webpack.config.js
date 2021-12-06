@@ -1,6 +1,7 @@
 import path from 'path';
 import nodeExternals from 'webpack-node-externals';
 import CopyPlugin from 'copy-webpack-plugin';
+import os from 'os';
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -47,7 +48,10 @@ hard_copy.push({
 
 export default (env) => {
     let mode = env.development ? 'development' : 'production';
-    console.log(`webpack configured for ${mode}`);
+    console.log(
+        os.EOL + '\x1b[34mi',
+        '\x1b[0mWebpack configured for \x1b[34m' + mode + '\x1b[0m' + os.EOL
+    );
     return {
         context: path.resolve(__dirname, '../'),
         entry: './src/index.ts',
@@ -74,7 +78,7 @@ export default (env) => {
                             options: {
                                 configFile: path.resolve(
                                     __dirname,
-                                    '../build-tools/tsconfig.production.json'
+                                    '../tsconfig.json'
                                 ),
                             },
                         },
