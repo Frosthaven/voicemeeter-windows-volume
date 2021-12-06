@@ -12,7 +12,7 @@ import * as path from 'path';
 // variables *******************************************************************
 // *****************************************************************************
 
-let logger: any; // will be populated with logger on init
+let logger: null | winston.Logger = null;
 
 // code ************************************************************************
 // *****************************************************************************
@@ -25,7 +25,7 @@ const init = () => {
     logger = winston.createLogger({
         level: 'info',
         format: winston.format.json(),
-        defaultMeta: { service: 'user-service' },
+        defaultMeta: '', //{ service: 'vmwv' },
         transports: [
             //
             // - Write all logs with level `error` and below to `error.log`
@@ -70,7 +70,9 @@ const flushLogs = () => {
     logFiles.forEach((fileName) => {
         try {
             fs.unlinkSync(path.normalize(`./logs/${fileName}.log`));
-        } catch (err) {}
+        } catch (err) {
+            /* silent */
+        }
     });
 };
 
@@ -92,7 +94,7 @@ type LogLevels =
  * @param message the message to log
  */
 const log = (level: LogLevels, message: string) => {
-    logger.log({ level, message });
+    logger && logger.log({ level, message });
 };
 
 export { init, log };

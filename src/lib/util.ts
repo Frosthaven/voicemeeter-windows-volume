@@ -21,6 +21,16 @@ const getDirName = () => {
 };
 
 /**
+ * allows code execution to pause for the specified time
+ * @param time time in ms to sleep
+ */
+const sleep = (time: number) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, time);
+    });
+};
+
+/**
  * ensures a provided function cannot be called more than once every wait period
  */
 const debounce = (callback: Function, wait: number) => {
@@ -41,11 +51,11 @@ const getSystemColor = async () => {
     return new Promise((resolve, reject) => {
         let color: SystemColor = 'default';
         try {
-            const RegPersonalization = new Registry({
+            const RegPersonalize = new Registry({
                 hive: Registry.HKCU,
                 key: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize',
             });
-            RegPersonalization.values((err, items) => {
+            RegPersonalize.values((err, items) => {
                 if (err) {
                     resolve(color);
                 } else {
@@ -53,8 +63,8 @@ const getSystemColor = async () => {
                         (i) => i.name === 'AppsUseLightTheme'
                     )?.value;
                     if (typeof AppsUseLightTheme !== 'undefined') {
-                        let enabled = parseInt(AppsUseLightTheme, 16);
-                        color = enabled === 0 ? 'dark' : 'light';
+                        let flag = parseInt(AppsUseLightTheme, 16);
+                        color = flag === 0 ? 'dark' : 'light';
                         resolve(color);
                     } else {
                         resolve(color);
@@ -67,4 +77,4 @@ const getSystemColor = async () => {
     });
 };
 
-export { debounce, getDirName, getSystemColor };
+export { debounce, getDirName, sleep, getSystemColor };

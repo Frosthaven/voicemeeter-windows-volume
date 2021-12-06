@@ -7,6 +7,7 @@
 
 import * as logger from './logger';
 import { getSystemColor } from './util';
+import * as voicemeeter from './managers/voicemeeterManager';
 
 // helper **********************************************************************
 // *****************************************************************************
@@ -26,7 +27,7 @@ const registerExitHandlers = () => {
         if (options.cleanup) {
             exit();
         }
-        if (exitCode) console.log('Exit Code:', exitCode);
+        if (exitCode) logger.log('info', `Exit Code: ${exitCode}`);
         if (options.exit) process.exit();
     };
 
@@ -45,14 +46,25 @@ const registerExitHandlers = () => {
  * starts the application logic
  */
 const init = async () => {
+    // logger setup
     logger.init();
-    let systemColor = await getSystemColor();
-    registerExitHandlers();
     logger.log(
         'info',
         `Voicemeeter Windows Volume started, Process ID: ${process.pid}`
     );
+
+    // exit handlers
+    registerExitHandlers();
+
+    // system color theme
+    let systemColor = await getSystemColor();
     logger.log('info', `Color Scheme: ${systemColor}`);
+
+    // voicemeeter
+    await voicemeeter.connect();
+
+    // windows audio
+    // await winaudio.init();
 };
 
 // exit ************************************************************************
@@ -64,9 +76,10 @@ const init = async () => {
  */
 const exit = () => {
     // clean exit
-    // let vm = getVoicemeeterConnection();
-    // vm && vm.disconnect();
-    // vm = null;
+    logger.log('info', 'Disconnecting from Voicemeeter');
+    let vm = voicemeeter.connection;
+    vm && vm.disconnect();
+    logger.log('info', `Clean exit`);
     // systray && systray.kill(false);
 };
 
