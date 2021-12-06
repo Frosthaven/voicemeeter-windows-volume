@@ -5,6 +5,7 @@
 // imports *********************************************************************
 // *****************************************************************************
 
+import * as logger from './logger';
 import { getSystemColor } from './util';
 
 // helper **********************************************************************
@@ -44,13 +45,14 @@ const registerExitHandlers = () => {
  * starts the application logic
  */
 const init = async () => {
+    logger.init();
     let systemColor = await getSystemColor();
     registerExitHandlers();
-    console.log(
-        'Voicemeeter Windows Volume started, Process ID: ',
-        process.pid
+    logger.log(
+        'info',
+        `Voicemeeter Windows Volume started, Process ID: ${process.pid}`
     );
-    console.log(`Color Scheme: ${systemColor}`);
+    logger.log('info', `Color Scheme: ${systemColor}`);
 };
 
 // exit ************************************************************************

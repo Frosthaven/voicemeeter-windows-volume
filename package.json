@@ -6,26 +6,27 @@
     "description": "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls",
     "author": "Frosthaven",
     "binaryName": "VMWV.exe",
+    "typings": "./types",
     "scripts": {
-        "types": "npx -p typescript tsc --outDir types --project ./tsconfig.json",
-        "dev": "rimraf types && nodemon --config ./build-tools/nodemon.json",
-        "clean": "rimraf types && rimraf _build && rimraf _dist",
+        "dev": "set NODE_ENV=development && nodemon --config ./build-tools/nodemon.json",
+        "clean": "rimraf _build && rimraf _dist",
         "icon_dir": "npx mkdirp _build/assets/default && npx mkdirp _build/assets/light npx mkdirp _build/assets/dark && rimraf mkdirp && rimraf npx",
-        "icon_base_default": "npm run icon_dir && magick convert ./src/assets/prebuild/icon-32.png -resize 32x32 ./_build/assets/default/icon-32.png && magick convert ./src/assets/prebuild/icon-32.png -resize 16x16 ./_build/assets/default/icon-16.png && magick convert ./src/assets/prebuild/icon-128.png -resize 64x64 ./_build/assets/default/icon-64.png  && magick convert ./src/assets/prebuild/icon-128.png -resize 128x128 ./_build/assets/default/icon-128.png",
+        "icon_base_default": "npm run icon_dir && magick convert ./src/assets/app-32.png -resize 32x32 ./_build/assets/default/icon-32.png && magick convert ./src/assets/app-32.png -resize 16x16 ./_build/assets/default/icon-16.png && magick convert ./src/assets/app-128.png -resize 64x64 ./_build/assets/default/icon-64.png  && magick convert ./src/assets/app-128.png -resize 128x128 ./_build/assets/default/icon-128.png",
         "icon_base_dark": "magick convert _build/assets/default/icon-16.png xc:\"#ffffff\" -channel RGB -clut  _build/assets/dark/icon-16.png && magick convert _build/assets/default/icon-32.png xc:\"#ffffff\" -channel RGB -clut  _build/assets/dark/icon-32.png && magick convert _build/assets/default/icon-64.png xc:\"#ffffff\" -channel RGB -clut  _build/assets/dark/icon-64.png && magick convert _build/assets/default/icon-128.png xc:\"#ffffff\" -channel RGB -clut  _build/assets/dark/icon-128.png",
         "icon_base_light": "magick convert _build/assets/default/icon-16.png xc:\"#000000\" -channel RGB -clut  _build/assets/light/icon-16.png && magick convert _build/assets/default/icon-32.png xc:\"#000000\" -channel RGB -clut  _build/assets/light/icon-32.png && magick convert _build/assets/default/icon-64.png xc:\"#000000\" -channel RGB -clut  _build/assets/light/icon-64.png && magick convert _build/assets/default/icon-128.png xc:\"#000000\" -channel RGB -clut  _build/assets/light/icon-128.png",
-        "icon_default": "magick convert ./_build/assets/default/icon-16.png ./_build/assets/default/icon-32.png ./_build/assets/default/icon-64.png ./_build/assets/default/icon-128.png ./src/assets/app-default.ico",
-        "icon_dark": "magick convert ./_build/assets/dark/icon-16.png ./_build/assets/dark/icon-32.png ./_build/assets/dark/icon-64.png ./_build/assets/dark/icon-128.png ./src/assets/app-dark.ico",
-        "icon_light": "magick convert ./_build/assets/light/icon-16.png ./_build/assets/light/icon-32.png ./_build/assets/light/icon-64.png ./_build/assets/light/icon-128.png ./src/assets/app-light.ico",
-        "icon": "npm run icon_dir && npm run icon_base_default && npm run icon_base_dark && npm run icon_base_light && npm run icon_default && npm run icon_dark && npm run icon_light",
+        "icon_default": "magick convert ./_build/assets/default/icon-16.png ./_build/assets/default/icon-32.png ./_build/assets/default/icon-64.png ./_build/assets/default/icon-128.png ./_build/assets/app-default.ico",
+        "icon_dark": "magick convert ./_build/assets/dark/icon-16.png ./_build/assets/dark/icon-32.png ./_build/assets/dark/icon-64.png ./_build/assets/dark/icon-128.png ./_build/assets/app-dark.ico",
+        "icon_light": "magick convert ./_build/assets/light/icon-16.png ./_build/assets/light/icon-32.png ./_build/assets/light/icon-64.png ./_build/assets/light/icon-128.png ./_build/assets/app-light.ico",
+        "icon_cleanup": "rimraf ./_build/assets/dark && rimraf ./_build/assets/light && rimraf ./_build/assets/default",
+        "icon": "npm run icon_dir && npm run icon_base_default && npm run icon_base_dark && npm run icon_base_light && npm run icon_default && npm run icon_dark && npm run icon_light && npm run icon_cleanup",
         "meta": "node ./build-tools/metadata.injector.js",
         "build_webpack": "webpack --config ./build-tools/webpack.config.js --env production",
         "copy_bundle": "node ./build-tools/copy.bundle.js",
         "build_nexe": "node ./build-tools/build.nexe.js",
         "build_installer": "makensis build-tools/build.installer.nsi",
         "archive": "node ./build-tools/build.archive.js",
-        "build": "npm run clean && npm run icon && npm run meta && npm run build_webpack && npm run copy_bundle && npm run build_nexe && npm run build_installer && npm run archive",
-        "rebuild": "npm run clean && npm run icon && npm run meta && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
+        "build": "set NODE_ENV=production && npm run clean && npm run icon && npm run meta && npm run build_webpack && npm run copy_bundle && npm run build_nexe && npm run build_installer && npm run archive",
+        "rebuild": "set NODE_ENV=production && npm run clean && npm run icon && npm run meta && npm run build_webpack && node ./build-tools/build.nexe.js clean && node ./build-tools/build.nexe.js && npm run build_installer && npm run archive"
     },
     "keywords": [],
     "license": "ISC",
@@ -63,6 +64,7 @@
         "node-gyp": "^8.4.1",
         "systray2": "^2.1.2",
         "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#678156bb59595e015ab6b8485758b57e44871baa",
-        "winreg": "^1.2.4"
+        "winreg": "^1.2.4",
+        "winston": "^3.3.3"
     }
 }

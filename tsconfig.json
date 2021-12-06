@@ -1,20 +1,23 @@
 {
     "compilerOptions": {
-        "outDir": "_build",
+        "outDir": "./_build",
         "baseUrl": "src",
-        "typeRoots": ["node_modules/@types", "types"],
+        "types": ["node"],
+        "typeRoots": ["../node_modules/@types", "../types"],
+        "declaration": true,
+        "declarationDir": "./types",
         "allowJs": true,
         "target": "es2017",
         "module": "esnext",
         "moduleResolution": "node",
         "esModuleInterop": true,
         "emitDeclarationOnly": false,
-        "declaration": false,
         "forceConsistentCasingInFileNames": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noUnusedLocals": true,
         "strict": true
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }

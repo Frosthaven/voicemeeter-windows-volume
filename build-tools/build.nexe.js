@@ -12,7 +12,7 @@ compile({
 //{{INJECT_END:PKG}}
     build: true, //required to use patches
     resources: ['./webpack.bundle.cjs'],
-    ico: './src/assets/app-default.ico',
+    ico: './_build/assets/app-default.ico',
     cwd: './_build',
     clean: clean,
     enableNodeCli: true,
