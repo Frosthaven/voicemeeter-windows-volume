@@ -21,7 +21,8 @@ init()
         process.exit(1);
     });
 
-/*
+/* OLD CODE BELOW THIS POINT
+
 // imports *********************************************************************
 
 // local
@@ -78,5 +79,3 @@ getSystemColor().then((color: any) => {
     });
 });
 */
-
-export {};

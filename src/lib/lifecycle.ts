@@ -9,6 +9,7 @@ import { getSystemColor } from './util';
 
 // helper **********************************************************************
 // *****************************************************************************
+
 /**
  * registers exit handlers so that we can run cleanup when possible
  */
@@ -40,8 +41,7 @@ const registerExitHandlers = () => {
 // *****************************************************************************
 
 /**
- * starts the application logic. we wrap this logic in a function to support
- * async/await (since those cannot be used in top-level at this time)
+ * starts the application logic
  */
 const init = async () => {
     let systemColor = await getSystemColor();
