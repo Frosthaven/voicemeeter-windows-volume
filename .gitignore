@@ -5,3 +5,5 @@ npm-debug.log
 .env
 .DS_Store
 settings.json
+logs
+.log
