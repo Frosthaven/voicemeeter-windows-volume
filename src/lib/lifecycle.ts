@@ -61,6 +61,9 @@ const init = async () => {
     logger.log('info', `Color Scheme: ${systemColor}`);
 
     // voicemeeter
+    voicemeeter.events.on('ready', () => {
+        // voicemeeter state is populated and ready for tracking
+    });
     await voicemeeter.connect();
 
     // windows audio
