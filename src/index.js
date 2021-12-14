@@ -40,14 +40,12 @@ process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 // initialize the tray app *****************************************************
 
 console.log('Voicemeeter Windows Volume started, Process ID: ', process.pid);
-getSystemColor().then((color) => {
-    setupPersistantSystray({
-        trayApp: getTrayApp(color),
-        defaults,
-        settingsPath,
-        onReady: () => {
-            console.log('Starting audio synchronization');
-            startAudioSync();
-        },
-    });
+setupPersistantSystray({
+    trayApp: getTrayApp('default'),
+    defaults,
+    settingsPath,
+    onReady: () => {
+        console.log('Starting audio synchronization');
+        startAudioSync();
+    },
 });
