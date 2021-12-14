@@ -63,7 +63,7 @@
         "mkdirp": "^1.0.4",
         "node-gyp": "^8.4.1",
         "systray2": "^2.1.2",
-        "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#a17cfd5bd3456bffca2342878a9bd605957bdeac",
+        "voicemeeter-connector": "github:Frosthaven/voicemeeter-connector#e34fc7e1386c0b51481c62233ffbb3c6c2b2b6b8",
         "winreg": "^1.2.4",
         "winston": "^3.3.3"
     }

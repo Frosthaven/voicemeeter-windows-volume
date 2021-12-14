@@ -63,11 +63,19 @@ const init = async () => {
     // voicemeeter
     voicemeeter.events.on('ready', () => {
         // voicemeeter state is populated and ready for tracking
+        debug();
     });
     await voicemeeter.connect();
 
     // windows audio
     // await winaudio.init();
+};
+
+// debug ***********************************************************************
+// *****************************************************************************
+
+const debug = () => {
+    logger.log('info', 'hi');
 };
 
 // exit ************************************************************************
