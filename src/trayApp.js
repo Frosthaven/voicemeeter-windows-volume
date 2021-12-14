@@ -22,44 +22,45 @@ import { itemDonate } from './menuItems/support/itemDonate';
 import { itemExit } from './menuItems/itemExit';
 
 // tray app setup **************************************************************
-
-const trayApp = {
-    menu: {
-        icon:
-            os.platform() === 'win32'
-                ? path.normalize(__dirname + '/assets/app.ico')
-                : path.normalize(__dirname + '/assets/app.png'),
-        title: STRING_METADATA.friendlyname,
-        tooltip: STRING_METADATA.friendlyname,
-        items: [
-            {
-                title: `${STRING_METADATA.friendlyname.toUpperCase()}\tv${
-                    STRING_METADATA.version
-                }`,
-                enabled: false,
-            },
-            itemListBindings(),
-            itemListRestarts(),
-            itemListPatches(),
-            SysTray.separator,
-            { title: STRING_MENU_ITEMS['itemVMTitle'], enabled: false },
-            itemShowVoicemeeter(),
-            itemRestartVoicemeeter(),
-            itemRestartAudioEngine(),
-            SysTray.separator,
-            { title: STRING_MENU_ITEMS['itemSupportTitle'], enabled: false },
-            itemVisitGithub(),
-            itemDonate(),
-            SysTray.separator,
-            itemExit({
-                click: () => {
-                    process.exit();
+const getTrayApp = (color) => {
+    return {
+        menu: {
+            icon: path.normalize(__dirname + `/assets/app-${color}.ico`),
+            title: STRING_METADATA.friendlyname,
+            tooltip: STRING_METADATA.friendlyname,
+            items: [
+                {
+                    title: `${STRING_METADATA.friendlyname.toUpperCase()}\tv${
+                        STRING_METADATA.version
+                    }`,
+                    enabled: false,
                 },
-            }),
-        ],
-    },
-    debug: false,
-    copyDir: true, // this is required since we're compiling to an exe
+                itemListBindings(),
+                itemListRestarts(),
+                itemListPatches(),
+                SysTray.separator,
+                { title: STRING_MENU_ITEMS['itemVMTitle'], enabled: false },
+                itemShowVoicemeeter(),
+                itemRestartVoicemeeter(),
+                itemRestartAudioEngine(),
+                SysTray.separator,
+                {
+                    title: STRING_MENU_ITEMS['itemSupportTitle'],
+                    enabled: false,
+                },
+                itemVisitGithub(),
+                itemDonate(),
+                SysTray.separator,
+                itemExit({
+                    click: () => {
+                        process.exit();
+                    },
+                }),
+            ],
+        },
+        debug: false,
+        copyDir: true, // this is required since we're compiling to an exe
+    };
 };
 
-export { trayApp };
+export { getTrayApp };

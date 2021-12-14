@@ -11,16 +11,16 @@
 ; Injected
 
 ;{{INJECT_START:PKG}}
-OutFile "../_dist/Install_voicemeeter-windows-volume_v1.6.2.0_x64.exe"
+OutFile "../_dist/Install_voicemeeter-windows-volume_v1.7.2.0_x64.exe"
 !define PRODUCT_NAME "Voicemeeter Windows Volume"
 !define PACKAGE_NAME "voicemeeter-windows-volume"
 !define EXE_NAME "VMWV.exe"
 !define PRODUCT_DESCRIPTION "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls"
-!define PRODUCT_VERSION "1.6.2.0"
-!define SETUP_VERSION 1.6.2.0
-!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of Voicemeeter Windows Volume v1.6.2.0.$\r$\n$\r$\nClick Next to continue."
+!define PRODUCT_VERSION "1.7.2.0"
+!define SETUP_VERSION 1.7.2.0
+!define MUI_TEXT_WELCOME_INFO_TEXT "This will guide you through the installation of Voicemeeter Windows Volume v1.7.2.0.$\r$\n$\r$\nClick Next to continue."
 Name "Voicemeeter Windows Volume"
-BrandingText "Voicemeeter Windows Volume v1.6.2.0"
+BrandingText "Voicemeeter Windows Volume v1.7.2.0"
 InstallDir "$PROGRAMFILES\Voicemeeter Windows Volume"
 InstallDirRegKey HKCU "Software\Voicemeeter Windows Volume" ""
 ;{{INJECT_END:PKG}}
@@ -94,7 +94,7 @@ Section "Tray Application" MyApp1
 ;{{INJECT_START:UNINSTALLER}}
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "Publisher" "Frosthaven"
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayName" "Voicemeeter Windows Volume"
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" 1.6.2.0
+    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayVersion" 1.7.2.0
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayIcon" "$INSTDIR\required\${EXE_NAME},0"
 ;{{INJECT_END:UNINSTALLER}}
 
@@ -106,11 +106,11 @@ SectionEnd
 Section "Start Menu Entry" MyApp2
     CreateDirectory "$SMPROGRAMS\${PRODUCT_NAME}"
     CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
-    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app.ico" 0
+    CreateShortCut "$SMPROGRAMS\${PRODUCT_NAME}\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app-default.ico" 0
 SectionEnd
 
 Section "Desktop Link" MyApp3
-    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app.ico" 0
+    CreateShortCut "$DESKTOP\${PRODUCT_NAME}.lnk" "$INSTDIR\app-launcher.vbs" "" "$INSTDIR\required\assets\app-default.ico" 0
 SectionEnd
 
 ;-------------------------------------------------------------------------------

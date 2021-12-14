@@ -8,8 +8,9 @@
 import { systray, setupPersistantSystray } from './lib/persistantSysTray';
 import { startAudioSync } from './lib/managers/audioSyncManager';
 import { getVoicemeeterConnection } from './lib/managers/audioSyncManager';
-import { trayApp } from './trayApp';
+import { getTrayApp } from './trayApp';
 import { defaults } from './defaultSettings';
+import { getSystemColor } from './lib/util';
 
 const settingsPath = `${__dirname}/settings.json`;
 
@@ -40,7 +41,7 @@ process.on('uncaughtException', exitHandler.bind(null, { exit: true }));
 
 console.log('Voicemeeter Windows Volume started, Process ID: ', process.pid);
 setupPersistantSystray({
-    trayApp,
+    trayApp: getTrayApp('default'),
     defaults,
     settingsPath,
     onReady: () => {

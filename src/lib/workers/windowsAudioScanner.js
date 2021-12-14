@@ -111,7 +111,10 @@ public class Audio {\r\n
         onResponse: (data) => {
             if (data && data.length > 0) {
                 // get volume and mute state out of the top two lines
-                let newVolume = Math.round(parseFloat(data.shift()) * 100);
+                // replace any ',' with a '.' - some locales use unparsable comma
+                let newVolume = Math.round(
+                    parseFloat(data.shift().replace(',', '.')) * 100
+                );
                 let newMuted = data.shift() === 'True' ? true : false;
 
                 let events = {
