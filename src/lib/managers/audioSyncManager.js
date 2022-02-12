@@ -247,24 +247,26 @@ const runWinAudio = () => {
 
     AudioEvents.on('mute', (status) => {
         // status.new = true or false to indicate mute
-        if (voicemeeterConnection) {
-            for (let [key, value] of systray.internalIdMap) {
-                if (
-                    value.checked &&
-                    (value?.sid?.startsWith('Strip') ||
-                        value?.sid?.startsWith('Bus'))
-                ) {
-                    const tokens = value.sid.split('_');
-                    const type = '';
-                    const isMute = status.new ? 1 : 0;
-                    try {
-                        voicemeeterConnection.setParameter(
-                            tokens[0],
-                            tokens[1],
-                            'Mute',
-                            isMute
-                        );
-                    } catch (e) {}
+        if (isToggleChecked('sync_mute')) {
+            if (voicemeeterConnection) {
+                for (let [key, value] of systray.internalIdMap) {
+                    if (
+                        value.checked &&
+                        (value?.sid?.startsWith('Strip') ||
+                            value?.sid?.startsWith('Bus'))
+                    ) {
+                        const tokens = value.sid.split('_');
+                        const type = '';
+                        const isMute = status.new ? 1 : 0;
+                        try {
+                            voicemeeterConnection.setParameter(
+                                tokens[0],
+                                tokens[1],
+                                'Mute',
+                                isMute
+                            );
+                        } catch (e) {}
+                    }
                 }
             }
         }

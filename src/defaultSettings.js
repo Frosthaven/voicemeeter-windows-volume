@@ -6,6 +6,7 @@ const defaults = {
     gain_max: 12,
     start_with_windows: true,
     limit_db_gain_to_0: false,
+    sync_mute: true,
     remember_volume: false,
     disable_donate: false,
     audiodg: {
