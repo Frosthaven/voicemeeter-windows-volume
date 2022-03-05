@@ -14,6 +14,7 @@ const enableStartOnLaunch = () => {
         $description = "Runs ${STRING_METADATA.friendlyname} app at login";
         $action = New-ScheduledTaskAction -Execute "${actionPath}";
         $trigger = New-ScheduledTaskTrigger -AtLogon;
+        $trigger.Delay = 'PT10S';
         $principal = New-ScheduledTaskPrincipal -GroupId "BUILTIN\\Administrators" -RunLevel Highest;
         $settings = New-ScheduledTaskSettingsSet -DontStopIfGoingOnBatteries -AllowStartIfOnBatteries -DontStopOnIdleEnd -ExecutionTimeLimit 0;
         $task = New-ScheduledTask -Description $description -Action $action -Principal $principal -Trigger $trigger -Settings $settings;
