@@ -127,15 +127,24 @@ const connectVoicemeeter = () => {
 };
 
 /**
- * converts a A windows volume level (0-100) to Voicemeeter decibel level
+ * logarithmically converts a A windows volume level (0-100) to a
+ * Voicemeeter decibel level
  */
 const convertVolumeToVoicemeeterGain = (windowsVolume, gain_min, gain_max) => {
     if (isToggleChecked('limit_db_gain_to_0')) {
         gain_max = 0;
     }
 
-    const gain = (windowsVolume * (gain_max - gain_min)) / 100 + gain_min;
+    // Avoid taking log_10 (0)
+    let amp = -1000;
+    if (windowsVolume > 0) {
+        amp = Math.log(windowsVolume / 100) / Math.log(10);
+    }
+
+    // Use function for dB = 20 * log_10 (amp), with an additional offset for gain_max
+    const gain = Math.max(20 * amp + gain_max, gain_min);
     const roundedGain = Math.round(gain * 10) / 10;
+
     return roundedGain;
 };
 
