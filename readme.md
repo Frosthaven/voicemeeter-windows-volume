@@ -41,7 +41,7 @@ Close the program if it is running, and open that file in a text editor. Here ar
 ## Contributors
 
 -   [metahexane](https://github.com/metahexane)
-    -   Logorithmic volume calculation to replace flat scale conversion
+    -   Logarithmic volume calculation to replace flat scale conversion
 
 ## Feature Wishlist
 
