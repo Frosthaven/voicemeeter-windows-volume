@@ -1,10 +1,10 @@
 import { itemLimitdBGain } from './settings/itemLimitdBGain';
-import { itemRestartAudioEngineOnDeviceChange } from './restarts/itemRestartAudioEngineOnDeviceChange';
 import { itemRestoreVolume } from './patches/itemRestoreVolume';
 import { itemPreventVolumeSpikes } from './patches/itemPreventVolumeSpikes';
 import { itemCrackleFix } from './patches/itemCrackleFix';
 import { STRING_MENU_ITEMS } from '../lib/strings';
 import { itemStartWithWindows } from './settings/itemStartWithWindows';
+import { itemLinearVolumeScale } from './settings/itemLinearVolumeScale';
 
 /**
  * menu entry for misc patches and workarounds
@@ -19,6 +19,7 @@ const itemListPatches = (props) => {
             { title: STRING_MENU_ITEMS['itemTitleSettings'] },
             itemStartWithWindows(),
             itemLimitdBGain(),
+            itemLinearVolumeScale(),
             { title: '', enabled: false },
             { title: STRING_MENU_ITEMS['itemTitleDriverWorkarounds'] },
             itemRestoreVolume(),

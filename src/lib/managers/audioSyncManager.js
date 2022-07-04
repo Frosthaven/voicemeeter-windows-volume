@@ -127,6 +127,25 @@ const connectVoicemeeter = () => {
 };
 
 /**
+ * linearly converts a A windows volume level (0-100) to a
+ * Voicemeeter decibel level
+ */
+const convertVolumeToVoicemeeterGainLinear = (
+    windowsVolume,
+    gain_min,
+    gain_max
+) => {
+    if (isToggleChecked('limit_db_gain_to_0')) {
+        gain_max = 0;
+    }
+
+    const gain = (windowsVolume * (gain_max - gain_min)) / 100 + gain_min;
+    const roundedGain = Math.round(gain * 10) / 10;
+
+    return roundedGain;
+};
+
+/**
  * logarithmically converts a A windows volume level (0-100) to a
  * Voicemeeter decibel level
  */
@@ -191,11 +210,20 @@ const runWinAudio = () => {
                     (value?.sid?.startsWith('Strip') ||
                         value?.sid?.startsWith('Bus'))
                 ) {
-                    let voicemeeterGain = convertVolumeToVoicemeeterGain(
-                        volume.new,
-                        settings.gain_min,
-                        settings.gain_max
-                    );
+                    let voicemeeterGain;
+                    if (isToggleChecked('linear_volume_scale')) {
+                        voicemeeterGain = convertVolumeToVoicemeeterGainLinear(
+                            volume.new,
+                            settings.gain_min,
+                            settings.gain_max
+                        );
+                    } else {
+                        voicemeeterGain = convertVolumeToVoicemeeterGain(
+                            volume.new,
+                            settings.gain_min,
+                            settings.gain_max
+                        );
+                    }
                     let tokens = value.sid.split('_');
                     try {
                         voicemeeterConnection.setParameter(
