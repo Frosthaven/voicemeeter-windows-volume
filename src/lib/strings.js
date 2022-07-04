@@ -2,7 +2,7 @@
 const STRING_METADATA = {
     name: 'voicemeeter-windows-volume',
     friendlyname: 'Voicemeeter Windows Volume',
-    version: '1.7.3.0',
+    version: '1.7.4.0',
 };
 //{{INJECT_END:PKG}}
 
@@ -100,6 +100,10 @@ const STRING_MENU_ITEMS = {
     },
     itemLimitdBGain: {
         t: 'Limit Max Gain To 0dB',
+        d: '',
+    },
+    itemLinearVolumeScale: {
+        t: 'Use Linear Volume Scaling',
         d: '',
     },
     itemRestoreVolume: {

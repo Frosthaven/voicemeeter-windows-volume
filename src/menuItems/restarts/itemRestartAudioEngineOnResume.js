@@ -7,6 +7,7 @@ import {
     stopWindowsEventScanner,
 } from '../../lib/workers/windowsEventScanner';
 import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
+import { itemCrackleFix } from '../patches/itemCrackleFix';
 
 // event handlers **************************************************************
 
@@ -36,6 +37,12 @@ const restartVM = (reason) => {
         let vm = getVoicemeeterConnection();
         vm && vm.sendCommand('Restart', 1);
         vm = null;
+
+        // re-apply crackle fix if enabled
+        setTimeout(() => {
+            const crackleFix = itemCrackleFix();
+            crackleFix.activate(true);
+        }, 3000);
     }, 1000);
 };
 
