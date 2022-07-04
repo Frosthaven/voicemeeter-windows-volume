@@ -8,6 +8,7 @@ import {
 } from '../../lib/workers/windowsEventScanner';
 import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
 import { itemCrackleFix } from '../patches/itemCrackleFix';
+import { isToggleChecked } from '../../lib/managers/settingsManager';
 
 // event handlers **************************************************************
 
@@ -38,11 +39,13 @@ const restartVM = (reason) => {
         vm && vm.sendCommand('Restart', 1);
         vm = null;
 
-        // re-apply crackle fix if enabled
-        setTimeout(() => {
-            const crackleFix = itemCrackleFix();
-            crackleFix.activate(true);
-        }, 3000);
+        if (isToggleChecked('apply_crackle_fix')) {
+            // re-apply crackle fix if enabled
+            setTimeout(() => {
+                const crackleFix = itemCrackleFix();
+                crackleFix.activate(true);
+            }, 3000);
+        }
     }, 1000);
 };
 
