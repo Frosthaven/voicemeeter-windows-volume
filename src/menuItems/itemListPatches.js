@@ -1,4 +1,5 @@
 import { itemLimitdBGain } from './settings/itemLimitdBGain';
+import { itemSyncMute } from './settings/itemSyncMute';
 import { itemRestoreVolume } from './patches/itemRestoreVolume';
 import { itemPreventVolumeSpikes } from './patches/itemPreventVolumeSpikes';
 import { itemCrackleFix } from './patches/itemCrackleFix';
@@ -20,6 +21,7 @@ const itemListPatches = (props) => {
             itemStartWithWindows(),
             itemLimitdBGain(),
             itemLinearVolumeScale(),
+            itemSyncMute(),
             { title: '', enabled: false },
             { title: STRING_MENU_ITEMS['itemTitleDriverWorkarounds'] },
             itemRestoreVolume(),

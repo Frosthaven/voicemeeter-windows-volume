@@ -106,6 +106,10 @@ const STRING_MENU_ITEMS = {
         t: 'Use Linear Volume Scaling',
         d: '',
     },
+    itemSyncMute: {
+        t: 'Sync mute',
+        d: '',
+    },
     itemRestoreVolume: {
         t: 'Restore Volume At Launch',
         d: '',
