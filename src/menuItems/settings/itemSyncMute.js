@@ -18,7 +18,7 @@ const itemSyncMute = (props) => {
             if (checked) {
                 console.log('Syncing mute');
             } else {
-                console.log('No longer sync mute');
+                console.log('No longer syncing mute');
             }
         },
     };
