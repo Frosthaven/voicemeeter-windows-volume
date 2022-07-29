@@ -19,7 +19,9 @@ The advantage of this application is that you do not need to fiddle with custom 
     -   `Limit Max Gain To 0dB`
         -   Windows volume will max out Voicemeeter to 0dB instead of +12dB
     -   `Use Linear Volume Scaling`
-        -   substitutes the logorithmic volume scaling out for simplified linear scaling
+        -   Substitutes the logorithmic volume scaling out for simplified linear scaling
+    -   `Sync Mute`
+        -   If enabled, the mute state of Windows will be synced along with the volume
     -   `Restore Volume At Launch`
         -   This setting allows the app to remember your volume changes while it is open and restore the last known volume on launch. This is useful for users with drivers that reset the volume on startup/reboot.
     -   `Prevent 100% Volume Spikes`
