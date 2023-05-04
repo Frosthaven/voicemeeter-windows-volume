@@ -2,7 +2,7 @@
 const STRING_METADATA = {
     name: 'voicemeeter-windows-volume',
     friendlyname: 'Voicemeeter Windows Volume',
-    version: '1.7.5.0',
+    version: '1.7.7.0',
 };
 //{{INJECT_END:PKG}}
 
@@ -57,6 +57,7 @@ const STRING_CONSOLE_ENTRIES = {
         userinput: 'User Input',
         applaunch: 'App Launch',
         devicechange: 'Audio Device Connection Changes',
+        anydevicechange: 'Any Device Connection Changes',
         resume: 'Resume From Standby',
         modern_resume: 'Resume From Modern Standby',
         monitor_resume: 'Monitor Resumed From Standby',

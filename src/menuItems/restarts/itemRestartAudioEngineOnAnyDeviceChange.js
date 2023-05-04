@@ -1,14 +1,12 @@
 import { getVoicemeeterConnection } from '../../lib/managers/audioSyncManager';
-import {
-    getSettings,
-    isToggleChecked,
-    setSettings,
-} from '../../lib/managers/settingsManager';
+import { isToggleChecked } from '../../lib/managers/settingsManager';
 import { STRING_CONSOLE_ENTRIES } from '../../lib/strings';
 import {
     AudioEvents,
-    startAudioDeviceScanner,
+    startAnyDeviceScanner,
+    stopAnyDeviceScanner,
     stopAudioDeviceScanner,
+    startAudioDeviceScanner,
 } from '../../lib/workers/windowsAudioScanner';
 
 /**
@@ -16,26 +14,21 @@ import {
  * @param {object} props properties passed to the menu item
  * @returns
  */
-const itemRestartAudioEngineOnDeviceChange = (props) => {
+const itemRestartAudioEngineOnAnyDeviceChange = (props) => {
     return {
-        title: STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.devicechange,
+        title: STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.anydevicechange,
         checked: false,
-        sid: 'restart_audio_engine_on_device_change',
+        sid: 'restart_audio_engine_on_any_device_change',
         enabled: true,
         init: function (checked) {
-            AudioEvents.on('audio_device', (devices) => {
-                let isEnabled =
-                    isToggleChecked('restart_audio_engine_on_device_change') &&
-                    !isToggleChecked(
-                        'restart_audio_engine_on_any_device_change'
-                    );
-                if (isEnabled) {
+            AudioEvents.on('any_device', (devices) => {
+                if (checked) {
                     setTimeout(() => {
                         console.log(
                             STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(
                                 '{{REASON}}',
                                 STRING_CONSOLE_ENTRIES.restartAudioEngineReasons
-                                    .devicechange
+                                    .anydevicechange
                             )
                         );
                         let vm = getVoicemeeterConnection();
@@ -43,19 +36,22 @@ const itemRestartAudioEngineOnDeviceChange = (props) => {
                         vm = null;
                     }, 1000);
                 }
-
-                isEnabled = null;
             });
             checked && this.activate(checked);
         },
         activate: function (checked) {
             if (checked) {
-                startAudioDeviceScanner();
-            } else {
                 stopAudioDeviceScanner();
+                startAnyDeviceScanner();
+            } else {
+                if (isToggleChecked('restart_audio_engine_on_device_change')) {
+                    startAudioDeviceScanner();
+                }
+
+                stopAnyDeviceScanner();
             }
         },
     };
 };
 
-export { itemRestartAudioEngineOnDeviceChange };
+export { itemRestartAudioEngineOnAnyDeviceChange };

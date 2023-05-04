@@ -2,6 +2,7 @@ import { STRING_MENU_ITEMS } from '../lib/strings';
 import { itemRestartAudioEngineOnDeviceChange } from './restarts/itemRestartAudioEngineOnDeviceChange';
 import { itemRestartAudioEngineOnAppLaunch } from './restarts/itemRestartAudioEngineOnAppLaunch';
 import { itemRestartAudioEngineOnResume } from './restarts/itemRestartAudioEngineOnResume';
+import { itemRestartAudioEngineOnAnyDeviceChange } from './restarts/itemRestartAudioEngineOnAnyDeviceChange';
 
 /**
  * menu entry for misc patches and workarounds
@@ -14,6 +15,7 @@ const itemListRestarts = (props) => {
         enabled: true,
         items: [
             itemRestartAudioEngineOnDeviceChange(),
+            itemRestartAudioEngineOnAnyDeviceChange(),
             itemRestartAudioEngineOnResume(),
             itemRestartAudioEngineOnAppLaunch(),
         ],

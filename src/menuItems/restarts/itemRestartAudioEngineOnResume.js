@@ -52,7 +52,8 @@ const restartVM = (reason) => {
 // menu entry ******************************************************************
 
 /**
- * menu entry for automatically restarting the audio engine when devices change
+ * menu entry for automatically restarting the audio engine when resuming from
+ * standby / sleep
  * @param {object} props properties passed to the menu item
  * @returns
  */
