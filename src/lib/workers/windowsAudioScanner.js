@@ -6,7 +6,8 @@ import {
 } from '../runPowershell';
 
 const label = 'AudioScanner';
-const labelDevices = 'DeviceScanner';
+const labelAudioDevices = 'AudioDeviceScanner';
+const labelAllDevices = 'AllDeviceScanner';
 
 let AudioEvents = new EventEmitter();
 let started = null;
@@ -173,10 +174,18 @@ public class Audio {\r\n
             }
         },
     });
+};
 
+const stopAudioScanner = () => {
+    stopPowershellWorker(label);
+    AudioEvents.emit('stopped');
+    started = false;
+};
+
+const startAudioDeviceScanner = () => {
     startPowershellWorker({
         interval: 5000,
-        label: labelDevices,
+        label: labelAudioDevices,
         command: 'get-wmiobject win32_sounddevice | Out-Host;',
         onResponse: (data) => {
             // remaining data is active audio device status. if we need more
@@ -204,22 +213,64 @@ public class Audio {\r\n
             }
 
             if (events.device.enable) {
-                AudioEvents.emit('device', events.device.data);
+                AudioEvents.emit('audio_device', events.device.data);
             }
 
             newDevices = null;
         },
     });
 };
+const stopAudioDeviceScanner = () => {
+    stopPowershellWorker(labelAudioDevices);
+};
 
-const stopAudioScanner = () => {
-    stopPowershellWorker(label);
-    stopPowershellWorker(labelDevices);
-    AudioEvents.emit('stopped');
-    started = false;
+const startAnyDeviceScanner = () => {
+    startPowershellWorker({
+        interval: 5000,
+        label: labelAllDevices,
+        command: 'Get-PnpDevice -PresentOnly | Out-Host;',
+        onResponse: (data) => {
+            // remaining data is active audio device status. if we need more
+            // data control later, we can split the lines via regex /\s{2,}/
+            // which will give us a 2 dimensional array of device info
+            // (the first two indexes will be headers, and then divider lines)
+            let newDevices = data;
+            let events = {
+                device: {
+                    enable: false,
+                    data: null,
+                },
+            };
+
+            if (newDevices.length > 0 && !arraysEqual(devices, newDevices)) {
+                if (devices.length > 0) {
+                    events.device.enable = true;
+                    events.device.data = {
+                        old: devices,
+                        new: newDevices,
+                    };
+                }
+
+                devices = Array.from(newDevices);
+            }
+
+            if (events.device.enable) {
+                AudioEvents.emit('any_device', events.device.data);
+            }
+
+            newDevices = null;
+        },
+    });
+};
+const stopAnyDeviceScanner = () => {
+    stopPowershellWorker(labelAllDevices);
 };
 
 export {
+    startAnyDeviceScanner,
+    stopAnyDeviceScanner,
+    startAudioDeviceScanner,
+    stopAudioDeviceScanner,
     startAudioScanner,
     stopAudioScanner,
     getDevices,

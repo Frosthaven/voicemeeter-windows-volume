@@ -61,7 +61,7 @@ If you have a feature you want added, be sure to let me know with a new ticket!
 
 ## Requirements
 
--   [NodeJS](https://nodejs.org/) _(Currently on the 16.x line)_
+-   [NodeJS](https://nodejs.org/) _(Currently on the 18.x line)_
 -   [Python v3.6-v3.9](https://www.python.org/downloads/) _(Ensure the python binary and scripts folder are in the system PATH variable)_
 -   [NASM](https://www.nasm.us/pub/nasm/releasebuilds/2.15.04/) _(Right click > Run as Administrator)_
 -   [Windows Build Tools](https://visualstudio.microsoft.com/downloads/?q=build+tools) _(Scroll down until you reach the build tools download link)_
