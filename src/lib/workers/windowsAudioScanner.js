@@ -204,16 +204,16 @@ const startAudioDeviceScanner = () => {
                 if (devices.length > 0) {
                     events.device.enable = true;
                     events.device.data = {
-                        old: devices,
-                        new: newDevices,
+                        old: devices.length,
+                        new: newDevices.length,
                     };
                 }
 
-                devices = Array.from(newDevices);
-            }
+                if (events.device.enable) {
+                    AudioEvents.emit('audio_device', events.device.data);
+                }
 
-            if (events.device.enable) {
-                AudioEvents.emit('audio_device', events.device.data);
+                devices = Array.from(newDevices);
             }
 
             newDevices = null;
@@ -242,20 +242,20 @@ const startAnyDeviceScanner = () => {
                 },
             };
 
-            if (newDevices.length > 0 && !arraysEqual(devices, newDevices)) {
+            if (!arraysEqual(devices, newDevices)) {
                 if (devices.length > 0) {
                     events.device.enable = true;
                     events.device.data = {
-                        old: devices,
-                        new: newDevices,
+                        old: devices.length,
+                        new: newDevices.length,
                     };
+
+                    if (events.device.enable) {
+                        AudioEvents.emit('any_device', events.device.data);
+                    }
                 }
 
                 devices = Array.from(newDevices);
-            }
-
-            if (events.device.enable) {
-                AudioEvents.emit('any_device', events.device.data);
             }
 
             newDevices = null;
