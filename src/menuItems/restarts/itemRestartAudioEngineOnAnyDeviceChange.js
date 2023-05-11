@@ -28,8 +28,15 @@ const itemRestartAudioEngineOnAnyDeviceChange = () => {
               STRING_CONSOLE_ENTRIES.restartAudioEngine.replace(
                 "{{REASON}}",
                 STRING_CONSOLE_ENTRIES.restartAudioEngineReasons.anydevicechange
-              ),
-              `(${chalk.magenta(devices.old)} => ${chalk.green(devices.new)})`
+              )
+            );
+            console.log(
+              chalk.blue(STRING_CONSOLE_ENTRIES.restartDeviceMessages.added),
+              devices.added
+            );
+            console.log(
+              chalk.red(STRING_CONSOLE_ENTRIES.restartDeviceMessages.removed),
+              devices.removed
             );
             let vm = getVoicemeeterConnection();
             vm && vm.sendCommand("Restart", 1);

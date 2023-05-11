@@ -1,7 +1,7 @@
 {
     "name": "voicemeeter-windows-volume",
     "friendlyName": "Voicemeeter Windows Volume",
-    "version": "1.7.8.0",
+    "version": "1.8.0.0",
     "description": "Tray app that allows you to sync windows volume and mute state to Voicemeeter volume controls",
     "author": "Frosthaven",
     "main": "index.js",

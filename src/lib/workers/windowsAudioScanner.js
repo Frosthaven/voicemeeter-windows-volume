@@ -1,66 +1,70 @@
-import { EventEmitter } from 'events';
+import { EventEmitter } from "events";
 import {
-    startPowershellWorker,
-    stopPowershellWorker,
-    sendToPowershellWorker,
-} from '../runPowershell';
+  startPowershellWorker,
+  stopPowershellWorker,
+  sendToPowershellWorker,
+} from "../runPowershell";
 
-const label = 'AudioScanner';
-const labelAudioDevices = 'AudioDeviceScanner';
-const labelAllDevices = 'AllDeviceScanner';
+const label = "AudioScanner";
+const labelAudioDevices = "AudioDeviceScanner";
+const labelAllDevices = "AllDeviceScanner";
+import * as chalk from "colorette";
+import { getSettings } from "../managers/settingsManager";
 
 let AudioEvents = new EventEmitter();
 let started = null;
 let volume = null;
 let muted = null;
-let devices = [];
+
+let audioDevices = [];
+let allDevices = [];
 
 const arraysEqual = (a, b) => {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length !== b.length) return false;
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length !== b.length) return false;
 
-    for (var i = 0; i < a.length; ++i) {
-        if (a[i] !== b[i]) return false;
-    }
-    return true;
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
 };
 
 const getVolume = () => {
-    return volume;
+  return volume;
 };
 
 const getMuted = () => {
-    return muted;
+  return muted;
 };
 
 const getDevices = () => {
-    return devices;
+  return audioDevices;
 };
 
 const setVolume = (volume) => {
-    // PS C:\> [Audio]::Volume = 0.75  # Set volume to 75%
-    sendToPowershellWorker({
-        label: label,
-        command: `[Audio]::Volume = ${volume * 0.01}`,
-    });
+  // PS C:\> [Audio]::Volume = 0.75  # Set volume to 75%
+  sendToPowershellWorker({
+    label: label,
+    command: `[Audio]::Volume = ${volume * 0.01}`,
+  });
 };
 
 const setMuted = (isMuted) => {
-    // PS C:\> [Audio]::Mute = $true   # Mute speaker
-    console.log('setMuted not yet implemented');
+  // PS C:\> [Audio]::Mute = $true   # Mute speaker
+  console.log("setMuted not yet implemented");
 };
 
 const startAudioScanner = (interval) => {
-    if (started) {
-        return;
-    }
-    started = true;
+  if (started) {
+    return;
+  }
+  started = true;
 
-    startPowershellWorker({
-        interval: interval,
-        label: label,
-        setup: `Add-Type -TypeDefinition @'\r\n
+  startPowershellWorker({
+    interval: interval,
+    label: label,
+    setup: `Add-Type -TypeDefinition @'\r\n
 using System.Runtime.InteropServices;\r\n
 \r\n
 [Guid("5CDF2C82-841E-4546-9722-0CF74078229A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]\r\n
@@ -108,175 +112,222 @@ public class Audio {\r\n
     }\r\n
 };\r\n
 '@\r\n`,
-        command: '[Audio]::Volume | Out-Host; [Audio]::Mute | Out-Host;',
-        onResponse: (data) => {
-            if (data && data.length > 0) {
-                // get volume and mute state out of the top two lines
-                // replace any ',' with a '.' - some locales use unparsable comma
-                let newVolume = Math.round(
-                    parseFloat(data.shift().replace(',', '.')) * 100
-                );
-                let newMuted = data.shift() === 'True' ? true : false;
+    command: "[Audio]::Volume | Out-Host; [Audio]::Mute | Out-Host;",
+    onResponse: (data) => {
+      if (data && data.length > 0) {
+        // get volume and mute state out of the top two lines
+        // replace any ',' with a '.' - some locales use unparsable comma
+        let newVolume = Math.round(
+          parseFloat(data.shift().replace(",", ".")) * 100
+        );
+        let newMuted = data.shift() === "True" ? true : false;
 
-                let events = {
-                    first_start: {
-                        enable: false,
-                    },
-                    volume: {
-                        enable: false,
-                        data: null,
-                    },
-                    muted: {
-                        enable: false,
-                        data: null,
-                    },
-                };
+        let events = {
+          first_start: {
+            enable: false,
+          },
+          volume: {
+            enable: false,
+            data: null,
+          },
+          muted: {
+            enable: false,
+            data: null,
+          },
+        };
 
-                // update our values and prepare events
-                if (volume !== newVolume && !isNaN(newVolume)) {
-                    if (volume === null && newVolume !== null) {
-                        events.first_start.enable = true;
-                    }
-                    if (null !== volume) {
-                        events.volume.enable = true;
-                        events.volume.data = {
-                            old: volume,
-                            new: newVolume,
-                        };
-                    }
-                    volume = newVolume;
-                }
-                if (muted !== newMuted) {
-                    if (null !== muted) {
-                        events.muted.enable = true;
-                        events.muted.data = {
-                            old: muted,
-                            new: newMuted,
-                        };
-                    }
-                    muted = newMuted;
-                }
-                if (events.first_start.enable) {
-                    AudioEvents.emit('started');
-                }
+        // update our values and prepare events
+        if (volume !== newVolume && !isNaN(newVolume)) {
+          if (volume === null && newVolume !== null) {
+            events.first_start.enable = true;
+          }
+          if (null !== volume) {
+            events.volume.enable = true;
+            events.volume.data = {
+              old: volume,
+              new: newVolume,
+            };
+          }
+          volume = newVolume;
+        }
+        if (muted !== newMuted) {
+          if (null !== muted) {
+            events.muted.enable = true;
+            events.muted.data = {
+              old: muted,
+              new: newMuted,
+            };
+          }
+          muted = newMuted;
+        }
+        if (events.first_start.enable) {
+          AudioEvents.emit("started");
+        }
 
-                if (events.volume.enable) {
-                    AudioEvents.emit('volume', events.volume.data);
-                }
-                if (events.muted.enable) {
-                    AudioEvents.emit('mute', events.muted.data);
-                }
+        if (events.volume.enable) {
+          AudioEvents.emit("volume", events.volume.data);
+        }
+        if (events.muted.enable) {
+          AudioEvents.emit("mute", events.muted.data);
+        }
 
-                //cleanup
-                events = null;
-                newVolume = null;
-                newMuted = null;
-            }
-        },
-    });
+        //cleanup
+        events = null;
+        newVolume = null;
+        newMuted = null;
+      }
+    },
+  });
 };
 
 const stopAudioScanner = () => {
-    stopPowershellWorker(label);
-    AudioEvents.emit('stopped');
-    started = false;
+  stopPowershellWorker(label);
+  AudioEvents.emit("stopped");
+  started = false;
 };
 
 const startAudioDeviceScanner = () => {
-    startPowershellWorker({
-        interval: 5000,
-        label: labelAudioDevices,
-        command: 'get-wmiobject win32_sounddevice | Out-Host;',
-        onResponse: (data) => {
-            // remaining data is active audio device status. if we need more
-            // data control later, we can split the lines via regex /\s{2,}/
-            // which will give us a 2 dimensional array of device info
-            // (the first two indexes will be headers, and then divider lines)
-            let newDevices = data;
-            let events = {
-                device: {
-                    enable: false,
-                    data: null,
-                },
-            };
-
-            if (newDevices.length > 0 && !arraysEqual(devices, newDevices)) {
-                if (devices.length > 0) {
-                    events.device.enable = true;
-                    events.device.data = {
-                        old: devices.length,
-                        new: newDevices.length,
-                    };
-                }
-
-                if (events.device.enable) {
-                    AudioEvents.emit('audio_device', events.device.data);
-                }
-
-                devices = Array.from(newDevices);
-            }
-
-            newDevices = null;
+  startPowershellWorker({
+    interval: 5000,
+    label: labelAudioDevices,
+    command: "get-wmiobject win32_sounddevice | Out-Host;",
+    onResponse: (data) => {
+      // remaining data is active audio device status. if we need more
+      // data control later, we can split the lines via regex /\s{2,}/
+      // which will give us a 2 dimensional array of device info
+      // (the first two indexes will be headers, and then divider lines)
+      let newDevices = data;
+      let events = {
+        device: {
+          enable: false,
+          data: null,
         },
-    });
+      };
+
+      if (newDevices.length > 0 && !arraysEqual(audioDevices, newDevices)) {
+        if (audioDevices.length > 0) {
+          let devicesAdded = newDevices.filter(
+            (x) => !audioDevices.includes(x)
+          );
+          let devicesRemoved = audioDevices.filter(
+            (x) => !newDevices.includes(x)
+          );
+
+          events.device.enable = true;
+          events.device.data = {
+            old: audioDevices.length,
+            new: newDevices.length,
+            added: devicesAdded,
+            removed: devicesRemoved,
+          };
+        }
+
+        if (events.device.enable) {
+          AudioEvents.emit("audio_device", events.device.data);
+        }
+
+        audioDevices = Array.from(newDevices);
+      }
+
+      newDevices = null;
+    },
+  });
 };
 const stopAudioDeviceScanner = () => {
-    stopPowershellWorker(labelAudioDevices);
+  stopPowershellWorker(labelAudioDevices);
 };
 
-const startAnyDeviceScanner = () => {
-    startPowershellWorker({
-        interval: 5000,
-        label: labelAllDevices,
-        command: 'Get-PnpDevice -PresentOnly | Out-Host;',
-        onResponse: (data) => {
-            // remaining data is active audio device status. if we need more
-            // data control later, we can split the lines via regex /\s{2,}/
-            // which will give us a 2 dimensional array of device info
-            // (the first two indexes will be headers, and then divider lines)
-            let newDevices = data;
-            let events = {
-                device: {
-                    enable: false,
-                    data: null,
-                },
-            };
+// make this an async function
+const startAnyDeviceScanner = async () => {
+  startPowershellWorker({
+    interval: 5000,
+    label: labelAllDevices,
+    command:
+      "Get-PnpDevice -PresentOnly | Select-Object FriendlyName |Out-Host;",
+    onResponse: (devices) => {
+      devices.shift();
+      devices.shift();
 
-            if (!arraysEqual(devices, newDevices)) {
-                if (devices.length > 0) {
-                    events.device.enable = true;
-                    events.device.data = {
-                        old: devices.length,
-                        new: newDevices.length,
-                    };
+      let settings = getSettings();
+      // remove any devices that are in the blacklist
+      if (settings.device_blacklist) {
+        devices = devices.filter((device) => {
+          return !settings.device_blacklist.includes(device);
+        });
+      }
 
-                    if (events.device.enable) {
-                        AudioEvents.emit('any_device', events.device.data);
-                    }
-                }
+      if (
+        devices.length > 0 &&
+        allDevices.length > 0 &&
+        !arraysEqual(allDevices, devices)
+      ) {
+        // the devices array has many duplicates, so when figuring out which
+        // are new, we need to count occurrences of each device name instead
+        // of just checking if it exists in the array
+        let deviceCounts = {};
+        devices.forEach((device) => {
+          deviceCounts[device] = (deviceCounts[device] || 0) + 1;
+        });
+        let allDeviceCounts = {};
+        allDevices.forEach((device) => {
+          allDeviceCounts[device] = (allDeviceCounts[device] || 0) + 1;
+        });
+        let devicesAdded = [];
+        let devicesRemoved = [];
+        for (let device in deviceCounts) {
+          if (
+            deviceCounts[device] > allDeviceCounts[device] ||
+            !allDeviceCounts[device]
+          ) {
+            devicesAdded.push(device);
+          }
+        }
+        for (let device in allDeviceCounts) {
+          if (
+            allDeviceCounts[device] > deviceCounts[device] ||
+            !deviceCounts[device]
+          ) {
+            devicesRemoved.push(device);
+          }
+        }
 
-                devices = Array.from(newDevices);
-            }
-
-            newDevices = null;
-        },
-    });
+        // trigger events
+        if (devicesAdded.length > 0 || devicesRemoved.length > 0) {
+          let events = {
+            device: {
+              enable: true,
+              data: {
+                old: allDevices.length,
+                new: devices.length,
+                added: devicesAdded,
+                removed: devicesRemoved,
+              },
+            },
+          };
+          if (events.device.enable) {
+            AudioEvents.emit("any_device", events.device.data);
+          }
+        }
+      }
+      allDevices = Array.from(devices);
+    },
+  });
 };
 const stopAnyDeviceScanner = () => {
-    stopPowershellWorker(labelAllDevices);
+  stopPowershellWorker(labelAllDevices);
 };
 
 export {
-    startAnyDeviceScanner,
-    stopAnyDeviceScanner,
-    startAudioDeviceScanner,
-    stopAudioDeviceScanner,
-    startAudioScanner,
-    stopAudioScanner,
-    getDevices,
-    getVolume,
-    setVolume,
-    getMuted,
-    setMuted,
-    AudioEvents,
+  startAnyDeviceScanner,
+  stopAnyDeviceScanner,
+  startAudioDeviceScanner,
+  stopAudioDeviceScanner,
+  startAudioScanner,
+  stopAudioScanner,
+  getDevices,
+  getVolume,
+  setVolume,
+  getMuted,
+  setMuted,
+  AudioEvents,
 };
