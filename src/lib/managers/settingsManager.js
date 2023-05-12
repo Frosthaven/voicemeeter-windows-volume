@@ -28,6 +28,7 @@ const saveSettings = () => {
     setSettings(loadedSettings);
 
     fs.writeFileSync(settingsFilePath, JSON.stringify(getSettings(), null, 2));
+    fs.chmodSync(settingsFilePath, 0o777);
   }
 };
 

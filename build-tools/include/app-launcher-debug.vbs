@@ -2,5 +2,5 @@ scriptdir = CreateObject("Scripting.FileSystemObject").GetParentFolderName(WScri
 Set Shell = CreateObject("Shell.Application")
 
 '{{INJECT_START:PKG}}
-Shell.ShellExecute scriptDir & "\required\VMWV.exe", , , "runas", 0
+Shell.ShellExecute scriptDir & "\required\VMWV.exe", , , "runas", 1
 '{{INJECT_END:PKG}}

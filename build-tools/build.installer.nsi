@@ -78,12 +78,17 @@ VIAddVersionKey "FileVersion" "${SETUP_VERSION}"
 ; Installer Sections
 Section "Tray Application" MyApp1
     ; Stop the running process
-    ExecWait `"$SYSDIR\taskkill.exe" /im ${EXE_NAME}`
+    ExecWait `"$SYSDIR\taskkill.exe" /im ${EXE_NAME} /f /t`
+
+    ; Wait another 1.5 seconds for the process to stop
+    Sleep 1500
 
     ; Copy Files & Folders
     SetOutPath "$INSTDIR"
 
     File /nonfatal /a /r "..\_dist\${PACKAGE_NAME}\required"
+    File "..\_dist\${PACKAGE_NAME}\auto-start-task.ps1"
+    File "..\_dist\${PACKAGE_NAME}\app-launcher-debug.vbs"
     File "..\_dist\${PACKAGE_NAME}\app-launcher.vbs"
 
     ; Uninstaller
@@ -98,8 +103,8 @@ Section "Tray Application" MyApp1
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}" "DisplayIcon" "$INSTDIR\required\${EXE_NAME},0"
 ;{{INJECT_END:UNINSTALLER}}
 
-    ; Start the application
-    Exec `$\"$SYSDIR\wscript.exe$\" $\"$INSTDIR\app-launcher.vbs$\"`
+    ; Start the application by calling auto-start-task.ps1
+    ExecWait "powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File $\"$INSTDIR\auto-start-task.ps1$\" -FFFeatureOff"
 
 SectionEnd
 
