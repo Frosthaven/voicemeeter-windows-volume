@@ -43,6 +43,14 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   `toggles` this is an enumerated list of all checkable items in the tray applet.
 -   `device_blacklist` this is an array of all devices to ignore when watching for device connections
 
+## Debug / Verbose Output Mode
+
+If you want to see nerdy console output, follow these steps:
+
+- Go to the installation directory (Usually `C:\Program Files (x86)\Voicemeeter Windows Volume`)
+- Make sure the program is not running (Exit it if it is)
+- Double click to run `app-launcher-debug.vbs`
+
 ## Contributors
 
 -   [metahexane](https://github.com/metahexane)
@@ -51,14 +59,6 @@ Close the program if it is running, and open that file in a text editor. Here ar
     -   Added option to toggle whether the mute state is synced or not
 -   [Mineral](https://github.com/Mineral)
     -   Inspiration for handling "Automatically Start With Windows" through powershell instead of .vbs files
-
-## Debug / Verbose Output Mode
-
-If you want to see nerdy console output, follow these steps:
-
-- Go to the installation directory (Usually `C:\Program Files (x86)\Voicemeeter Windows Volume`)
-- Make sure the program is not running (Exit it if it is)
-- Double click to run `app-launcher-debug.vbs`
 
 # Building From Source
 
