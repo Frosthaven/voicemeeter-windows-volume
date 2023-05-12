@@ -41,6 +41,7 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   `disable_donate` if set to true, the donate link will be hidden from the tray app (donations are optional and nothing is locked behind them).
 -   `audiodg` should be left alone unless you know what you are doing. It utilizes Windows priority and affinity codes to set both appropriately when "Apply Crackle Fix" is checked.
 -   `toggles` this is an enumerated list of all checkable items in the tray applet.
+-   `device_blacklist` this is an array of all devices to ignore when watching for device connections
 
 ## Contributors
 
@@ -49,13 +50,13 @@ Close the program if it is running, and open that file in a text editor. Here ar
 -   [mkc1370](https://github.com/mkc1370)
     -   Added option to toggle whether the mute state is synced or not
 
-## Feature Wishlist
+## Debug / Verbose Output Mode
 
-These are features I currently want to add to the application. This is a spare-time project, so these are in no particular order or time-table.
+If you want to see nerdy console output, follow these steps:
 
--   Ability to control voicemeeter remotely, through both the browser and mobile devices.
-
-If you have a feature you want added, be sure to let me know with a new ticket!
+- Go to the installation directory (Usually `C:\Program Files (x86)\Voicemeeter Windows Volume`)
+- Make sure the program is not running (Exit it if it is)
+- Double click to run `app-launcher-debug.vbs`
 
 # Building From Source
 
