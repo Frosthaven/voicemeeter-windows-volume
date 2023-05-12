@@ -5,3 +5,12 @@ npm-debug.log
 .env
 .DS_Store
 settings.json
+/.idea/.gitignore
+/.idea/deployment.xml
+/.idea/git_toolbox_prj.xml
+/.idea/modules.xml
+/.idea/php.xml
+/.idea/prettier.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
+/.idea/voicemeeter-windows-volume.iml
