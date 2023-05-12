@@ -23,7 +23,7 @@ const defaults = {
       value: false,
     },
   ],
-  device_blacklist: ["Microsoft Streaming Service Proxy"],
+  device_blacklist: ["Microsoft Streaming Service Proxy", "Volume", "Xvd"],
 };
 
 export { defaults };
