@@ -1,24 +1,42 @@
 $scriptpath = $MyInvocation.MyCommand.Path
 $dir = Split-Path $scriptpath
+$vmwvPath = Join-Path $dir "required\VMWV.exe"
+Set-Location $dir
 
-<# define our boot script #>
-function Start-App {
-    Set-Location $dir
-    cscript.exe app-launcher.vbs
-}
+# Wait for VMWV to be responsive
+# we will know vmwv loaded correctly when it has a cmd.exe child process
 
-<# wait until the systray is available #>
-while ($true) {
+# begin the loader
+$vmwvLoaded = $false
+while ($vmwvLoaded -eq $false) {
+    # kill any existing VMWV processes
     try {
-        $systray = (Get-Process explorer | Where-Object {$_.MainWindowTitle -eq "Program Manager"}).MainWindowHandle
-        if ($systray -eq 0) {
-            throw "systray not found"
+        taskkill /im "VMWV.exe" /t /f
+        Get-Process -Name "VMWV" -ErrorAction SilentlyContinue | Stop-Process -Force
+    } catch {}
+
+    # start a fresh process and give it time to breathe
+    Start-Process -FilePath $vmwvPath -WindowStyle Hidden
+    $vmwv = Get-Process -Name "VMWV" -ErrorAction SilentlyContinue
+    Start-Sleep -s 2
+
+    # begin polling for child processes to ensure VMWV has access to cmd.exe
+    $polling_for_children = $true;
+    $polling_count = 0;
+    while ($polling_for_children -eq $true) {
+        $childProcesses = Get-WmiObject Win32_Process -Filter "ParentProcessId=$($vmwv.Id)"
+        if ($childProcesses | Where-Object {$_.Name -eq "cmd.exe"}) {
+            # we have a child process, VMWV is ready
+            $polling_for_children = $false
+            $vmwvLoaded = $true
+            break
         }
-        <# extra sleep to make sure the systray is fully loaded #>
-        Start-Sleep -Seconds 5
-        Start-App
-        break
-    } catch {
-        Start-Sleep -Seconds 1
+
+        # if cmd.exe is not found, wait a second and try again
+        $polling_count++
+        if ($polling_count -gt 10) {
+            $polling_for_children = $false
+        }
+        Start-Sleep -s 1
     }
 }
