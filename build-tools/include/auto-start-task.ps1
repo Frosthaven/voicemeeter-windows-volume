@@ -7,7 +7,18 @@ function Start-App {
     cscript.exe app-launcher.vbs
 }
 
-<# Run Start-App only after the task bar is accessible #>
-$wshell = New-Object -ComObject wscript.shell
-$wshell.AppActivate('Taskbar')
-Start-App
+<# wait until the systray is available #>
+while ($true) {
+    try {
+        $systray = (Get-Process explorer | Where-Object {$_.MainWindowTitle -eq "Program Manager"}).MainWindowHandle
+        if ($systray -eq 0) {
+            throw "systray not found"
+        }
+        <# extra sleep to make sure the systray is fully loaded #>
+        Start-Sleep -Seconds 5
+        Start-App
+        break
+    } catch {
+        Start-Sleep -Seconds 1
+    }
+}
