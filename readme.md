@@ -49,6 +49,8 @@ Close the program if it is running, and open that file in a text editor. Here ar
     -   Logarithmic volume calculation to replace flat scale conversion
 -   [mkc1370](https://github.com/mkc1370)
     -   Added option to toggle whether the mute state is synced or not
+-   [Mineral](https://github.com/Mineral)
+    -   Inspiration for handling "Automatically Start With Windows" through powershell instead of .vbs files
 
 ## Debug / Verbose Output Mode
 
