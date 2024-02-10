@@ -8,6 +8,7 @@ The advantage of this application is that you do not need to fiddle with custom 
 
 1. Head over to the [releases](https://github.com/Frosthaven/voicemeeter-windows-volume/releases/) page to download the latest version.
 2. Download the installer and run it.
+3. Restart your system to get started!
 
 ## Features
 
